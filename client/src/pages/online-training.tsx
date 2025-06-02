@@ -1,3 +1,5 @@
+import Footer from "@/components/footer";
+
 export default function OnlineTraining() {
   return (
     <main className="min-h-screen bg-white pt-20">
@@ -141,6 +143,7 @@ export default function OnlineTraining() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

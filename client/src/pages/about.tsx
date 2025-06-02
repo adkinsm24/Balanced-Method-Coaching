@@ -129,6 +129,7 @@ export default function About() {
           </a>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
