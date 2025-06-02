@@ -6,6 +6,8 @@ import Orangetheory_Fitness_1 from "@assets/Orangetheory-Fitness_1.jpg";
 
 import thumbnail_PSP04110_1030x687_1 from "@assets/thumbnail_PSP04110-1030x687-1.jpg";
 
+import _2 from "@assets/2.png";
+
 export default function Home() {
   return (
     <main className="min-h-screen pt-20">
@@ -66,9 +68,9 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=90"
+                src={_2}
                 alt="Professional trainer working with client in modern gym facility"
-                className="w-full h-96 object-cover rounded-lg shadow-lg"
+                className="w-full h-96 object-cover rounded-lg shadow-lg pl-[-6px] pr-[-6px] ml-[0px] mr-[0px] mt-[0px] mb-[0px] pt-[24px] pb-[24px]"
               />
             </div>
             <div>
