@@ -73,83 +73,86 @@ export default function HeroSection() {
 [00:01:51] Mark: "eating."`;
 
   return (
-    <section 
-      id="hero" 
-      className="relative w-full h-screen overflow-hidden flex items-center justify-center"
-    >
-      {/* Background Video */}
-      <video
-        ref={videoRef}
-        className="hero-background"
-        autoPlay
-        muted
-        loop
-        playsInline
-        onError={handleVideoError}
-        poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080"
-      >
-        <source src="/coach_mark.mov" type="video/mp4" />
-        <div 
+    <>
+      {/* Full-screen video section */}
+      <section className="relative w-full h-screen overflow-hidden">
+        <video
+          ref={videoRef}
           className="hero-background"
-          style={{
-            background: 'linear-gradient(135deg, #2C3E50 0%, #34495E 100%)',
-          }}
-        />
-      </video>
-
-      {/* Semi-transparent overlay */}
-      <div className="hero-overlay" />
-
-      {/* Centered content container */}
-      <div className="hero-content text-center text-white px-4 max-w-4xl mx-auto fade-in">
-        <h1 
-          id="hero-headline" 
-          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight slide-up"
+          autoPlay
+          muted
+          loop
+          playsInline
+          onError={handleVideoError}
+          poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080"
         >
-          {heroHeadline}
-        </h1>
-        
-        <p 
-          id="hero-subheading" 
-          className="text-lg md:text-xl lg:text-2xl font-light mb-8 max-w-3xl mx-auto leading-relaxed opacity-90"
-          style={{ animationDelay: '0.2s' }}
-        >
-          {heroSubheading}
-        </p>
-        
-        <div style={{ animationDelay: '0.4s' }}>
-          <Button
-            onClick={handleCTAClick}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-6 h-auto rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg mb-8"
-            size="lg"
-            aria-label={heroCTA}
+          <source src="/coach_mark.mov" type="video/mp4" />
+          <div 
+            className="hero-background"
+            style={{
+              background: 'linear-gradient(135deg, #2C3E50 0%, #34495E 100%)',
+            }}
+          />
+        </video>
+
+        {/* Minimal overlay for better video visibility */}
+        <div className="absolute inset-0 bg-black/20" />
+
+        {/* Simple scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <div 
+            className="scroll-arrow text-4xl text-white opacity-70 bounce-gentle cursor-pointer" 
+            aria-hidden="true"
+            onClick={handleScrollIndicatorClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleScrollIndicatorClick();
+              }
+            }}
           >
-            {heroCTA}
-          </Button>
+            ↓
+          </div>
+        </div>
+      </section>
+
+      {/* Content section below video */}
+      <section id="hero" className="bg-white py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 
+            id="hero-headline" 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-secondary slide-up"
+          >
+            {heroHeadline}
+          </h1>
+          
+          <p 
+            id="hero-subheading" 
+            className="text-lg md:text-xl lg:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed"
+            style={{ animationDelay: '0.2s' }}
+          >
+            {heroSubheading}
+          </p>
+          
+          <div style={{ animationDelay: '0.4s' }}>
+            <Button
+              onClick={handleCTAClick}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-6 h-auto rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+              size="lg"
+              aria-label={heroCTA}
+            >
+              {heroCTA}
+            </Button>
+          </div>
         </div>
         
-        {/* Scroll indicator */}
-        <div 
-          className="scroll-arrow text-4xl opacity-70 bounce-gentle cursor-pointer mt-8" 
-          aria-hidden="true"
-          onClick={handleScrollIndicatorClick}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleScrollIndicatorClick();
-            }
-          }}
-        >
-          ↓
+        {/* Hidden transcript for SEO/accessibility */}
+        <div id="full-transcript" className="sr-only">
+          <h2>Video Transcript</h2>
+          <pre>{videoTranscript}</pre>
         </div>
-      </div>
-      
-      {/* Hidden transcript for SEO/accessibility */}
-      <div id="full-transcript" className="sr-only">
-        <h2>Video Transcript</h2>
-        <pre>{videoTranscript}</pre>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
