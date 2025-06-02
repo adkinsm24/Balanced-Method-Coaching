@@ -2,11 +2,12 @@ import HeroSection from "@/components/hero-section";
 import SignupSection from "@/components/signup-section";
 import Footer from "@/components/footer";
 
+import Orangetheory_Fitness_1 from "@assets/Orangetheory-Fitness_1.jpg";
+
 export default function Home() {
   return (
     <main className="min-h-screen pt-20">
       <HeroSection />
-      
       {/* Success Stories Section with High-Res Images */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
@@ -17,7 +18,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg overflow-hidden shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=90"
+                src={Orangetheory_Fitness_1}
                 alt="Person exercising with weights in modern gym"
                 className="w-full h-64 object-cover"
               />
@@ -53,7 +54,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Training Methods Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
@@ -104,7 +104,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Transformation Gallery */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
@@ -159,7 +158,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
       <SignupSection />
       <Footer />
     </main>
