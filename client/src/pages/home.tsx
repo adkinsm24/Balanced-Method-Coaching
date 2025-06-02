@@ -4,6 +4,8 @@ import Footer from "@/components/footer";
 
 import Orangetheory_Fitness_1 from "@assets/Orangetheory-Fitness_1.jpg";
 
+import thumbnail_PSP04110_1030x687_1 from "@assets/thumbnail_PSP04110-1030x687-1.jpg";
+
 export default function Home() {
   return (
     <main className="min-h-screen pt-20">
@@ -30,7 +32,7 @@ export default function Home() {
             
             <div className="bg-white rounded-lg overflow-hidden shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=90"
+                src={thumbnail_PSP04110_1030x687_1}
                 alt="Person doing cardio workout in professional fitness setting"
                 className="w-full h-64 object-cover"
               />
