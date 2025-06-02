@@ -1,0 +1,126 @@
+export default function About() {
+  return (
+    <main className="min-h-screen bg-white pt-20">
+      {/* Hero Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold text-secondary mb-8">
+            About Coach Mark
+          </h1>
+          <p className="text-xl text-gray-700 leading-relaxed">
+            Passionate about health and fitness with a mission to help as many people as possible find a sustainable way of eating that leads to lasting fat loss and better health.
+          </p>
+        </div>
+      </section>
+
+      {/* Education & Background */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-secondary mb-8">Education & Background</h2>
+          
+          <div className="space-y-8">
+            <div className="border-l-4 border-primary pl-6">
+              <h3 className="text-xl font-semibold mb-2">Bachelor's Degree</h3>
+              <p className="text-gray-700 mb-2">Cal State University Fullerton • 2016</p>
+              <p className="text-gray-600">
+                I've been passionate about health and fitness since earning my bachelor's degree, which laid the foundation for my career in helping others achieve their fitness goals.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-primary pl-6">
+              <h3 className="text-xl font-semibold mb-2">Level 1 Precision Nutrition Certification</h3>
+              <p className="text-gray-700 mb-2">Precision Nutrition • 2018</p>
+              <p className="text-gray-600">
+                This certification gave me the tools to launch my one-on-one nutrition coaching business. It provided the scientific foundation and practical skills needed to help clients transform their relationship with food.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-primary pl-6">
+              <h3 className="text-xl font-semibold mb-2">Continued Education</h3>
+              <p className="text-gray-700 mb-2">Ongoing Professional Development</p>
+              <p className="text-gray-600">
+                I've continued expanding my knowledge base through advanced education courses and by following top leaders in the field, ensuring I stay current with the latest research and best practices.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-secondary mb-8">Professional Experience</h2>
+          
+          <div className="space-y-8">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-3">Personal & Group Training</h3>
+              <p className="text-gray-600 mb-4">
+                Since 2016, I've had the privilege to work with hundreds of people, both in group and personal training settings. This hands-on experience has taught me how to adapt my approach to meet each individual's unique needs and circumstances.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-3">One-on-One Nutrition Coaching</h3>
+              <p className="text-gray-600 mb-4">
+                Since launching my nutrition coaching business in 2018, I've helped nearly 100 clients transform their nutrition, improve their relationship with food, and achieve real, lasting results. Each client receives a completely personalized approach based on their individual needs and goals.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-3">Self-Paced Nutrition Course</h3>
+              <p className="text-gray-600 mb-4">
+                I'm excited to introduce my brand new Self-Paced Nutrition course. It's built on the exact framework I use with my private clients and designed for those who want results but don't necessarily need the one-on-one support. Whether it's about affordability, independence, or convenience, this course gives more people access to a proven system that works.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Philosophy */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-secondary mb-8">My Coaching Philosophy</h2>
+          
+          <div className="space-y-6">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-3 text-primary">No Cookie-Cutter Solutions</h3>
+              <p className="text-gray-700">
+                What sets my coaching apart is that I don't rely on cookie-cutter meal plans. I take the time to understand your current eating habits and then guide you through small, meaningful changes that build real momentum—changes that actually stick.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-3 text-primary">Ongoing Support & Accountability</h3>
+              <p className="text-gray-700">
+                I'll be with you every step of the way to provide you guidance and accountability. Success isn't just about having the right plan—it's about having the right support system to help you implement it consistently.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-3 text-primary">Sustainable Results</h3>
+              <p className="text-gray-700">
+                My ultimate mission is simple: help as many people as possible find a sustainable way of eating that leads to lasting fat loss, better health, without any gimmicks, shortcuts, or unnecessary restrictions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-16 bg-secondary text-secondary-foreground">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+          <p className="text-xl mb-8 opacity-90">
+            Let's get you stronger, more energized, leaner, and more confident through smarter and healthier eating.
+          </p>
+          <a
+            href="/"
+            className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105"
+          >
+            Start Your Transformation
+          </a>
+        </div>
+      </section>
+    </main>
+  );
+}
