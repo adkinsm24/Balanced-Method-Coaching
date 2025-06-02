@@ -13,7 +13,7 @@ export default function Home() {
     <main className="min-h-screen pt-20">
       <HeroSection />
       {/* Success Stories Section with High-Res Images */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-secondary mb-16">
             Real Results from Real People
@@ -109,7 +109,7 @@ export default function Home() {
         </div>
       </section>
       {/* Transformation Gallery */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gradient-to-bl from-slate-50 via-gray-100 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-secondary mb-16">
             Transformation Gallery

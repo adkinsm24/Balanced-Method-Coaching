@@ -5,7 +5,7 @@ export default function Navigation() {
   const [location] = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white via-gray-50 to-white backdrop-blur-sm border-b border-gray-300 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/">
           <h1 className="text-2xl font-bold text-secondary">Coach Mark</h1>

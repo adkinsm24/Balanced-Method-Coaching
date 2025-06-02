@@ -4,7 +4,7 @@ export default function OnlineTraining() {
   return (
     <main className="min-h-screen bg-white pt-20">
       {/* Hero Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-slate-50 to-gray-100">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold text-secondary mb-8">
             Online Training Program
@@ -43,7 +43,7 @@ export default function OnlineTraining() {
       </section>
 
       {/* Program Features */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gradient-to-tr from-slate-50 via-blue-50 to-gray-100">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-secondary mb-12 text-center">
             What's Included
@@ -103,14 +103,14 @@ export default function OnlineTraining() {
           </h2>
           
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg">
+            <div className="bg-gradient-to-br from-white to-blue-50 p-6 rounded-lg shadow-md border border-gray-200">
               <p className="text-gray-700 mb-4 italic">
                 "Coach Mark's online program gave me the flexibility I needed. The personalized approach made all the difference - I finally found a way of eating and training that fits my busy lifestyle."
               </p>
               <p className="font-semibold text-secondary">- Client Success Story</p>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg">
+            <div className="bg-gradient-to-bl from-slate-50 to-white p-6 rounded-lg shadow-md border border-gray-200">
               <p className="text-gray-700 mb-4 italic">
                 "The weekly check-ins and constant support kept me accountable. After years of trying different programs, this is the first one that actually stuck and delivered lasting results."
               </p>
