@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import SocialMedia from "@/components/social-media";
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -138,12 +139,18 @@ export default function HeroSection() {
           <div style={{ animationDelay: '0.4s' }}>
             <Button
               onClick={handleCTAClick}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-6 h-auto rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-6 h-auto rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg mb-8"
               size="lg"
               aria-label={heroCTA}
             >
               {heroCTA}
             </Button>
+          </div>
+          
+          {/* Social Media Follow */}
+          <div className="mt-8" style={{ animationDelay: '0.6s' }}>
+            <p className="text-gray-600 mb-4 text-lg">Follow Coach Mark's Journey</p>
+            <SocialMedia variant="default" />
           </div>
         </div>
         

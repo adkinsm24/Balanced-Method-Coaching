@@ -1,3 +1,6 @@
+import SocialMedia from "@/components/social-media";
+import Footer from "@/components/footer";
+
 export default function About() {
   return (
     <main className="min-h-screen bg-white pt-20">
@@ -7,9 +10,14 @@ export default function About() {
           <h1 className="text-5xl font-bold text-secondary mb-8">
             About Coach Mark
           </h1>
-          <p className="text-xl text-gray-700 leading-relaxed">
+          <p className="text-xl text-gray-700 leading-relaxed mb-8">
             Passionate about health and fitness with a mission to help as many people as possible find a sustainable way of eating that leads to lasting fat loss and better health.
           </p>
+          
+          <div className="mt-8">
+            <p className="text-lg text-gray-600 mb-4">Connect with Coach Mark</p>
+            <SocialMedia variant="default" />
+          </div>
         </div>
       </section>
 

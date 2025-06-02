@@ -1,5 +1,6 @@
 import HeroSection from "@/components/hero-section";
 import SignupSection from "@/components/signup-section";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
@@ -160,6 +161,7 @@ export default function Home() {
       </section>
       
       <SignupSection />
+      <Footer />
     </main>
   );
 }
