@@ -29,6 +29,15 @@ export default function Navigation() {
               About Me
             </Button>
           </Link>
+          
+          <Link href="/online-training">
+            <Button 
+              variant={location === "/online-training" ? "default" : "ghost"}
+              className={location === "/online-training" ? "bg-primary text-primary-foreground" : ""}
+            >
+              Online Training
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>
