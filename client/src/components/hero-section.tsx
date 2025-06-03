@@ -113,9 +113,7 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="p-6 bg-white">
-                <p className="text-primary font-semibold group-hover:text-primary/80 transition-colors">
-                  Get Started →
-                </p>
+                <p className="text-primary font-semibold group-hover:text-primary/80 transition-colors">Learn More→</p>
               </div>
             </a>
 
