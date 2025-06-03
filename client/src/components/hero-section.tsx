@@ -88,7 +88,7 @@ export default function HeroSection() {
             >
               <div className="h-64 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
                 <div className="text-center p-6">
-                  <div className="text-6xl mb-4 text-primary">👤</div>
+                  <div className="text-6xl mb-4 text-primary">🎯</div>
                   <h3 className="text-2xl font-bold text-secondary mb-2">1-on-1 Nutrition Coaching</h3>
                   <p className="text-gray-700">Personalized guidance, real-time accountability, and expert coaching </p>
                 </div>
