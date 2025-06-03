@@ -163,33 +163,33 @@ export default function SignupSection() {
           </p>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-card/10 border-white/20">
+            <Card className="bg-blue-50/80 border-blue-200/50">
               <CardContent className="pt-8">
                 <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-primary-foreground text-2xl font-bold">1</span>
                 </div>
-                <h4 className="text-xl font-semibold mb-3">Personal Assessment</h4>
-                <p className="opacity-90">Complete lifestyle and fitness evaluation to understand your unique needs</p>
+                <h4 className="text-xl font-semibold mb-3 text-gray-800">Personal Assessment</h4>
+                <p className="text-gray-700">Complete lifestyle and fitness evaluation to understand your unique needs</p>
               </CardContent>
             </Card>
             
-            <Card className="bg-card/10 border-white/20">
+            <Card className="bg-blue-50/80 border-blue-200/50">
               <CardContent className="pt-8">
                 <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-primary-foreground text-2xl font-bold">2</span>
                 </div>
-                <h4 className="text-xl font-semibold mb-3">Custom Plan Creation</h4>
-                <p className="opacity-90">Receive your personalized nutrition and exercise plan tailored to your goals</p>
+                <h4 className="text-xl font-semibold mb-3 text-gray-800">Custom Plan Creation</h4>
+                <p className="text-gray-700">Receive your personalized nutrition and exercise plan tailored to your goals</p>
               </CardContent>
             </Card>
             
-            <Card className="bg-card/10 border-white/20">
+            <Card className="bg-blue-50/80 border-blue-200/50">
               <CardContent className="pt-8">
                 <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-primary-foreground text-2xl font-bold">3</span>
                 </div>
-                <h4 className="text-xl font-semibold mb-3">Ongoing Support</h4>
-                <p className="opacity-90">Weekly check-ins and plan adjustments to ensure consistent progress</p>
+                <h4 className="text-xl font-semibold mb-3 text-gray-800">Ongoing Support</h4>
+                <p className="text-gray-700">Weekly check-ins and plan adjustments to ensure consistent progress</p>
               </CardContent>
             </Card>
           </div>
