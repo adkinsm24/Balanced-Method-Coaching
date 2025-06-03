@@ -21,7 +21,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
       {/* Education & Background */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4">
@@ -29,7 +28,7 @@ export default function About() {
           
           <div className="space-y-8">
             <div className="border-l-4 border-primary pl-6">
-              <h3 className="text-xl font-semibold mb-2">Bachelor's Degree</h3>
+              <h3 className="text-xl font-semibold mb-2">Bachelor's Degree in Kinesiology, Strength & Conditioning</h3>
               <p className="text-gray-700 mb-2">Cal State University Fullerton • 2016</p>
               <p className="text-gray-600">
                 I've been passionate about health and fitness since earning my bachelor's degree, which laid the foundation for my career in helping others achieve their fitness goals.
