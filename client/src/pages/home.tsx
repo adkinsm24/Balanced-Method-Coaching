@@ -22,9 +22,7 @@ export default function Home() {
                 Improve Your Nutrition
                 <span className="block text-primary">With Coach Mark</span>
               </h1>
-              <p className="text-lg md:text-xl mb-8 text-gray-700 leading-relaxed">
-                Find a way of eating that actually fits your lifestyle with personalized coaching from Coach Mark
-              </p>
+              <p className="text-lg md:text-xl mb-8 text-gray-700 leading-relaxed">Discover a sustainable way of eating that allows you to lose body fat and improve your health with my methodology</p>
               <Button 
                 size="lg" 
                 className="text-lg px-8 py-4 bg-primary hover:bg-primary/90 text-white"
@@ -77,7 +75,6 @@ export default function Home() {
         </div>
       </section>
       <HeroSection />
-      
       {/* Success Stories Section with High-Res Images */}
       <section className="py-20 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
