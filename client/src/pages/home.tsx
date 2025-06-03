@@ -42,7 +42,7 @@ export default function Home() {
           
           {/* Right side - Video */}
           <div className="w-1/2 relative flex items-center justify-center">
-            <div className="w-2/3 aspect-video">
+            <div className="w-4/5 aspect-video">
               <iframe
                 width="100%"
                 height="100%"
