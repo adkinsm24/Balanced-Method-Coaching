@@ -69,7 +69,7 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-radial from-blue-200/40 to-transparent rounded-full blur-3xl"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-radial from-teal-200/30 to-transparent rounded-full blur-2xl"></div>
         </div>
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
           <h2 className="text-4xl font-bold text-center text-secondary mb-16">
             Proven Training Methods
           </h2>
@@ -118,8 +118,12 @@ export default function Home() {
         </div>
       </section>
       {/* Transformation Gallery */}
-      <section className="py-20 bg-gradient-to-bl from-slate-50 via-gray-100 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-20 bg-gradient-to-tr from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-br from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-tl from-cyan-200/30 to-blue-200/30 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
           <h2 className="text-4xl font-bold text-center text-secondary mb-16">
             Transformation Gallery
           </h2>
