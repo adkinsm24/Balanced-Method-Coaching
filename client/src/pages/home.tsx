@@ -136,6 +136,22 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Call to Action */}
+      <section className="py-16 bg-secondary text-secondary-foreground">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+          <p className="text-xl mb-8 opacity-90">
+            Let's get you stronger, more energized, leaner, and more confident through smarter and healthier eating.
+          </p>
+          <a
+            href="/coaching-offers"
+            className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105"
+          >
+            Start Your Transformation
+          </a>
+        </div>
+      </section>
       <Footer />
     </main>
   );
