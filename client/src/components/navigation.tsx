@@ -30,11 +30,18 @@ export default function Navigation() {
             </Button>
           </Link>
           
+          <Link href="/coaching-offers">
+            <Button 
+              variant={location === "/coaching-offers" ? "default" : "ghost"}
+              className={location === "/coaching-offers" ? "bg-primary text-primary-foreground" : ""}
+            >Coaching Offers</Button>
+          </Link>
+          
           <Link href="/online-training">
             <Button 
               variant={location === "/online-training" ? "default" : "ghost"}
               className={location === "/online-training" ? "bg-primary text-primary-foreground" : ""}
-            >Coaching Offers</Button>
+            >Online Training</Button>
           </Link>
         </div>
       </div>
