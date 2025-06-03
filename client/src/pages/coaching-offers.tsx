@@ -100,20 +100,20 @@ export default function CoachingOffers() {
               </Button>
             </div>
 
-            {/* Online Training Program */}
-            <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-8 shadow-lg border border-green-200">
-              <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Online Training Program</h3>
+            {/* Coaching Calls */}
+            <div id="coaching-calls" className="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-8 shadow-lg border border-green-200">
+              <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Coaching Calls</h3>
               <p className="text-gray-700 mb-6 leading-relaxed">
-                Comprehensive fitness and nutrition program combining personalized workouts with nutrition guidance. Get the complete package for total body transformation.
+                Book a personalized call with Coach Mark to get answers to your specific questions about nutrition, food tracking, exercise, or any health-related concerns.
               </p>
               <ul className="text-gray-700 mb-6 space-y-2">
-                <li>• Custom workout plans</li>
-                <li>• Nutrition guidance included</li>
-                <li>• Progress tracking</li>
-                <li>• Complete lifestyle approach</li>
+                <li>• Direct access to Coach Mark</li>
+                <li>• Personalized guidance and advice</li>
+                <li>• Flexible scheduling options</li>
+                <li>• Nutrition and exercise expertise</li>
               </ul>
               <Button className="w-full bg-primary hover:bg-primary/90 text-white">
-                View Program
+                Book a Call
               </Button>
             </div>
           </div>
