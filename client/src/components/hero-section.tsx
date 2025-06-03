@@ -39,7 +39,7 @@ export default function HeroSection() {
   };
 
   // Authentic messaging extracted from Coach Mark's video
-  const heroHeadline = "Find a Way of Eating That Actually Fits Your Lifestyle";
+  const heroHeadline = "Ditch the Diets. Discover Eating That Finally Works for You.";
   const heroSubheading = "I'm Coach Mark, and I don't rely on cookie-cutter meal plans. I take the time to understand your current eating habits and guide you through small, meaningful changes that build real momentum—changes that actually stick. I'll be with you every step of the way to provide guidance and accountability.";
   const heroCTA = "Are You Ready? Let's Get Started";
   
