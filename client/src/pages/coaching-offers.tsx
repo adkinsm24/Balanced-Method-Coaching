@@ -137,18 +137,7 @@ export default function CoachingOffers() {
           </div>
         </div>
       </section>
-      {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-orange-50 to-red-50">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-secondary mb-6">Ready to Start Your Transformation?</h2>
-          <p className="text-xl text-gray-700 mb-8">
-            Choose the coaching option that best fits your needs and take the first step toward lasting results.
-          </p>
-          <Button size="lg" className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-4">
-            Schedule a Consultation
-          </Button>
-        </div>
-      </section>
+
       <Footer />
     </main>
   );
