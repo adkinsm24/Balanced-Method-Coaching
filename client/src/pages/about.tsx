@@ -83,9 +83,8 @@ export default function About() {
                   <p className="text-sm text-gray-600">September 2022</p>
                 </div>
               </div>
-              <p className="text-gray-600 mt-4 text-center italic">
-                These certifications provide the foundation for evidence-based coaching and safe, effective training methodologies.
-              </p>
+              <p className="text-gray-600 mt-4 text-center italic">I've continued to expand my knowledge through advanced education courses and by learning from top leaders in the field. This diverse background allows me to tailor coaching to your specific needs — whether you're new to fitness, training for performance, or simply want to feel better in your body.
+</p>
             </div>
 
             <div className="border-l-4 border-primary pl-6">
