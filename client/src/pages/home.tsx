@@ -82,7 +82,41 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/15 rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <h2 className="text-4xl font-bold text-center text-secondary mb-16">Full Testimonials</h2>
+          <h2 className="text-4xl font-bold text-center text-secondary mb-8">Full Testimonials</h2>
+          
+          {/* Testimonial Description */}
+          <div className="max-w-4xl mx-auto text-center mb-16">
+            <p className="text-xl text-gray-700 mb-6 leading-relaxed">
+              Curious what it's like working with me?
+            </p>
+            <p className="text-lg text-gray-600 mb-6">
+              Hear directly from my clients as they answer the following questions:
+            </p>
+            <div className="text-left max-w-3xl mx-auto bg-white/50 backdrop-blur-sm rounded-lg p-8 shadow-sm">
+              <ol className="space-y-3 text-gray-700">
+                <li className="flex items-start">
+                  <span className="font-semibold text-secondary mr-3">1.</span>
+                  <span>Why did you start working with me?</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-semibold text-secondary mr-3">2.</span>
+                  <span>How has your body, health, and/or mindset changed since working with me?</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-semibold text-secondary mr-3">3.</span>
+                  <span>What results have you achieved that you're most proud of?</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-semibold text-secondary mr-3">4.</span>
+                  <span>How did my coaching differ from other things you've tried before?</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-semibold text-secondary mr-3">5.</span>
+                  <span>What would you say to someone who's on the fence about working with me?</span>
+                </li>
+              </ol>
+            </div>
+          </div>
           
           {/* Video Section */}
           <div className="max-w-4xl mx-auto mb-16">
