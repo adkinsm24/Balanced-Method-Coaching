@@ -59,7 +59,7 @@ export default function About() {
                 </div>
                 
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-                  <h4 className="font-semibold text-primary mb-1">Precision Nutrition Level 1</h4>
+                  <h4 className="font-semibold text-primary mb-1">TRX Suspension Trainer Certified (Level 1)</h4>
                   <p className="text-sm text-gray-600">November 2018</p>
                 </div>
                 
