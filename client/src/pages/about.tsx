@@ -75,7 +75,7 @@ export default function About() {
                 
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                   <h4 className="font-semibold text-primary mb-1">XPT Level 1 Coach</h4>
-                  <p className="text-sm text-gray-600">June 2018</p>
+                  <p className="text-sm text-gray-600">November 2018</p>
                 </div>
                 
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 md:col-span-2">
