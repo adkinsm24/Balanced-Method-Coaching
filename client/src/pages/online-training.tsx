@@ -48,7 +48,7 @@ export default function OnlineTraining() {
           <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-red-200/30 to-orange-200/30 rounded-full blur-3xl"></div>
         </div>
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
           <h2 className="text-3xl font-bold text-secondary mb-12 text-center">
             What's Included
           </h2>
