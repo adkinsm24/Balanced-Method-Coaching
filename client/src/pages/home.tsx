@@ -57,12 +57,21 @@ export default function Home() {
             Real Results from Real People
           </h2>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            
-
-            
-
+          {/* Video Section */}
+          <div className="max-w-4xl mx-auto mb-16">
+            <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-lg">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/h1V4GeHr-Ek?controls=1&rel=0&showinfo=0&modestbranding=1"
+                title="Real Results from Real People"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="absolute inset-0"
+              ></iframe>
+            </div>
           </div>
         </div>
       </section>
