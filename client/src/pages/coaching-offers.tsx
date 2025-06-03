@@ -11,9 +11,6 @@ export default function CoachingOffers() {
           <h1 className="text-5xl font-bold text-secondary mb-8">
             Coaching Offers
           </h1>
-          <p className="text-xl text-gray-700 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Choose the coaching approach that fits your lifestyle and goals. From personalized one-on-one support to self-paced learning, find the perfect path to transform your nutrition.
-          </p>
         </div>
       </section>
 
