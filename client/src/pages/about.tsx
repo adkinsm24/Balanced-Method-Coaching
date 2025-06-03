@@ -55,7 +55,7 @@ export default function About() {
                 
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
                   <h4 className="font-semibold text-primary mb-1">NSCA Certified Strength and Conditioning Specialist (CSCS)</h4>
-                  <p className="text-sm text-gray-600">January 2017</p>
+                  <p className="text-sm text-gray-600">March 2017</p>
                 </div>
                 
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
