@@ -55,24 +55,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-          <div 
-            className="text-4xl text-secondary opacity-70 bounce-gentle cursor-pointer" 
-            aria-hidden="true"
-            onClick={() => {
-              const nextSection = document.querySelector('section:nth-of-type(2)');
-              if (nextSection) {
-                nextSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            role="button"
-            tabIndex={0}
-          >
-            ↓
-          </div>
-        </div>
+
       </section>
       <HeroSection />
       {/* Success Stories Section with High-Res Images */}
