@@ -41,18 +41,20 @@ export default function Home() {
           </div>
           
           {/* Right side - Video */}
-          <div className="w-1/2 relative">
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/JR0B_mNGqAw?controls=1&rel=0&showinfo=0&modestbranding=1"
-              title="Coach Mark Introduction Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              className="w-full h-full object-cover rounded-l-lg shadow-2xl"
-            ></iframe>
+          <div className="w-1/2 relative flex items-center justify-center">
+            <div className="w-2/3 aspect-video">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/JR0B_mNGqAw?controls=1&rel=0&showinfo=0&modestbranding=1"
+                title="Coach Mark Introduction Video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="w-full h-full rounded-lg shadow-2xl"
+              ></iframe>
+            </div>
           </div>
         </div>
         
