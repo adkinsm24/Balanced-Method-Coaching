@@ -19,8 +19,8 @@ export default function Home() {
           <div className="w-1/2 flex items-center justify-center px-8 lg:px-16">
             <div className="max-w-lg">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-secondary">
-                Transform Your
-                <span className="block text-primary">Nutrition</span>
+                Improve Your Nutrition
+                <span className="block text-primary">With Coach Mark</span>
               </h1>
               <p className="text-lg md:text-xl mb-8 text-gray-700 leading-relaxed">
                 Find a way of eating that actually fits your lifestyle with personalized coaching from Coach Mark
