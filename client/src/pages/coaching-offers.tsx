@@ -55,6 +55,24 @@ export default function CoachingOffers() {
             {/* Self-Paced Course */}
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 shadow-lg border border-blue-200">
               <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Self-Paced Nutrition Course</h3>
+              
+              {/* Video Section */}
+              <div className="mb-6">
+                <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-md">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src="https://www.youtube.com/embed/BxGcECnGUjQ?controls=1&rel=0&showinfo=0&modestbranding=1"
+                    title="Self-Paced Nutrition Course Overview"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    className="absolute inset-0"
+                  ></iframe>
+                </div>
+              </div>
+              
               <p className="text-gray-700 mb-6 leading-relaxed">
                 Built on the exact framework used with private clients. Perfect for those who want proven results but prefer independence and convenience in their learning journey.
               </p>
