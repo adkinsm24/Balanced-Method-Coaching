@@ -13,8 +13,12 @@ export default function Home() {
     <main className="min-h-screen pt-20">
       <HeroSection />
       {/* Success Stories Section with High-Res Images */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-20 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 w-72 h-72 bg-primary/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/15 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
           <h2 className="text-4xl font-bold text-center text-secondary mb-16">
             Real Results from Real People
           </h2>
@@ -59,7 +63,12 @@ export default function Home() {
         </div>
       </section>
       {/* Training Methods Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gradient-to-br from-violet-50 via-indigo-50 to-cyan-50 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-purple-200/40 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-radial from-blue-200/40 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-radial from-teal-200/30 to-transparent rounded-full blur-2xl"></div>
+        </div>
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-secondary mb-16">
             Proven Training Methods
