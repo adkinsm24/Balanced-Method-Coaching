@@ -24,7 +24,6 @@ export default function About() {
       {/* Connect Section */}
       <section className="py-12 bg-gradient-to-r from-blue-50 via-white to-slate-50">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-lg text-gray-600 mb-4">Connect with Coach Mark</p>
           <SocialMedia variant="default" />
         </div>
       </section>
