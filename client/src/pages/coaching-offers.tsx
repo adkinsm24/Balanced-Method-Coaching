@@ -58,7 +58,7 @@ export default function CoachingOffers() {
               <ul className="text-gray-700 mb-6 space-y-2">
                 <li>• Personalized meal planning</li>
                 <li>• Weekly check-ins and adjustments</li>
-                <li>• Direct access to Coach Mark</li>
+                <li>• Direct access to me</li>
                 <li>• Ongoing support and accountability</li>
                 <li>• Lifetime access to my Self-Paced Nutrition Course</li>
               </ul>
