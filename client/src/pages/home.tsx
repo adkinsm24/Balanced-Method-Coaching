@@ -121,18 +121,17 @@ export default function Home() {
           {/* Video Section */}
           <div className="max-w-4xl mx-auto mb-16">
             <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-lg">
-              {/* Placeholder for another video - user can provide the URL */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-300 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-600 font-medium">Additional Success Story Video</p>
-                  <p className="text-sm text-gray-500 mt-2">Ready for your next testimonial</p>
-                </div>
-              </div>
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/FN6KS-Jq31g?controls=1&rel=0&showinfo=0&modestbranding=1"
+                title="Full Client Testimonials"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="absolute inset-0"
+              ></iframe>
             </div>
           </div>
         </div>
