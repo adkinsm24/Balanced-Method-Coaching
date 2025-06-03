@@ -7,7 +7,6 @@ import Navigation from "@/components/navigation";
 import SocialMedia from "@/components/social-media";
 import Home from "@/pages/home";
 import About from "@/pages/about";
-import OnlineTraining from "@/pages/online-training";
 import CoachingOffers from "@/pages/coaching-offers";
 import NotFound from "@/pages/not-found";
 
@@ -16,7 +15,6 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
-      <Route path="/online-training" component={OnlineTraining} />
       <Route path="/coaching-offers" component={CoachingOffers} />
       <Route component={NotFound} />
     </Switch>
