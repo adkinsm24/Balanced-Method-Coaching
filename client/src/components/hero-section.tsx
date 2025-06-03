@@ -75,53 +75,7 @@ export default function HeroSection() {
 
   return (
     <>
-      {/* Full-screen video section */}
-      <section className="relative w-full" style={{ height: 'calc(100vh + 80px)' }}>
-        <video
-          ref={videoRef}
-          className="hero-background"
-          autoPlay
-          muted
-          loop
-          playsInline
-          onError={handleVideoError}
-          style={{ 
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'cover'
-          }}
-          
-        >
-          <source src="/coach_mark.mov" type="video/mp4" />
-          <div 
-            className="hero-background"
-            style={{
-              background: 'linear-gradient(135deg, #2C3E50 0%, #34495E 100%)',
-            }}
-          />
-        </video>
 
-        {/* Minimal overlay for better video visibility */}
-        <div className="absolute inset-0 bg-black/20" />
-
-        {/* Simple scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <div 
-            className="scroll-arrow text-4xl text-white opacity-70 bounce-gentle cursor-pointer" 
-            aria-hidden="true"
-            onClick={handleScrollIndicatorClick}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                handleScrollIndicatorClick();
-              }
-            }}
-          >
-            ↓
-          </div>
-        </div>
-      </section>
       {/* Content section below video */}
       <section id="hero" className="bg-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
