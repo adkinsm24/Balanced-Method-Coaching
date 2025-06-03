@@ -40,7 +40,7 @@ export default function About() {
                 <img 
                   src={degreeImage}
                   alt="Bachelor of Science degree in Kinesiology from California State University, Fullerton"
-                  className="w-32 h-auto rounded-lg shadow-lg border border-gray-200"
+                  className="w-96 h-auto rounded-lg shadow-lg border border-gray-200"
                 />
               </div>
             </div>
