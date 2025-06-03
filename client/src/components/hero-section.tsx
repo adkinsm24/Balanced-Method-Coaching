@@ -101,9 +101,11 @@ export default function HeroSection() {
             </a>
 
             {/* Quadrant 2 - Self-Paced Course */}
-            <a 
-              href="/coaching-offers#self-paced-course" 
-              className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            <div 
+              onClick={() => {
+                window.location.href = '/coaching-offers#self-paced-course';
+              }}
+              className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
             >
               <div className="h-64 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
                 <div className="text-center p-6">
@@ -115,7 +117,7 @@ export default function HeroSection() {
               <div className="p-6 bg-white">
                 <p className="text-primary font-semibold group-hover:text-primary/80 transition-colors">Learn More→</p>
               </div>
-            </a>
+            </div>
 
             {/* Quadrant 3 - Online Training */}
             <a 
