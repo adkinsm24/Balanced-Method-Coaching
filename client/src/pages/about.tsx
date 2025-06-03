@@ -55,10 +55,10 @@ export default function About() {
       </section>
 
       {/* Experience */}
-      <section className="py-16 bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 relative overflow-hidden">
+      <section className="py-16 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-10 right-10 w-80 h-80 bg-gradient-to-br from-orange-200/40 to-red-200/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 left-10 w-96 h-96 bg-gradient-to-tl from-amber-200/30 to-yellow-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-gradient-to-tl from-red-200/30 to-pink-200/30 rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-4xl mx-auto px-4 relative z-10">
           <h2 className="text-3xl font-bold text-secondary mb-8">Professional Experience</h2>

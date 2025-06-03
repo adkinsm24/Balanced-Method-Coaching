@@ -43,10 +43,10 @@ export default function OnlineTraining() {
       </section>
 
       {/* Program Features */}
-      <section className="py-16 bg-gradient-to-bl from-purple-50 via-pink-50 to-red-50 relative overflow-hidden">
+      <section className="py-16 bg-gradient-to-bl from-orange-50 via-red-50 to-pink-50 relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-red-200/30 to-orange-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-orange-200/30 to-red-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-red-200/30 to-pink-200/30 rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <h2 className="text-3xl font-bold text-secondary mb-12 text-center">
@@ -107,14 +107,14 @@ export default function OnlineTraining() {
           </h2>
           
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-white to-blue-50 p-6 rounded-lg shadow-md border border-gray-200">
+            <div className="bg-gradient-to-br from-white to-orange-50 p-6 rounded-lg shadow-md border border-orange-200">
               <p className="text-gray-700 mb-4 italic">
                 "Coach Mark's online program gave me the flexibility I needed. The personalized approach made all the difference - I finally found a way of eating and training that fits my busy lifestyle."
               </p>
               <p className="font-semibold text-secondary">- Client Success Story</p>
             </div>
             
-            <div className="bg-gradient-to-bl from-slate-50 to-white p-6 rounded-lg shadow-md border border-gray-200">
+            <div className="bg-gradient-to-bl from-red-50 to-white p-6 rounded-lg shadow-md border border-red-200">
               <p className="text-gray-700 mb-4 italic">
                 "The weekly check-ins and constant support kept me accountable. After years of trying different programs, this is the first one that actually stuck and delivered lasting results."
               </p>
