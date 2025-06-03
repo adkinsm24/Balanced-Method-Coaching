@@ -45,9 +45,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-secondary-foreground/20 mt-8 pt-8 text-center">
-          <p className="text-secondary-foreground/60">
-            © 2024 Coach Mark. All rights reserved. | Precision Nutrition Certified Coach
-          </p>
+          <p className="text-secondary-foreground/60">© 2024 Coach Mark. All rights reserved. | B.S., CSCS, Pn1 Coach</p>
         </div>
       </div>
     </footer>
