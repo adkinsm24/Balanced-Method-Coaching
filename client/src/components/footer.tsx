@@ -29,7 +29,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/online-training" className="text-secondary-foreground/80 hover:text-primary transition-colors">Coaching Offers</Link>
+                <Link href="/coaching-offers" className="text-secondary-foreground/80 hover:text-primary transition-colors">Coaching Offers</Link>
               </li>
             </ul>
           </div>
