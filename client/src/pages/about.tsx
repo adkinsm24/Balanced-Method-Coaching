@@ -12,7 +12,7 @@ export default function About() {
           alt="Coach Mark with fitness community group in park setting"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40 flex items-start justify-center pt-16">
+        <div className="absolute inset-0 bg-black/40 flex items-start justify-center pt-8">
           <div className="text-center text-white max-w-4xl px-4">
             <h1 className="text-5xl font-bold mb-6">
               About Coach Mark
