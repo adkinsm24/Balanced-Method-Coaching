@@ -11,6 +11,33 @@ import _2 from "@assets/2.png";
 export default function Home() {
   return (
     <main className="min-h-screen pt-20">
+      {/* YouTube Video Section */}
+      <section className="py-16 bg-gradient-to-r from-orange-50 to-red-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-secondary mb-8">
+            Meet Coach Mark
+          </h2>
+          
+          <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-lg mb-6">
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              title="Coach Mark Introduction Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              className="absolute inset-0"
+            ></iframe>
+          </div>
+          
+          <p className="text-center text-gray-600 italic">
+            Watch Coach Mark share his approach to fitness and nutrition coaching
+          </p>
+        </div>
+      </section>
+
       <HeroSection />
       {/* Success Stories Section with High-Res Images */}
       <section className="py-20 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 relative overflow-hidden">
