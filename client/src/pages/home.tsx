@@ -58,17 +58,7 @@ export default function Home() {
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
-              <img 
-                src={Orangetheory_Fitness_1}
-                alt="Person exercising with weights in modern gym"
-                className="w-full h-64 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Strength Training</h3>
-                <p className="text-gray-600">Build lean muscle and boost metabolism with personalized strength programs.</p>
-              </div>
-            </div>
+
             
             <div className="bg-white rounded-lg overflow-hidden shadow-lg">
               <img 
@@ -82,17 +72,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600&q=90"
-                alt="Person in yoga pose demonstrating flexibility and mindfulness"
-                className="w-full h-64 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Flexibility & Recovery</h3>
-                <p className="text-gray-600">Enhance mobility and prevent injury with targeted flexibility work.</p>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
