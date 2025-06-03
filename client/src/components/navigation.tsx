@@ -40,7 +40,7 @@ export default function Navigation() {
           {/* Social Media Quick Access */}
           <div className="flex items-center gap-2 ml-4">
             <a
-              href="https://youtube.com/@coachmark"
+              href="https://www.youtube.com/channel/UCBT1Ybx3SnpA0gW0jeLxpLg"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-gray-600 hover:text-red-600 transition-colors"
