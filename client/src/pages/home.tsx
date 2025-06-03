@@ -22,7 +22,7 @@ export default function Home() {
                 Improve Your Nutrition
                 <span className="block text-primary">With Coach Mark</span>
               </h1>
-              <p className="text-lg md:text-xl mb-8 text-gray-700 leading-relaxed">Discover a sustainable way of eating that allows you to lose body fat and improve your health with my methodology</p>
+              <p className="text-lg md:text-xl mb-8 text-gray-700 leading-relaxed">Discover a sustainable approach to eating that helps you lose body fat and improve your health—without restrictive diets</p>
               <Button 
                 size="lg" 
                 className="text-lg px-8 py-4 bg-primary hover:bg-primary/90 text-white"
