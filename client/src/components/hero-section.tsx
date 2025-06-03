@@ -76,39 +76,68 @@ export default function HeroSection() {
   return (
     <>
 
-      {/* Content section below video */}
-      <section id="hero" className="bg-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 
-            id="hero-headline" 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-secondary slide-up"
-          >
-            {heroHeadline}
-          </h1>
+      {/* 3 Quadrants Section */}
+      <section id="hero" className="bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-secondary mb-12">Transform Your Health Today</h2>
           
-          <p 
-            id="hero-subheading" 
-            className="text-lg md:text-xl lg:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed"
-            style={{ animationDelay: '0.2s' }}
-          >
-            {heroSubheading}
-          </p>
-          
-          <div style={{ animationDelay: '0.4s' }}>
-            <Button
-              onClick={handleCTAClick}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-6 h-auto rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg mb-8"
-              size="lg"
-              aria-label={heroCTA}
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Quadrant 1 - One-on-One Coaching */}
+            <a 
+              href="/coaching-offers" 
+              className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
-              {heroCTA}
-            </Button>
-          </div>
-          
-          {/* Social Media Follow */}
-          <div className="mt-8" style={{ animationDelay: '0.6s' }}>
-            <p className="text-gray-600 mb-4 text-lg">Follow Coach Mark's Journey</p>
-            <SocialMedia variant="default" />
+              <div className="h-64 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
+                <div className="text-center p-6">
+                  <div className="text-6xl mb-4 text-primary">👤</div>
+                  <h3 className="text-2xl font-bold text-secondary mb-2">One-on-One Coaching</h3>
+                  <p className="text-gray-700">Personalized nutrition coaching tailored to your unique goals</p>
+                </div>
+              </div>
+              <div className="p-6 bg-white">
+                <p className="text-primary font-semibold group-hover:text-primary/80 transition-colors">
+                  Learn More →
+                </p>
+              </div>
+            </a>
+
+            {/* Quadrant 2 - Self-Paced Course */}
+            <a 
+              href="/coaching-offers" 
+              className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            >
+              <div className="h-64 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                <div className="text-center p-6">
+                  <div className="text-6xl mb-4 text-primary">📚</div>
+                  <h3 className="text-2xl font-bold text-secondary mb-2">Self-Paced Course</h3>
+                  <p className="text-gray-700">Complete nutrition framework you can follow at your own pace</p>
+                </div>
+              </div>
+              <div className="p-6 bg-white">
+                <p className="text-primary font-semibold group-hover:text-primary/80 transition-colors">
+                  Get Started →
+                </p>
+              </div>
+            </a>
+
+            {/* Quadrant 3 - Online Training */}
+            <a 
+              href="/coaching-offers" 
+              className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            >
+              <div className="h-64 bg-gradient-to-br from-green-100 to-teal-100 flex items-center justify-center">
+                <div className="text-center p-6">
+                  <div className="text-6xl mb-4 text-primary">💪</div>
+                  <h3 className="text-2xl font-bold text-secondary mb-2">Online Training</h3>
+                  <p className="text-gray-700">Comprehensive fitness and nutrition program for total transformation</p>
+                </div>
+              </div>
+              <div className="p-6 bg-white">
+                <p className="text-primary font-semibold group-hover:text-primary/80 transition-colors">
+                  View Program →
+                </p>
+              </div>
+            </a>
           </div>
         </div>
         
