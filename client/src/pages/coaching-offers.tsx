@@ -13,7 +13,6 @@ export default function CoachingOffers() {
           </h1>
         </div>
       </section>
-
       {/* Coaching Options */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
@@ -21,7 +20,7 @@ export default function CoachingOffers() {
             
             {/* One-on-One Coaching */}
             <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-8 shadow-lg border border-orange-200">
-              <h3 className="text-2xl font-bold text-secondary mb-4">One-on-One Nutrition Coaching</h3>
+              <h3 className="text-2xl font-bold text-secondary mb-4 text-center">1-on-1 Nutrition Coaching</h3>
               <p className="text-gray-700 mb-6 leading-relaxed">
                 Get completely personalized nutrition coaching based on your individual needs and goals. I take the time to understand your current eating habits and guide you through meaningful changes that stick.
               </p>
@@ -38,7 +37,7 @@ export default function CoachingOffers() {
 
             {/* Self-Paced Course */}
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 shadow-lg border border-blue-200">
-              <h3 className="text-2xl font-bold text-secondary mb-4">Self-Paced Nutrition Course</h3>
+              <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Self-Paced Nutrition Course</h3>
               <p className="text-gray-700 mb-6 leading-relaxed">
                 Built on the exact framework used with private clients. Perfect for those who want proven results but prefer independence and convenience in their learning journey.
               </p>
@@ -55,7 +54,7 @@ export default function CoachingOffers() {
 
             {/* Online Training Program */}
             <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-8 shadow-lg border border-green-200">
-              <h3 className="text-2xl font-bold text-secondary mb-4">Online Training Program</h3>
+              <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Online Training Program</h3>
               <p className="text-gray-700 mb-6 leading-relaxed">
                 Comprehensive fitness and nutrition program combining personalized workouts with nutrition guidance. Get the complete package for total body transformation.
               </p>
@@ -72,7 +71,6 @@ export default function CoachingOffers() {
           </div>
         </div>
       </section>
-
       {/* Call to Action */}
       <section className="py-16 bg-gradient-to-r from-orange-50 to-red-50">
         <div className="max-w-4xl mx-auto px-4 text-center">
@@ -85,7 +83,6 @@ export default function CoachingOffers() {
           </Button>
         </div>
       </section>
-
       <Footer />
     </main>
   );
