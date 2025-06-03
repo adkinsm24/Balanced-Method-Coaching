@@ -19,7 +19,7 @@ export default function Home() {
           <div className="w-1/2 flex items-center justify-center px-8 lg:px-16">
             <div className="max-w-lg">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-secondary">
-                Improve Your Nutrition
+                Improve Your Nutrition{" "}
                 <span className="block text-primary">With Coach Mark</span>
               </h1>
               <p className="text-lg md:text-xl mb-8 text-gray-700 leading-relaxed">
