@@ -79,7 +79,7 @@ export default function HeroSection() {
       <section className="relative w-full h-screen overflow-hidden">
         <video
           ref={videoRef}
-          className="hero-background pt-[-13px] pb-[-13px] mt-[-17px] mb-[-17px]"
+          className="hero-background pt-[-13px] pb-[-13px] mt-[0px] mb-[0px]"
           autoPlay
           muted
           loop
