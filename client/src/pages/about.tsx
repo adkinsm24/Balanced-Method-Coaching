@@ -17,13 +17,10 @@ export default function About() {
             <h1 className="text-5xl font-bold mb-3">
               About Coach Mark
             </h1>
-            <p className="text-xl leading-relaxed">
-              Passionate about health and fitness with a mission to help as many people as possible find a sustainable way of eating that leads to lasting fat loss and better health.
-            </p>
+            <p className="text-xl leading-relaxed">Hi, I'm Mark! I'm passionate about health and fitness, and my mission is to help as many people as possible live healthier, stronger lives.</p>
           </div>
         </div>
       </section>
-
       {/* Connect Section */}
       <section className="py-12 bg-gradient-to-r from-blue-50 via-white to-slate-50">
         <div className="max-w-4xl mx-auto px-4 text-center">
@@ -31,7 +28,6 @@ export default function About() {
           <SocialMedia variant="default" />
         </div>
       </section>
-
       {/* Education & Background */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4">
@@ -64,7 +60,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
       {/* Experience */}
       <section className="py-16 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 relative overflow-hidden">
         <div className="absolute inset-0">
@@ -98,7 +93,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
       {/* Philosophy */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4">
@@ -128,7 +122,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
       {/* Call to Action */}
       <section className="py-16 bg-secondary text-secondary-foreground">
         <div className="max-w-4xl mx-auto px-4 text-center">
