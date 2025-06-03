@@ -60,17 +60,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
             
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
-              <img 
-                src={thumbnail_PSP04110_1030x687_1}
-                alt="Person doing cardio workout in professional fitness setting"
-                className="w-full h-64 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Cardio Excellence</h3>
-                <p className="text-gray-600">Improve endurance and burn fat with effective cardiovascular training.</p>
-              </div>
-            </div>
+
             
 
           </div>
