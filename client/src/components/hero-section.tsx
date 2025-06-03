@@ -109,7 +109,7 @@ export default function HeroSection() {
                 <div className="text-center p-6">
                   <div className="text-6xl mb-4 text-primary">📚</div>
                   <h3 className="text-2xl font-bold text-secondary mb-2">Self-Paced Nutrition Course</h3>
-                  <p className="text-gray-700">Complete nutrition framework you can follow at your own pace</p>
+                  <p className="text-gray-700">My nutrition coaching methodology at your own pace</p>
                 </div>
               </div>
               <div className="p-6 bg-white">
