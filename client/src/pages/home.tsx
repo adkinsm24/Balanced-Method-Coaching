@@ -1,6 +1,7 @@
 import HeroSection from "@/components/hero-section";
 import SignupSection from "@/components/signup-section";
 import Footer from "@/components/footer";
+import { Button } from "@/components/ui/button";
 
 import Orangetheory_Fitness_1 from "@assets/Orangetheory-Fitness_1.jpg";
 
@@ -11,34 +12,73 @@ import _2 from "@assets/2.png";
 export default function Home() {
   return (
     <main className="min-h-screen pt-20">
-      {/* YouTube Video Section */}
-      <section className="py-16 bg-gradient-to-r from-orange-50 to-red-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-secondary mb-8">
-            Meet Coach Mark
-          </h2>
-          
-          <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-lg mb-6">
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/JR0B_mNGqAw"
-              title="Coach Mark Introduction Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              className="absolute inset-0"
-            ></iframe>
+      {/* Hero Video Section */}
+      <section className="relative w-full h-screen bg-black overflow-hidden">
+        <div className="absolute inset-0 w-full h-full">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/JR0B_mNGqAw?autoplay=1&mute=1&controls=1&rel=0&showinfo=0&modestbranding=1"
+            title="Coach Mark Introduction Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            className="w-full h-full object-cover"
+            style={{ 
+              transform: 'scale(1.1)',
+              filter: 'brightness(0.8)'
+            }}
+          ></iframe>
+        </div>
+        
+        {/* Hero Content Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-10" />
+        
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="text-center text-white max-w-4xl px-4">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              Transform Your
+              <span className="block text-primary">Nutrition</span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto">
+              Find a way of eating that actually fits your lifestyle with personalized coaching from Coach Mark
+            </p>
+            <Button 
+              size="lg" 
+              className="text-lg px-8 py-4 bg-primary hover:bg-primary/90 text-white"
+              onClick={() => {
+                const signupSection = document.getElementById('signup');
+                if (signupSection) {
+                  signupSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            >
+              Start Your Transformation
+            </Button>
           </div>
-          
-          <p className="text-center text-gray-600 italic">
-            Watch Coach Mark share his approach to fitness and nutrition coaching
-          </p>
+        </div>
+        
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+          <div 
+            className="text-4xl text-white opacity-70 bounce-gentle cursor-pointer" 
+            aria-hidden="true"
+            onClick={() => {
+              const nextSection = document.querySelector('section:nth-of-type(2)');
+              if (nextSection) {
+                nextSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            role="button"
+            tabIndex={0}
+          >
+            ↓
+          </div>
         </div>
       </section>
-
       <HeroSection />
+      
       {/* Success Stories Section with High-Res Images */}
       <section className="py-20 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
