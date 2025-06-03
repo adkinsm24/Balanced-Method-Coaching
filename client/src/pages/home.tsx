@@ -76,6 +76,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Additional Results Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 right-0 w-72 h-72 bg-secondary/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/15 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <h2 className="text-4xl font-bold text-center text-secondary mb-16">
+            Success Stories Continue
+          </h2>
+          
+          {/* Video Section */}
+          <div className="max-w-4xl mx-auto mb-16">
+            <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-lg">
+              {/* Placeholder for another video - user can provide the URL */}
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-300 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-600 font-medium">Additional Success Story Video</p>
+                  <p className="text-sm text-gray-500 mt-2">Ready for your next testimonial</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </main>
   );
