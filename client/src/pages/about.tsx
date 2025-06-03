@@ -1,23 +1,34 @@
 import SocialMedia from "@/components/social-media";
 import Footer from "@/components/footer";
+import parkImage from "@assets/park.jpg";
 
 export default function About() {
   return (
     <main className="min-h-screen bg-white pt-20">
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-50 via-white to-slate-50">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold text-secondary mb-8">
-            About Coach Mark
-          </h1>
-          <p className="text-xl text-gray-700 leading-relaxed mb-8">
-            Passionate about health and fitness with a mission to help as many people as possible find a sustainable way of eating that leads to lasting fat loss and better health.
-          </p>
-          
-          <div className="mt-8">
-            <p className="text-lg text-gray-600 mb-4">Connect with Coach Mark</p>
-            <SocialMedia variant="default" />
+      {/* Hero Section with Group Photo */}
+      <section className="relative h-96 overflow-hidden">
+        <img 
+          src={parkImage}
+          alt="Coach Mark with fitness community group in park setting"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl px-4">
+            <h1 className="text-5xl font-bold mb-6">
+              About Coach Mark
+            </h1>
+            <p className="text-xl leading-relaxed">
+              Passionate about health and fitness with a mission to help as many people as possible find a sustainable way of eating that leads to lasting fat loss and better health.
+            </p>
           </div>
+        </div>
+      </section>
+
+      {/* Connect Section */}
+      <section className="py-12 bg-gradient-to-r from-blue-50 via-white to-slate-50">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-lg text-gray-600 mb-4">Connect with Coach Mark</p>
+          <SocialMedia variant="default" />
         </div>
       </section>
 
