@@ -79,7 +79,7 @@ export default function HeroSection() {
       <section className="relative w-full h-screen overflow-hidden">
         <video
           ref={videoRef}
-          className="hero-background"
+          className="hero-background pt-[-13px] pb-[-13px] mt-[-17px] mb-[-17px]"
           autoPlay
           muted
           loop
@@ -117,7 +117,6 @@ export default function HeroSection() {
           </div>
         </div>
       </section>
-
       {/* Content section below video */}
       <section id="hero" className="bg-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
