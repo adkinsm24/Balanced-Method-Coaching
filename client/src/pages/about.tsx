@@ -46,7 +46,7 @@ export default function About() {
             </div>
 
             <div className="border-l-4 border-primary pl-6">
-              <h3 className="text-xl font-semibold mb-2">Level 1 Precision Nutrition Certification</h3>
+              <h3 className="text-xl font-semibold mb-2">Certifications</h3>
               <p className="text-gray-700 mb-2">Precision Nutrition • 2018</p>
               <p className="text-gray-600">
                 This certification gave me the tools to launch my one-on-one nutrition coaching business. It provided the scientific foundation and practical skills needed to help clients transform their relationship with food.
