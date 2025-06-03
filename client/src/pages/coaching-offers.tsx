@@ -125,7 +125,7 @@ export default function CoachingOffers() {
                 Book a personalized call with Coach Mark to get answers to your specific questions about nutrition, food tracking, exercise, or any health-related concerns.
               </p>
               <ul className="text-gray-700 mb-6 space-y-2">
-                <li>• Direct access to Coach Mark</li>
+                <li>• Direct access to me</li>
                 <li>• Personalized guidance and advice</li>
                 <li>• Flexible scheduling options</li>
                 <li>• Nutrition and exercise expertise</li>
