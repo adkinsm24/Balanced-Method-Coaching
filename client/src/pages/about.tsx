@@ -126,7 +126,7 @@ export default function About() {
             Let's get you stronger, more energized, leaner, and more confident through smarter and healthier eating.
           </p>
           <a
-            href="/"
+            href="/coaching-offers"
             className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-lg px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105"
           >
             Start Your Transformation
