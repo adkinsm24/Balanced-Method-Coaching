@@ -124,7 +124,7 @@ export default function Home() {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/FN6KS-Jq31g?controls=1&rel=0&showinfo=0&modestbranding=1"
+                src="https://www.youtube.com/embed/videoseries?list=PLAsCiNVA0oC2MqA18wAj7IbRg5_fPmsyc&controls=1&rel=0&showinfo=0&modestbranding=1"
                 title="Full Client Testimonials"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
