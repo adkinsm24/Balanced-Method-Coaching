@@ -49,7 +49,7 @@ export default function About() {
               <h3 className="text-xl font-semibold mb-6 border-l-4 border-primary pl-6">Professional Certifications</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-                  <h4 className="font-semibold text-primary mb-1">NSCA Certified Strength and Conditioning Specialist (CSCS)</h4>
+                  <h4 className="font-semibold text-primary mb-1">USAW Level 1 Coach</h4>
                   <p className="text-sm text-gray-600">March 2017</p>
                 </div>
                 
