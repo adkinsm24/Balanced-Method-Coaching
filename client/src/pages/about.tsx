@@ -7,7 +7,7 @@ export default function About() {
   return (
     <main className="min-h-screen bg-white pt-20">
       {/* Hero Section with Group Photo */}
-      <section className="relative h-96 overflow-hidden">
+      <section className="relative h-[500px] overflow-hidden">
         <img 
           src={parkImage}
           alt="Coach Mark with fitness community group in park setting"
