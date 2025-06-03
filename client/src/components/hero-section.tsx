@@ -76,25 +76,33 @@ export default function HeroSection() {
   return (
     <>
       {/* Full-screen video section */}
-      <section className="relative w-full h-screen overflow-hidden">
-        <video
-          ref={videoRef}
-          className="hero-background pt-[-13px] pb-[-13px] mt-[0px] mb-[0px]"
-          autoPlay
-          muted
-          loop
-          playsInline
-          onError={handleVideoError}
-          poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080"
-        >
-          <source src="/coach_mark.mov" type="video/mp4" />
-          <div 
+      <section className="relative w-full h-screen">
+        <div className="relative w-full h-full">
+          <video
+            ref={videoRef}
             className="hero-background"
-            style={{
-              background: 'linear-gradient(135deg, #2C3E50 0%, #34495E 100%)',
+            autoPlay
+            muted
+            loop
+            playsInline
+            onError={handleVideoError}
+            style={{ 
+              width: '100%', 
+              height: 'calc(100vh - 80px)', 
+              objectFit: 'cover',
+              paddingBottom: '80px'
             }}
-          />
-        </video>
+            poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080"
+          >
+            <source src="/coach_mark.mov" type="video/mp4" />
+            <div 
+              className="hero-background"
+              style={{
+                background: 'linear-gradient(135deg, #2C3E50 0%, #34495E 100%)',
+              }}
+            />
+          </video>
+        </div>
 
         {/* Minimal overlay for better video visibility */}
         <div className="absolute inset-0 bg-black/20" />
