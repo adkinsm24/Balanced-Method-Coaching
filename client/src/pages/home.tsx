@@ -78,25 +78,16 @@ export default function Home() {
             Proven Training Methods
           </h2>
           
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-            <div>
-              <img 
-                src={_2}
-                alt="Professional trainer working with client in modern gym facility"
-                className="w-full h-96 object-cover rounded-lg shadow-lg pl-[-6px] pr-[-6px] ml-[0px] mr-[0px] mt-[0px] mb-[0px] pt-[24px] pb-[24px]"
-              />
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-secondary mb-6">
-                Personalized Approach
-              </h3>
-              <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                Every program is tailored to your unique goals, fitness level, and lifestyle. No cookie-cutter solutions—just proven strategies that work for you.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                With nearly 100 successful client transformations, Coach Mark's methods focus on sustainable changes that create lasting results.
-              </p>
-            </div>
+          <div className="text-center mb-16">
+            <h3 className="text-3xl font-bold text-secondary mb-6">
+              Personalized Approach
+            </h3>
+            <p className="text-lg text-gray-700 mb-6 leading-relaxed max-w-4xl mx-auto">
+              Every program is tailored to your unique goals, fitness level, and lifestyle. No cookie-cutter solutions—just proven strategies that work for you.
+            </p>
+            <p className="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto">
+              With nearly 100 successful client transformations, Coach Mark's methods focus on sustainable changes that create lasting results.
+            </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
