@@ -28,19 +28,19 @@ export default function About() {
           <h2 className="text-3xl font-bold text-secondary mb-8">Education & Background</h2>
           
           <div className="space-y-8">
-            <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div className="border-l-4 border-primary pl-6">
+            <div className="flex items-start gap-6">
+              <div className="border-l-4 border-primary pl-6 flex-1">
                 <h3 className="text-xl font-semibold mb-2">Bachelor's Degree in Kinesiology, Strength & Conditioning</h3>
                 <p className="text-gray-700 mb-2">Cal State University Fullerton • 2016</p>
                 <p className="text-gray-600">
                   I've been passionate about health and fitness since earning my bachelor's degree, which laid the foundation for my career in helping others achieve their fitness goals.
                 </p>
               </div>
-              <div className="flex justify-center">
+              <div className="flex-shrink-0">
                 <img 
                   src={degreeImage}
                   alt="Bachelor of Science degree in Kinesiology from California State University, Fullerton"
-                  className="max-w-full h-auto rounded-lg shadow-lg border border-gray-200"
+                  className="w-32 h-auto rounded-lg shadow-lg border border-gray-200"
                 />
               </div>
             </div>
