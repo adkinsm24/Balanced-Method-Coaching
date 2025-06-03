@@ -34,9 +34,7 @@ export default function Navigation() {
             <Button 
               variant={location === "/online-training" ? "default" : "ghost"}
               className={location === "/online-training" ? "bg-primary text-primary-foreground" : ""}
-            >
-              Online Training
-            </Button>
+            >Coaching Offers</Button>
           </Link>
         </div>
       </div>
