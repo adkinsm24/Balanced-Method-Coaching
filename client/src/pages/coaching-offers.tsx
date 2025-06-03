@@ -47,6 +47,7 @@ export default function CoachingOffers() {
                 <li>• Weekly check-ins and adjustments</li>
                 <li>• Direct access to Coach Mark</li>
                 <li>• Ongoing support and accountability</li>
+                <li>• Lifetime access to my Self-Paced Nutrition Course</li>
               </ul>
               <Button className="w-full bg-primary hover:bg-primary/90 text-white">Book Your Free Introductory Call</Button>
             </div>
