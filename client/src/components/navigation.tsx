@@ -51,7 +51,7 @@ export default function Navigation() {
               </svg>
             </a>
             <a
-              href="https://instagram.com/coachmark"
+              href="https://www.instagram.com/itscoachmark?igsh=MTJ3eTJpa3U5OTc0cw%3D%3D&utm_source=qr"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-gray-600 hover:text-pink-600 transition-colors"
