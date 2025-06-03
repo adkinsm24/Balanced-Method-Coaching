@@ -53,7 +53,7 @@ export default function CoachingOffers() {
             </div>
 
             {/* Self-Paced Course */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 shadow-lg border border-blue-200">
+            <div id="self-paced-course" className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 shadow-lg border border-blue-200">
               <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Self-Paced Nutrition Course</h3>
               
               {/* Video Section */}

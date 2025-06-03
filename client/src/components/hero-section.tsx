@@ -102,7 +102,7 @@ export default function HeroSection() {
 
             {/* Quadrant 2 - Self-Paced Course */}
             <a 
-              href="/coaching-offers" 
+              href="/coaching-offers#self-paced-course" 
               className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               <div className="h-64 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
