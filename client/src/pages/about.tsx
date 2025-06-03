@@ -11,7 +11,7 @@ export default function About() {
         <img 
           src={parkImage}
           alt="Coach Mark with fitness community group in park setting"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-bottom"
         />
         <div className="absolute inset-0 bg-black/40 flex items-start justify-center pt-8">
           <div className="text-center text-white max-w-4xl px-4">
