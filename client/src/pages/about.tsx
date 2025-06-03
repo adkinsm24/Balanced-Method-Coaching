@@ -21,12 +21,7 @@ export default function About() {
           </div>
         </div>
       </section>
-      {/* Connect Section */}
-      <section className="py-12 bg-gradient-to-r from-blue-50 via-white to-slate-50">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <SocialMedia variant="default" />
-        </div>
-      </section>
+
       {/* Education & Background */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4">
