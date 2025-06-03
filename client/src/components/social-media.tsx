@@ -55,22 +55,7 @@ export default function SocialMedia({ variant = "default", className = "" }: Soc
 
   return (
     <div className={`${variantStyles[variant]} ${className}`}>
-      {socialLinks.map((social) => {
-        const Icon = social.icon;
-        return (
-          <a
-            key={social.name}
-            href={social.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${iconStyles[variant]} ${social.color}`}
-            aria-label={`Follow Coach Mark on ${social.name}`}
-            title={`Follow on ${social.name}`}
-          >
-            <Icon size={variant === "floating" ? 24 : 20} />
-          </a>
-        );
-      })}
+      {/* Social media links removed */}
     </div>
   );
 }
