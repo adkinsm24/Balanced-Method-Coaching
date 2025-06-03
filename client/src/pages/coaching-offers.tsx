@@ -30,9 +30,7 @@ export default function CoachingOffers() {
                 <li>• Direct access to Coach Mark</li>
                 <li>• Ongoing support and accountability</li>
               </ul>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white">
-                Learn More
-              </Button>
+              <Button className="w-full bg-primary hover:bg-primary/90 text-white">Book Your Free Introductory Call</Button>
             </div>
 
             {/* Self-Paced Course */}
