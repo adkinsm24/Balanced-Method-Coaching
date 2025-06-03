@@ -87,13 +87,7 @@ export default function About() {
 </p>
             </div>
 
-            <div className="border-l-4 border-primary pl-6">
-              <h3 className="text-xl font-semibold mb-2">Continued Education</h3>
-              <p className="text-gray-700 mb-2">Ongoing Professional Development</p>
-              <p className="text-gray-600">
-                I've continued expanding my knowledge base through advanced education courses and by following top leaders in the field, ensuring I stay current with the latest research and best practices.
-              </p>
-            </div>
+
           </div>
         </div>
       </section>
