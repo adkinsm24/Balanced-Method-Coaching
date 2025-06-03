@@ -103,6 +103,24 @@ export default function CoachingOffers() {
             {/* Coaching Calls */}
             <div id="coaching-calls" className="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-8 shadow-lg border border-green-200">
               <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Coaching Calls</h3>
+              
+              {/* Video Section */}
+              <div className="mb-6">
+                <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-md">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src="https://www.youtube.com/embed/FauWJpzmsus?controls=1&rel=0&showinfo=0&modestbranding=1"
+                    title="Coaching Calls Overview"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    className="absolute inset-0"
+                  ></iframe>
+                </div>
+              </div>
+              
               <p className="text-gray-700 mb-6 leading-relaxed">
                 Book a personalized call with Coach Mark to get answers to your specific questions about nutrition, food tracking, exercise, or any health-related concerns.
               </p>
