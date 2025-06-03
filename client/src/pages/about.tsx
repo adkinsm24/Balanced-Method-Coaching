@@ -45,23 +45,46 @@ export default function About() {
               </div>
             </div>
 
-            <div className="border-l-4 border-primary pl-6">
-              <h3 className="text-xl font-semibold mb-2">Certifications</h3>
-              <p className="text-gray-700 mb-2">NSCA Certified Strength and Conditioning Specialist (CSCS) – March 2017
-
-              USAW Level 1 Coach – January 2017
-
-              Precision Nutrition Level 1 – November 2018
-
-              XPT Level 1 Coach – November 2018
-
-              TRX Suspension Trainer Certified (Level 1) – April 2017
-
-              Orangetheory Group Training Certified – June 2018
-
-              Conor Harris Biomechanics Course – September 2022</p>
-              <p className="text-gray-600">
-                This certification gave me the tools to launch my one-on-one nutrition coaching business. It provided the scientific foundation and practical skills needed to help clients transform their relationship with food.
+            <div>
+              <h3 className="text-xl font-semibold mb-6 border-l-4 border-primary pl-6">Professional Certifications</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                  <h4 className="font-semibold text-primary mb-1">NSCA Certified Strength and Conditioning Specialist (CSCS)</h4>
+                  <p className="text-sm text-gray-600">March 2017</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                  <h4 className="font-semibold text-primary mb-1">USAW Level 1 Coach</h4>
+                  <p className="text-sm text-gray-600">January 2017</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                  <h4 className="font-semibold text-primary mb-1">Precision Nutrition Level 1</h4>
+                  <p className="text-sm text-gray-600">November 2018</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                  <h4 className="font-semibold text-primary mb-1">XPT Level 1 Coach</h4>
+                  <p className="text-sm text-gray-600">November 2018</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                  <h4 className="font-semibold text-primary mb-1">TRX Suspension Trainer Certified (Level 1)</h4>
+                  <p className="text-sm text-gray-600">April 2017</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                  <h4 className="font-semibold text-primary mb-1">Orangetheory Group Training Certified</h4>
+                  <p className="text-sm text-gray-600">June 2018</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 md:col-span-2">
+                  <h4 className="font-semibold text-primary mb-1">Conor Harris Biomechanics Course</h4>
+                  <p className="text-sm text-gray-600">September 2022</p>
+                </div>
+              </div>
+              <p className="text-gray-600 mt-4 text-center italic">
+                These certifications provide the foundation for evidence-based coaching and safe, effective training methodologies.
               </p>
             </div>
 
