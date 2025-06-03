@@ -40,7 +40,7 @@ export default function HeroSection() {
 
   // Authentic messaging extracted from Coach Mark's video
   const heroHeadline = "Ditch the Diets. Discover Eating That Finally Works for You.";
-  const heroSubheading = "I'm Coach Mark, and I don't rely on cookie-cutter meal plans. I take the time to understand your current eating habits and guide you through small, meaningful changes that build real momentum—changes that actually stick. I'll be with you every step of the way to provide guidance and accountability.";
+  const heroSubheading = "Forget generic meal plans that leave you hungry, frustrated, and back at square one. We'll start by uncovering your real-life habits—no judgment, no fads—so you can make small, powerful tweaks that build unstoppable momentum. With personalized guidance and hands-on accountability, you'll feel energized, confident, and in control—every single day.";
   const heroCTA = "Are You Ready? Let's Get Started";
   
   // Full authentic transcript from Coach Mark's video
