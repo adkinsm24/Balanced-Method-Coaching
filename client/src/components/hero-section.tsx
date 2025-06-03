@@ -128,7 +128,7 @@ export default function HeroSection() {
                 <div className="text-center p-6">
                   <div className="text-6xl mb-4 text-primary">💪</div>
                   <h3 className="text-2xl font-bold text-secondary mb-2">Coaching Calls</h3>
-                  <p className="text-gray-700">Comprehensive fitness and nutrition program for total transformation</p>
+                  <p className="text-gray-700">Book a call with me to answer any questions about nutrition, food tracking, or exercise</p>
                 </div>
               </div>
               <div className="p-6 bg-white">
