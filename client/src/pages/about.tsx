@@ -86,8 +86,6 @@ export default function About() {
               <p className="text-gray-600 mt-4 text-center italic">I've continued to expand my knowledge through advanced education courses and by learning from top leaders in the field. This diverse background allows me to tailor coaching to your specific needs — whether you're new to fitness, training for performance, or simply want to feel better in your body.
 </p>
             </div>
-
-
           </div>
         </div>
       </section>
