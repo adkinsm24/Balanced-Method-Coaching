@@ -1,8 +1,21 @@
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export default function CoachingOffers() {
+  useEffect(() => {
+    // Check if there's a hash in the URL and scroll to that element
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, []);
   return (
     <main className="min-h-screen bg-white pt-20">
       {/* Hero Section */}
