@@ -75,7 +75,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Additional Results Section */}
       <section className="py-20 bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 relative overflow-hidden">
         <div className="absolute inset-0 opacity-30">
@@ -83,9 +82,7 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/15 rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <h2 className="text-4xl font-bold text-center text-secondary mb-16">
-            Success Stories Continue
-          </h2>
+          <h2 className="text-4xl font-bold text-center text-secondary mb-16">Full Testimonials</h2>
           
           {/* Video Section */}
           <div className="max-w-4xl mx-auto mb-16">
@@ -106,7 +103,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       <Footer />
     </main>
   );
