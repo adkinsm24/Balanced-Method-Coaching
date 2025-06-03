@@ -90,7 +90,7 @@ export default function HeroSection() {
             height: '100%', 
             objectFit: 'cover'
           }}
-          poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080"
+          
         >
           <source src="/coach_mark.mov" type="video/mp4" />
           <div 
