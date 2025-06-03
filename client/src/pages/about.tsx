@@ -47,7 +47,19 @@ export default function About() {
 
             <div className="border-l-4 border-primary pl-6">
               <h3 className="text-xl font-semibold mb-2">Certifications</h3>
-              <p className="text-gray-700 mb-2">Precision Nutrition • 2018</p>
+              <p className="text-gray-700 mb-2">NSCA Certified Strength and Conditioning Specialist (CSCS) – March 2017
+
+              USAW Level 1 Coach – January 2017
+
+              Precision Nutrition Level 1 – November 2018
+
+              XPT Level 1 Coach – November 2018
+
+              TRX Suspension Trainer Certified (Level 1) – April 2017
+
+              Orangetheory Group Training Certified – June 2018
+
+              Conor Harris Biomechanics Course – September 2022</p>
               <p className="text-gray-600">
                 This certification gave me the tools to launch my one-on-one nutrition coaching business. It provided the scientific foundation and practical skills needed to help clients transform their relationship with food.
               </p>
