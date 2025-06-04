@@ -120,9 +120,10 @@ export default function About() {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-3">Self-Paced Nutrition Course</h3>
+              <h3 className="text-xl font-semibold mb-3">Personal Trainer – WorkStrong & UCI ARC</h3>
+              <p className="text-sm text-gray-500 mb-3">April 2017 – Winter 2019</p>
               <p className="text-gray-600 mb-4">
-                I'm excited to introduce my brand new Self-Paced Nutrition course. It's built on the exact framework I use with my private clients and designed for those who want results but don't necessarily need the one-on-one support. Whether it's about affordability, independence, or convenience, this course gives more people access to a proven system that works.
+                Worked with faculty and staff on preventative wellness and post-rehabilitation fitness programs. Delivered individualized training in both private and group formats at the University of California, Irvine's fitness center.
               </p>
             </div>
           </div>
