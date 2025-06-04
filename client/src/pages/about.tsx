@@ -139,6 +139,27 @@ export default function About() {
                 When gyms shut down in early 2020, I saw it as an opportunity to keep people connected and moving. From February 2020 to April 2021, I built a supportive community of motivated individuals by leading weekly outdoor workouts in local parks. What started small quickly grew — over 150 people came out to train, and I regularly coached groups of 15 to 30. During that time, I also began supporting people with their nutrition, which marked the true <strong>beginning of my nutrition coaching journey</strong>.
               </p>
             </div>
+            
+            {/* Mark in the Park Photos - Full Width */}
+            <div className="-mx-4 lg:-mx-8 xl:-mx-16">
+              <div className="grid md:grid-cols-3 gap-1 md:gap-2">
+                <img 
+                  src="/park1.jpg"
+                  alt="Mark in the Park outdoor workout session with participants exercising on mats"
+                  className="w-full h-auto max-h-[500px] object-contain shadow-lg"
+                />
+                <img 
+                  src="/park2.jpg"
+                  alt="Wide view of Mark in the Park outdoor fitness class in local park setting"
+                  className="w-full h-auto max-h-[500px] object-contain shadow-lg"
+                />
+                <img 
+                  src="/park3.jpg"
+                  alt="Mark in the Park community group photo with participants wearing #24 shirts"
+                  className="w-full h-auto max-h-[500px] object-contain shadow-lg"
+                />
+              </div>
+            </div>
 
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold mb-3">Personal Trainer – WorkStrong & UCI ARC</h3>
