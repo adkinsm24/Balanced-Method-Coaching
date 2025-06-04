@@ -115,7 +115,7 @@ export default function About() {
               <h3 className="text-xl font-semibold mb-3">Mark in the Park</h3>
               <p className="text-sm text-gray-500 mb-3">February 2020 – April 2021</p>
               <p className="text-gray-600 mb-4">
-                When gyms shut down in early 2020, I saw it as an opportunity to keep people connected and moving. From February 2020 to April 2021, I built a supportive community of motivated individuals by leading weekly outdoor workouts in local parks. What started small quickly grew — over 150 people came out to train, and I regularly coached groups of 15 to 30. During that time, I also began supporting people with their nutrition, which marked the true beginning of my nutrition coaching journey.
+                When gyms shut down in early 2020, I saw it as an opportunity to keep people connected and moving. From February 2020 to April 2021, I built a supportive community of motivated individuals by leading weekly outdoor workouts in local parks. What started small quickly grew — over 150 people came out to train, and I regularly coached groups of 15 to 30. During that time, I also began supporting people with their nutrition, which marked the true <strong>beginning of my nutrition coaching journey</strong>.
               </p>
             </div>
 
