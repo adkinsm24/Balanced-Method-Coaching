@@ -106,9 +106,10 @@ export default function About() {
           
           <div className="space-y-8">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-3">Personal & Group Training</h3>
+              <h3 className="text-xl font-semibold mb-3">Head Coach – Orangetheory Fitness (Claremont & Glendora)</h3>
+              <p className="text-sm text-gray-500 mb-3">June 2018 – June 2024</p>
               <p className="text-gray-600 mb-4">
-                Since 2016, I've had the privilege to work with hundreds of people, both in group and personal training settings. This hands-on experience has taught me how to adapt my approach to meet each individual's unique needs and circumstances.
+                Led hundreds of group training sessions, coached diverse client populations, and helped members improve strength, endurance, and body composition through structured interval training. Oversaw onboarding of new coaches and developed team programming.
               </p>
             </div>
 
