@@ -114,25 +114,25 @@ export default function About() {
             {/* Orangetheory Photos - Full Width */}
             <div className="-mx-4 lg:-mx-8 xl:-mx-16">
               <div className="grid md:grid-cols-3 gap-1 md:gap-2">
-                <div className="flex justify-center">
+                <div className="flex justify-center items-end h-[420px]">
                   <img 
                     src="/1otf.jpg"
                     alt="Coach Mark with Orangetheory Fitness class group photo"
-                    className="max-w-full max-h-[500px] object-contain shadow-lg"
+                    className="max-w-full max-h-full object-contain shadow-lg"
                   />
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center items-end h-[420px]">
                   <img 
                     src="/2otf.jpg"
                     alt="Energetic Orangetheory Fitness class celebration with members"
-                    className="max-w-full max-h-[500px] object-contain shadow-lg"
+                    className="max-w-full max-h-full object-contain shadow-lg"
                   />
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center items-end h-[420px]">
                   <img 
                     src="/3otf.jpg"
                     alt="Orangetheory Fitness team and members group photo"
-                    className="max-w-full max-h-[500px] object-contain shadow-lg"
+                    className="max-w-full max-h-full object-contain shadow-lg"
                   />
                 </div>
               </div>
