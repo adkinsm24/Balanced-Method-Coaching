@@ -181,9 +181,20 @@ export default function About() {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-3">Personal Trainer – UFC Gym, La Mirada</h3>
-              <p className="text-sm text-gray-500 mb-3">April 2017 – July 2017</p>
-              <p className="text-gray-600 mb-4">Delivered one-on-one personal training while actively promoting training packages and DotFit supplements through direct outreach. Led multiple group classes each week, including TRX (up to 16 participants) and DUT high-intensity resistance training (20–40 participants), creating energetic, engaging sessions tailored to all fitness levels. This was my first role after graduating college and where I first developed my passion for fitness coaching.</p>
+              <div className="grid md:grid-cols-2 gap-6 items-center">
+                <div className="flex justify-center order-2 md:order-1">
+                  <img 
+                    src="/ufc.jpg"
+                    alt="Mark with UFC Gym TRX class group photo showing participants and training equipment"
+                    className="w-full max-w-sm h-auto object-contain rounded-lg shadow-lg"
+                  />
+                </div>
+                <div className="order-1 md:order-2">
+                  <h3 className="text-xl font-semibold mb-3">Personal Trainer – UFC Gym, La Mirada</h3>
+                  <p className="text-sm text-gray-500 mb-3">April 2017 – July 2017</p>
+                  <p className="text-gray-600 mb-4">Delivered one-on-one personal training while actively promoting training packages and DotFit supplements through direct outreach. Led multiple group classes each week, including TRX (up to 16 participants) and DUT high-intensity resistance training (20–40 participants), creating energetic, engaging sessions tailored to all fitness levels. This was my first role after graduating college and where I first developed my passion for fitness coaching.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
