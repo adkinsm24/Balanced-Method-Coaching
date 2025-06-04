@@ -62,7 +62,9 @@ export default function CoachingOffers() {
                 <li>• Ongoing support and accountability</li>
                 <li>• Lifetime access to my Self-Paced Nutrition Course</li>
               </ul>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white">Book Your Free Introductory Call</Button>
+              <a href="/book-call">
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white">Book Your Free Introductory Call</Button>
+              </a>
             </div>
 
             {/* Self-Paced Course */}
