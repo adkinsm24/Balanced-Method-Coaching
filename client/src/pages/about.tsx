@@ -109,22 +109,25 @@ export default function About() {
               <h3 className="text-xl font-semibold mb-3">Head Coach – Orangetheory Fitness (Claremont & Glendora)</h3>
               <p className="text-sm text-gray-500 mb-3">June 2018 – June 2024</p>
               <p className="text-gray-600 mb-4">Led thousands of group training sessions, coached diverse client populations, and helped members improve strength, endurance, and body composition through structured interval training. Additionally, oversaw the onboarding and development of new coaches.</p>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            </div>
+            
+            {/* Orangetheory Photos - Full Width */}
+            <div className="-mx-4 lg:-mx-8 xl:-mx-16">
+              <div className="grid md:grid-cols-3 gap-2 md:gap-4">
                 <img 
                   src="/1otf.jpg"
                   alt="Coach Mark with Orangetheory Fitness class group photo"
-                  className="w-full h-64 md:h-72 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  className="w-full h-80 md:h-96 object-cover shadow-lg"
                 />
                 <img 
                   src="/2otf.jpg"
                   alt="Energetic Orangetheory Fitness class celebration with members"
-                  className="w-full h-64 md:h-72 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  className="w-full h-80 md:h-96 object-cover shadow-lg"
                 />
                 <img 
                   src="/3otf.jpg"
                   alt="Orangetheory Fitness team and members group photo"
-                  className="w-full h-64 md:h-72 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 md:col-span-2 lg:col-span-1"
+                  className="w-full h-80 md:h-96 object-cover shadow-lg"
                 />
               </div>
             </div>
