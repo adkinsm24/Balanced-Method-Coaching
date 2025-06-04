@@ -117,17 +117,17 @@ export default function About() {
                 <img 
                   src="/1otf.jpg"
                   alt="Coach Mark with Orangetheory Fitness class group photo"
-                  className="w-full h-80 md:h-96 object-cover shadow-lg"
+                  className="w-full h-80 md:h-96 object-contain bg-gray-50 rounded-lg shadow-lg"
                 />
                 <img 
                   src="/2otf.jpg"
                   alt="Energetic Orangetheory Fitness class celebration with members"
-                  className="w-full h-80 md:h-96 object-cover shadow-lg"
+                  className="w-full h-80 md:h-96 object-contain bg-gray-50 rounded-lg shadow-lg"
                 />
                 <img 
                   src="/3otf.jpg"
                   alt="Orangetheory Fitness team and members group photo"
-                  className="w-full h-80 md:h-96 object-cover shadow-lg"
+                  className="w-full h-80 md:h-96 object-contain bg-gray-50 rounded-lg shadow-lg"
                 />
               </div>
             </div>
