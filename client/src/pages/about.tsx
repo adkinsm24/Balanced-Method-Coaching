@@ -98,6 +98,12 @@ export default function About() {
         <div className="max-w-4xl mx-auto px-4 relative z-10">
           <h2 className="text-3xl font-bold text-secondary mb-8">Professional Experience</h2>
           
+          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-8">
+            <p className="text-gray-700 leading-relaxed">
+              For the past 7+ years, I've coached in a wide range of settings — from private sessions with kids as young as 8 to older adults looking to stay active and strong. I've led group training classes, helped clients recover from injuries, and even ran outdoor workouts for a full year when gyms were closed during COVID. No matter the setting, my goal has always been the same: to meet people where they're at and help them build sustainable, healthy habits.
+            </p>
+          </div>
+          
           <div className="space-y-8">
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold mb-3">Personal & Group Training</h3>
