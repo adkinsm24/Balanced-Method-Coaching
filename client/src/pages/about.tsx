@@ -112,9 +112,10 @@ export default function About() {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-3">One-on-One Nutrition Coaching</h3>
+              <h3 className="text-xl font-semibold mb-3">Mark in the Park</h3>
+              <p className="text-sm text-gray-500 mb-3">February 2020 – April 2021</p>
               <p className="text-gray-600 mb-4">
-                Since launching my nutrition coaching business in 2018, I've helped nearly 100 clients transform their nutrition, improve their relationship with food, and achieve real, lasting results. Each client receives a completely personalized approach based on their individual needs and goals.
+                When gyms shut down in early 2020, I saw it as an opportunity to keep people connected and moving. From February 2020 to April 2021, I built a supportive community of motivated individuals by leading weekly outdoor workouts in local parks. What started small quickly grew — over 150 people came out to train, and I regularly coached groups of 15 to 30. During that time, I also began supporting people with their nutrition, which marked the true beginning of my nutrition coaching journey.
               </p>
             </div>
 
