@@ -130,9 +130,7 @@ export default function About() {
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold mb-3">Personal Trainer – UFC Gym, La Mirada</h3>
               <p className="text-sm text-gray-500 mb-3">April 2017 – July 2017</p>
-              <p className="text-gray-600 mb-4">
-                Provided one-on-one coaching with a focus on strength training, body recomposition, and combat fitness fundamentals.
-              </p>
+              <p className="text-gray-600 mb-4">Provided one-on-one personal training while actively promoting training packages and DotFit supplements through direct outreach. Led multiple group classes weekly, including TRX (up to 16 participants) and DUT high-intensity resistance training (20–40 participants), delivering energetic and fun sessions tailored to various fitness levels. This was my first job out of college.</p>
             </div>
           </div>
         </div>
