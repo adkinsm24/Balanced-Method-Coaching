@@ -126,6 +126,14 @@ export default function About() {
                 Worked with faculty and staff on preventative wellness and post-rehabilitation fitness programs. Delivered individualized training in both private and group formats at the University of California, Irvine's fitness center.
               </p>
             </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-3">Personal Trainer – UFC Gym, La Mirada</h3>
+              <p className="text-sm text-gray-500 mb-3">April 2017 – July 2017</p>
+              <p className="text-gray-600 mb-4">
+                Provided one-on-one coaching with a focus on strength training, body recomposition, and combat fitness fundamentals.
+              </p>
+            </div>
           </div>
         </div>
       </section>
