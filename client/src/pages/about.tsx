@@ -110,21 +110,21 @@ export default function About() {
               <p className="text-sm text-gray-500 mb-3">June 2018 – June 2024</p>
               <p className="text-gray-600 mb-4">Led thousands of group training sessions, coached diverse client populations, and helped members improve strength, endurance, and body composition through structured interval training. Additionally, oversaw the onboarding and development of new coaches.</p>
               
-              <div className="grid md:grid-cols-3 gap-4 mt-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <img 
                   src="/1otf.jpg"
                   alt="Coach Mark with Orangetheory Fitness class group photo"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                  className="w-full h-64 md:h-72 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
                 />
                 <img 
                   src="/2otf.jpg"
                   alt="Energetic Orangetheory Fitness class celebration with members"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                  className="w-full h-64 md:h-72 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
                 />
                 <img 
                   src="/3otf.jpg"
                   alt="Orangetheory Fitness team and members group photo"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                  className="w-full h-64 md:h-72 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 md:col-span-2 lg:col-span-1"
                 />
               </div>
             </div>
