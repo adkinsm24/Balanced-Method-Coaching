@@ -204,27 +204,13 @@ export default function About() {
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-secondary mb-8">My Coaching Philosophy</h2>
           
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-white to-blue-50 p-6 rounded-lg shadow-md border border-gray-200">
-              <h3 className="text-xl font-semibold mb-3 text-primary">No Cookie-Cutter Solutions</h3>
-              <p className="text-gray-700">
-                What sets my coaching apart is that I don't rely on cookie-cutter meal plans. I take the time to understand your current eating habits and then guide you through small, meaningful changes that build real momentum—changes that actually stick.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-r from-blue-50 to-slate-50 p-6 rounded-lg shadow-md border border-gray-200">
-              <h3 className="text-xl font-semibold mb-3 text-primary">Ongoing Support & Accountability</h3>
-              <p className="text-gray-700">
-                I'll be with you every step of the way to provide you guidance and accountability. Success isn't just about having the right plan—it's about having the right support system to help you implement it consistently.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-r from-slate-50 to-white p-6 rounded-lg shadow-md border border-gray-200">
-              <h3 className="text-xl font-semibold mb-3 text-primary">Sustainable Results</h3>
-              <p className="text-gray-700">
-                My ultimate mission is simple: help as many people as possible find a sustainable way of eating that leads to lasting fat loss, better health, without any gimmicks, shortcuts, or unnecessary restrictions.
-              </p>
-            </div>
+          <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
+            <p className="text-gray-700 leading-relaxed text-lg">
+              My coaching philosophy is rooted in personalization and balance. When it comes to exercise, I take the time to understand each client's history, goals, and preferences so I can tailor their training accordingly. My aim is to improve their overall health by applying progressive overload in a way that's sustainable and enjoyable. I recognize that everyone is different—there's no one-size-fits-all approach. I focus on selecting exercises that not only suit their body but also ones they enjoy, helping them stay motivated and consistent.
+            </p>
+            <p className="text-gray-700 leading-relaxed text-lg mt-4">
+              On the nutrition side, I promote a balanced, realistic approach. I steer away from cookie-cutter meal plans, fad diets, and unnecessary restrictions. I believe true health comes from balance—not extremes—and I strive to help clients build habits that support long-term well-being while becoming the best version of themselves.
+            </p>
           </div>
         </div>
       </section>
