@@ -143,16 +143,67 @@ export default function BookCall() {
                       <SelectValue placeholder="Choose an available time slot" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="mon-9am-est">Monday 9:00 AM EST (3:00 PM CET)</SelectItem>
-                      <SelectItem value="mon-1pm-est">Monday 1:00 PM EST (7:00 PM CET)</SelectItem>
-                      <SelectItem value="tue-10am-est">Tuesday 10:00 AM EST (4:00 PM CET)</SelectItem>
-                      <SelectItem value="tue-3pm-est">Tuesday 3:00 PM EST (9:00 PM CET)</SelectItem>
-                      <SelectItem value="wed-8am-est">Wednesday 8:00 AM EST (2:00 PM CET)</SelectItem>
-                      <SelectItem value="wed-2pm-est">Wednesday 2:00 PM EST (8:00 PM CET)</SelectItem>
-                      <SelectItem value="thu-9am-est">Thursday 9:00 AM EST (3:00 PM CET)</SelectItem>
-                      <SelectItem value="thu-1pm-est">Thursday 1:00 PM EST (7:00 PM CET)</SelectItem>
-                      <SelectItem value="fri-10am-est">Friday 10:00 AM EST (4:00 PM CET)</SelectItem>
-                      <SelectItem value="fri-2pm-est">Friday 2:00 PM EST (8:00 PM CET)</SelectItem>
+                      {/* Monday */}
+                      <SelectItem value="mon-6am">Monday 6:00 AM EST (12:00 PM CET)</SelectItem>
+                      <SelectItem value="mon-630am">Monday 6:30 AM EST (12:30 PM CET)</SelectItem>
+                      <SelectItem value="mon-730am">Monday 7:30 AM EST (1:30 PM CET)</SelectItem>
+                      <SelectItem value="mon-8am">Monday 8:00 AM EST (2:00 PM CET)</SelectItem>
+                      <SelectItem value="mon-830am">Monday 8:30 AM EST (2:30 PM CET)</SelectItem>
+                      <SelectItem value="mon-930am">Monday 9:30 AM EST (3:30 PM CET)</SelectItem>
+                      <SelectItem value="mon-10am">Monday 10:00 AM EST (4:00 PM CET)</SelectItem>
+                      <SelectItem value="mon-1030am">Monday 10:30 AM EST (4:30 PM CET)</SelectItem>
+                      <SelectItem value="mon-11am">Monday 11:00 AM EST (5:00 PM CET)</SelectItem>
+                      <SelectItem value="mon-1130am">Monday 11:30 AM EST (5:30 PM CET)</SelectItem>
+                      <SelectItem value="mon-12pm">Monday 12:00 PM EST (6:00 PM CET)</SelectItem>
+                      
+                      {/* Tuesday */}
+                      <SelectItem value="tue-6am">Tuesday 6:00 AM EST (12:00 PM CET)</SelectItem>
+                      <SelectItem value="tue-630am">Tuesday 6:30 AM EST (12:30 PM CET)</SelectItem>
+                      <SelectItem value="tue-7am">Tuesday 7:00 AM EST (1:00 PM CET)</SelectItem>
+                      <SelectItem value="tue-730am">Tuesday 7:30 AM EST (1:30 PM CET)</SelectItem>
+                      <SelectItem value="tue-8am">Tuesday 8:00 AM EST (2:00 PM CET)</SelectItem>
+                      <SelectItem value="tue-830am">Tuesday 8:30 AM EST (2:30 PM CET)</SelectItem>
+                      <SelectItem value="tue-9am">Tuesday 9:00 AM EST (3:00 PM CET)</SelectItem>
+                      <SelectItem value="tue-930am">Tuesday 9:30 AM EST (3:30 PM CET)</SelectItem>
+                      <SelectItem value="tue-1030am">Tuesday 10:30 AM EST (4:30 PM CET)</SelectItem>
+                      <SelectItem value="tue-11am">Tuesday 11:00 AM EST (5:00 PM CET)</SelectItem>
+                      <SelectItem value="tue-1130am">Tuesday 11:30 AM EST (5:30 PM CET)</SelectItem>
+                      <SelectItem value="tue-12pm">Tuesday 12:00 PM EST (6:00 PM CET)</SelectItem>
+                      
+                      {/* Wednesday */}
+                      <SelectItem value="wed-6am">Wednesday 6:00 AM EST (12:00 PM CET)</SelectItem>
+                      <SelectItem value="wed-630am">Wednesday 6:30 AM EST (12:30 PM CET)</SelectItem>
+                      <SelectItem value="wed-7am">Wednesday 7:00 AM EST (1:00 PM CET)</SelectItem>
+                      <SelectItem value="wed-730am">Wednesday 7:30 AM EST (1:30 PM CET)</SelectItem>
+                      <SelectItem value="wed-830am">Wednesday 8:30 AM EST (2:30 PM CET)</SelectItem>
+                      <SelectItem value="wed-9am">Wednesday 9:00 AM EST (3:00 PM CET)</SelectItem>
+                      <SelectItem value="wed-930am">Wednesday 9:30 AM EST (3:30 PM CET)</SelectItem>
+                      <SelectItem value="wed-1030am">Wednesday 10:30 AM EST (4:30 PM CET)</SelectItem>
+                      <SelectItem value="wed-1130am">Wednesday 11:30 AM EST (5:30 PM CET)</SelectItem>
+                      
+                      {/* Thursday */}
+                      <SelectItem value="thu-6am">Thursday 6:00 AM EST (12:00 PM CET)</SelectItem>
+                      <SelectItem value="thu-630am">Thursday 6:30 AM EST (12:30 PM CET)</SelectItem>
+                      <SelectItem value="thu-7am">Thursday 7:00 AM EST (1:00 PM CET)</SelectItem>
+                      <SelectItem value="thu-8am">Thursday 8:00 AM EST (2:00 PM CET)</SelectItem>
+                      <SelectItem value="thu-830am">Thursday 8:30 AM EST (2:30 PM CET)</SelectItem>
+                      <SelectItem value="thu-930am">Thursday 9:30 AM EST (3:30 PM CET)</SelectItem>
+                      <SelectItem value="thu-10am">Thursday 10:00 AM EST (4:00 PM CET)</SelectItem>
+                      <SelectItem value="thu-11am">Thursday 11:00 AM EST (5:00 PM CET)</SelectItem>
+                      <SelectItem value="thu-1130am">Thursday 11:30 AM EST (5:30 PM CET)</SelectItem>
+                      <SelectItem value="thu-12pm">Thursday 12:00 PM EST (6:00 PM CET)</SelectItem>
+                      
+                      {/* Friday */}
+                      <SelectItem value="fri-6am">Friday 6:00 AM EST (12:00 PM CET)</SelectItem>
+                      <SelectItem value="fri-630am">Friday 6:30 AM EST (12:30 PM CET)</SelectItem>
+                      <SelectItem value="fri-7am">Friday 7:00 AM EST (1:00 PM CET)</SelectItem>
+                      <SelectItem value="fri-730am">Friday 7:30 AM EST (1:30 PM CET)</SelectItem>
+                      <SelectItem value="fri-8am">Friday 8:00 AM EST (2:00 PM CET)</SelectItem>
+                      <SelectItem value="fri-830am">Friday 8:30 AM EST (2:30 PM CET)</SelectItem>
+                      <SelectItem value="fri-1030am">Friday 10:30 AM EST (4:30 PM CET)</SelectItem>
+                      <SelectItem value="fri-11am">Friday 11:00 AM EST (5:00 PM CET)</SelectItem>
+                      <SelectItem value="fri-1130am">Friday 11:30 AM EST (5:30 PM CET)</SelectItem>
+                      <SelectItem value="fri-12pm">Friday 12:00 PM EST (6:00 PM CET)</SelectItem>
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-gray-500 mt-1">Times shown in US Eastern Time with Swiss Central European Time for reference</p>
