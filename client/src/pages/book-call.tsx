@@ -17,7 +17,12 @@ export default function BookCall() {
     preferredTime: "",
     goals: "",
     experience: "",
-    challenges: ""
+    eatingOut: "",
+    typicalDay: "",
+    drinks: "",
+    snacking: "",
+    emotionalEating: "",
+    medications: ""
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -169,14 +174,72 @@ export default function BookCall() {
                 </div>
 
                 <div>
-                  <Label htmlFor="challenges" className="text-sm font-medium text-gray-700">What's your biggest challenge with nutrition right now?</Label>
+                  <Label htmlFor="eatingOut" className="text-sm font-medium text-gray-700">How many times a week do you eat out?</Label>
+                  <Input
+                    id="eatingOut"
+                    value={formData.eatingOut}
+                    onChange={(e) => handleInputChange("eatingOut", e.target.value)}
+                    className="mt-1"
+                    placeholder="e.g., 2-3 times, rarely, daily..."
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="typicalDay" className="text-sm font-medium text-gray-700">What does a typical day of eating look like?</Label>
                   <Textarea
-                    id="challenges"
-                    value={formData.challenges}
-                    onChange={(e) => handleInputChange("challenges", e.target.value)}
+                    id="typicalDay"
+                    value={formData.typicalDay}
+                    onChange={(e) => handleInputChange("typicalDay", e.target.value)}
                     className="mt-1"
                     rows={3}
-                    placeholder="e.g., emotional eating, time constraints, food prep, staying consistent..."
+                    placeholder="Describe your usual breakfast, lunch, dinner, and any snacks..."
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="drinks" className="text-sm font-medium text-gray-700">Do you drink soda, alcohol, lattes, or other caloric drinks?</Label>
+                  <Textarea
+                    id="drinks"
+                    value={formData.drinks}
+                    onChange={(e) => handleInputChange("drinks", e.target.value)}
+                    className="mt-1"
+                    rows={2}
+                    placeholder="Type and frequency of beverages you regularly consume..."
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="snacking" className="text-sm font-medium text-gray-700">Do you snack?</Label>
+                  <Input
+                    id="snacking"
+                    value={formData.snacking}
+                    onChange={(e) => handleInputChange("snacking", e.target.value)}
+                    className="mt-1"
+                    placeholder="e.g., yes - chips and crackers, no, only fruit..."
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="emotionalEating" className="text-sm font-medium text-gray-700">Do you eat for any other reason than being hungry?</Label>
+                  <Textarea
+                    id="emotionalEating"
+                    value={formData.emotionalEating}
+                    onChange={(e) => handleInputChange("emotionalEating", e.target.value)}
+                    className="mt-1"
+                    rows={2}
+                    placeholder="e.g., stress, boredom, social situations, celebrations..."
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="medications" className="text-sm font-medium text-gray-700">Are you on any medications? Do you know if they affect weight loss?</Label>
+                  <Textarea
+                    id="medications"
+                    value={formData.medications}
+                    onChange={(e) => handleInputChange("medications", e.target.value)}
+                    className="mt-1"
+                    rows={2}
+                    placeholder="List any medications and note if you're aware of weight-related effects..."
                   />
                 </div>
 
