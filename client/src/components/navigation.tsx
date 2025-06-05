@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { User, LogOut } from "lucide-react";
+import logoImage from "@assets/Balancemethodcoachingjpg_1749150656854.jpg";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -12,7 +13,7 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/">
           <img 
-            src="/attached_assets/Balancemethodcoachingjpg_1749150656854.jpg" 
+            src={logoImage}
             alt="Balanced Method Coaching" 
             className="h-12 w-auto object-contain"
           />
