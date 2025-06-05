@@ -15,7 +15,7 @@ import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react
 // Example: "https://vimeo.com/123456789" or "https://player.vimeo.com/video/123456789"
 const courseVideos = [
   { id: 0, title: "Introduction & Program Overview", videoUrl: "https://player.vimeo.com/video/1090975324", badge: "Start Here" },
-  { id: 1, title: "Downloading MyFitnessPal", videoUrl: "", badge: "Essential" },
+  { id: 1, title: "Downloading MyFitnessPal", videoUrl: "https://player.vimeo.com/video/1090987690", badge: "Essential" },
   { id: 2, title: "Logging on MyFitnessPal", videoUrl: "", badge: "Tutorial" },
   { id: 3, title: "Establishing Your Nutritional Goals", videoUrl: "", badge: "Foundation" },
   { id: 4, title: "Roadmap to Achieving Your Nutritional Goals", videoUrl: "", badge: "Strategy" },
