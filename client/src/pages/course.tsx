@@ -122,14 +122,24 @@ export default function Course() {
                 <Card className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Module 1: Nutrition Fundamentals</CardTitle>
-                      <Badge variant="outline">45 min</Badge>
+                      <CardTitle className="text-xl">Module 1: Nutrition Foundation & Mindset</CardTitle>
+                      <Badge variant="outline">52 min</Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      Understanding macronutrients, micronutrients, and how your body processes food.
+                      Build the right mindset and understand core nutrition principles that form the foundation of lasting transformation.
                     </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>The psychology behind successful nutrition changes</li>
+                        <li>Why diets fail and what actually works long-term</li>
+                        <li>Understanding your relationship with food</li>
+                        <li>Setting realistic, sustainable goals</li>
+                        <li>The role of self-compassion in your journey</li>
+                      </ul>
+                    </div>
                     <div className="flex gap-2">
                       <Button className="flex items-center gap-2">
                         <Play className="w-4 h-4" />
@@ -137,7 +147,7 @@ export default function Course() {
                       </Button>
                       <Button variant="outline" className="flex items-center gap-2">
                         <Download className="w-4 h-4" />
-                        Download PDF
+                        Download Workbook
                       </Button>
                     </div>
                   </CardContent>
@@ -147,14 +157,24 @@ export default function Course() {
                 <Card className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Module 2: Building Sustainable Habits</CardTitle>
-                      <Badge variant="outline">52 min</Badge>
+                      <CardTitle className="text-xl">Module 2: Macronutrients & Energy Balance</CardTitle>
+                      <Badge variant="outline">48 min</Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      Creating lasting change through small, consistent actions that compound over time.
+                      Master the fundamentals of protein, carbs, and fats - and how to balance them for your goals.
                     </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>How much protein you actually need (and why most people get it wrong)</li>
+                        <li>The truth about carbs and when to eat them</li>
+                        <li>Healthy fats that support your metabolism</li>
+                        <li>Creating your personal calorie and macro targets</li>
+                        <li>Flexible tracking methods that fit your lifestyle</li>
+                      </ul>
+                    </div>
                     <div className="flex gap-2">
                       <Button className="flex items-center gap-2">
                         <Play className="w-4 h-4" />
@@ -162,7 +182,7 @@ export default function Course() {
                       </Button>
                       <Button variant="outline" className="flex items-center gap-2">
                         <Download className="w-4 h-4" />
-                        Download PDF
+                        Download Calculator
                       </Button>
                     </div>
                   </CardContent>
@@ -172,14 +192,24 @@ export default function Course() {
                 <Card className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Module 3: Meal Planning & Prep</CardTitle>
-                      <Badge variant="outline">38 min</Badge>
+                      <CardTitle className="text-xl">Module 3: Meal Planning & Prep Systems</CardTitle>
+                      <Badge variant="outline">44 min</Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      Practical strategies for planning, shopping, and preparing nutritious meals efficiently.
+                      Build efficient systems for meal planning and prep that save time while keeping you on track.
                     </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>The 3-step meal planning system I use with all my clients</li>
+                        <li>Batch cooking strategies that save hours each week</li>
+                        <li>Smart grocery shopping to reduce food waste</li>
+                        <li>Building flexible meal templates</li>
+                        <li>Emergency backup plans for busy weeks</li>
+                      </ul>
+                    </div>
                     <div className="flex gap-2">
                       <Button className="flex items-center gap-2">
                         <Play className="w-4 h-4" />
@@ -187,7 +217,7 @@ export default function Course() {
                       </Button>
                       <Button variant="outline" className="flex items-center gap-2">
                         <Download className="w-4 h-4" />
-                        Download PDF
+                        Download Templates
                       </Button>
                     </div>
                   </CardContent>
@@ -197,14 +227,24 @@ export default function Course() {
                 <Card className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Module 4: Emotional Eating Mastery</CardTitle>
-                      <Badge variant="outline">41 min</Badge>
+                      <CardTitle className="text-xl">Module 4: Emotional Eating & Food Relationships</CardTitle>
+                      <Badge variant="outline">38 min</Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      Understanding triggers, developing awareness, and creating healthy coping strategies.
+                      Break free from emotional eating patterns and build a healthier relationship with food.
                     </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Identifying your personal emotional eating triggers</li>
+                        <li>The difference between physical and emotional hunger</li>
+                        <li>Building awareness without judgment</li>
+                        <li>Alternative coping strategies for stress and emotions</li>
+                        <li>Creating food freedom while staying healthy</li>
+                      </ul>
+                    </div>
                     <div className="flex gap-2">
                       <Button className="flex items-center gap-2">
                         <Play className="w-4 h-4" />
@@ -212,13 +252,151 @@ export default function Course() {
                       </Button>
                       <Button variant="outline" className="flex items-center gap-2">
                         <Download className="w-4 h-4" />
-                        Download PDF
+                        Download Journal
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
 
-                {/* Additional modules would go here */}
+                {/* Module 5 */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-xl">Module 5: Hydration & Recovery Nutrition</CardTitle>
+                      <Badge variant="outline">31 min</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-4">
+                      Optimize your hydration, sleep, and recovery through strategic nutrition timing.
+                    </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>How much water you really need (it's not 8 glasses)</li>
+                        <li>Electrolyte balance for optimal performance</li>
+                        <li>Foods that support better sleep quality</li>
+                        <li>Post-workout nutrition for faster recovery</li>
+                        <li>Managing energy levels throughout the day</li>
+                      </ul>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button className="flex items-center gap-2">
+                        <Play className="w-4 h-4" />
+                        Start Module
+                      </Button>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <Download className="w-4 h-4" />
+                        Download Guide
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Module 6 */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-xl">Module 6: Eating Out & Social Situations</CardTitle>
+                      <Badge variant="outline">29 min</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-4">
+                      Navigate restaurants, social events, and travel while maintaining your nutrition goals.
+                    </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Restaurant strategies that don't involve salads</li>
+                        <li>Handling social pressure around food choices</li>
+                        <li>Travel nutrition planning and airport/hotel tips</li>
+                        <li>Holiday and special event navigation</li>
+                        <li>Maintaining progress without being antisocial</li>
+                      </ul>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button className="flex items-center gap-2">
+                        <Play className="w-4 h-4" />
+                        Start Module
+                      </Button>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <Download className="w-4 h-4" />
+                        Download Checklist
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Module 7 */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-xl">Module 7: Troubleshooting & Plateaus</CardTitle>
+                      <Badge variant="outline">35 min</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-4">
+                      Overcome common challenges, break through plateaus, and get back on track after setbacks.
+                    </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Why progress stalls and how to restart momentum</li>
+                        <li>Adjusting your approach as your body changes</li>
+                        <li>Dealing with cravings and late-night eating</li>
+                        <li>Getting back on track after a "bad" day or week</li>
+                        <li>When and how to modify your nutrition plan</li>
+                      </ul>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button className="flex items-center gap-2">
+                        <Play className="w-4 h-4" />
+                        Start Module
+                      </Button>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <Download className="w-4 h-4" />
+                        Download Toolkit
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Module 8 */}
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-xl">Module 8: Long-Term Success & Maintenance</CardTitle>
+                      <Badge variant="outline">42 min</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-4">
+                      Build systems for lifelong success and create your personalized nutrition lifestyle.
+                    </p>
+                    <div className="text-sm text-gray-600 mb-4">
+                      <h4 className="font-semibold mb-2">What you'll learn:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Transitioning from weight loss to maintenance</li>
+                        <li>Building flexibility into your nutrition approach</li>
+                        <li>Creating your personal "non-negotiables"</li>
+                        <li>Planning for life changes and challenges</li>
+                        <li>Continuing to evolve your relationship with food</li>
+                      </ul>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button className="flex items-center gap-2">
+                        <Play className="w-4 h-4" />
+                        Start Module
+                      </Button>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <Download className="w-4 h-4" />
+                        Download Roadmap
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </TabsContent>
 
