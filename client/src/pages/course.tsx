@@ -19,7 +19,7 @@ const courseVideos = [
   { id: 2, title: "Logging on MyFitnessPal", videoUrl: "https://player.vimeo.com/video/1091003401", badge: "Tutorial" },
   { id: 3, title: "Establishing Your Nutritional Goals", videoUrl: "https://player.vimeo.com/video/1090997254", badge: "Foundation" },
   { id: 4, title: "Roadmap to Achieving Your Nutritional Goals", videoUrl: "https://player.vimeo.com/video/1090997641", badge: "Strategy" },
-  { id: 5, title: "Strategies to Achieving Your Nutritional Goals Over Time", videoUrl: "", badge: "Long-term" },
+  { id: 5, title: "Strategies to Achieving Your Nutritional Goals Over Time", videoUrl: "https://player.vimeo.com/video/1090998630", badge: "Long-term" },
   { id: 6, title: "Other Factors Influencing Fat Loss", videoUrl: "", badge: "Advanced" },
   { id: 7, title: "Tracking Progress", videoUrl: "", badge: "Monitoring" },
   { id: 8, title: "Progress Expectations and Interpreting Check-in Results", videoUrl: "", badge: "Analysis" },
