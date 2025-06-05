@@ -22,7 +22,8 @@ export default function BookCall() {
     drinks: "",
 
     emotionalEating: "",
-    medications: ""
+    medications: "",
+    contactMethod: ""
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -120,6 +121,19 @@ export default function BookCall() {
                     className="mt-1"
                     placeholder="(555) 123-4567"
                   />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">How would you prefer to be contacted? *</Label>
+                  <Select onValueChange={(value) => handleInputChange("contactMethod", value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Choose your preferred contact method" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="facetime">FaceTime (iPhone required)</SelectItem>
+                      <SelectItem value="whatsapp">WhatsApp</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Scheduling Preferences */}
