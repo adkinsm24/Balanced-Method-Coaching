@@ -190,14 +190,7 @@ export default function Course() {
                                 title={`Part ${video.id}: ${video.title}`}
                               />
                             </div>
-                            <div className="flex gap-2">
-                              <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">
-                                <Button variant="outline" size="sm" className="flex items-center gap-2">
-                                  <Play className="w-4 h-4" />
-                                  Open in New Tab
-                                </Button>
-                              </a>
-                            </div>
+
                           </>
                         ) : (
                           <div className="aspect-video bg-gray-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-200">
