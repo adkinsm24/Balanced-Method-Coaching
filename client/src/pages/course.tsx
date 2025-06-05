@@ -21,7 +21,7 @@ const courseVideos = [
   { id: 4, title: "Roadmap to Achieving Your Nutritional Goals", videoUrl: "https://player.vimeo.com/video/1090997641", badge: "Strategy" },
   { id: 5, title: "Strategies to Achieving Your Nutritional Goals Over Time", videoUrl: "https://player.vimeo.com/video/1090998630", badge: "Long-term" },
   { id: 6, title: "Other Factors Influencing Fat Loss", videoUrl: "https://player.vimeo.com/video/1090999246", badge: "Advanced" },
-  { id: 7, title: "Tracking Progress", videoUrl: "", badge: "Monitoring" },
+  { id: 7, title: "Tracking Progress", videoUrl: "https://player.vimeo.com/video/1090999757", badge: "Monitoring" },
   { id: 8, title: "Progress Expectations and Interpreting Check-in Results", videoUrl: "", badge: "Analysis" },
   { id: 9, title: "Breaking Through Plateaus", videoUrl: "", badge: "Problem-solving" },
   { id: 10, title: "Post-Goal Mindset", videoUrl: "", badge: "Maintenance" },
