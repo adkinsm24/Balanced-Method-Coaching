@@ -52,24 +52,21 @@ export default function Navigation() {
 
           {/* Authentication buttons */}
           {isAuthenticated ? (
-            <div className="flex items-center gap-2 ml-4">
-              <span className="text-sm text-gray-600">Welcome, {(user as any)?.firstName || 'User'}</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.location.href = '/api/logout'}
-                className="flex items-center gap-1"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => window.location.href = '/api/logout'}
+              className="flex items-center gap-1 ml-6"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
+            </Button>
           ) : (
             <Button
               variant="outline"
               size="sm"
               onClick={() => window.location.href = '/api/login'}
-              className="flex items-center gap-1 ml-4"
+              className="flex items-center gap-1 ml-6"
             >
               <User className="w-4 h-4" />
               Login
