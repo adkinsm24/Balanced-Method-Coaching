@@ -165,9 +165,38 @@ export default function Checkout() {
               </div>
             )}
 
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm text-gray-500 space-y-2">
               <p>🔒 Secure checkout powered by Stripe</p>
               <p>Your payment information is encrypted and secure</p>
+            </div>
+
+            {/* Legal Information */}
+            <div className="border-t pt-6 space-y-4 text-xs text-gray-600">
+              <div>
+                <h4 className="font-semibold mb-2">Terms & Conditions</h4>
+                <p>
+                  By purchasing this course, you agree to our terms of service. This is a digital product with lifetime access. 
+                  All sales are final. No refunds will be provided after purchase.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2">Disclaimer</h4>
+                <p>
+                  This nutrition course is for educational purposes only and is not intended as medical advice. 
+                  Results may vary based on individual circumstances. Please consult with a healthcare professional 
+                  before making significant dietary changes, especially if you have existing health conditions.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2">Privacy & Copyright</h4>
+                <p>
+                  © {new Date().getFullYear()} Coach Mark Nutrition. All rights reserved. 
+                  Course materials are proprietary and protected by copyright law. 
+                  Your personal information is protected according to our privacy policy.
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
