@@ -220,7 +220,7 @@ export default function BookCall() {
                 </div>
 
                 <div>
-                  <Label htmlFor="medications" className="text-sm font-medium text-gray-700">Are you on any medications? Do you know if they affect weight loss?</Label>
+                  <Label htmlFor="medications" className="text-sm font-medium text-gray-700">Are you on any medications? </Label>
                   <Textarea
                     id="medications"
                     value={formData.medications}
