@@ -11,6 +11,7 @@ import CoachingOffers from "@/pages/coaching-offers";
 import BookCall from "@/pages/book-call";
 import Checkout from "@/pages/checkout";
 import Success from "@/pages/success";
+import Course from "@/pages/course";
 import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/book-call" component={BookCall} />
       <Route path="/checkout" component={Checkout} />
       <Route path="/success" component={Success} />
+      <Route path="/course" component={Course} />
       <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>

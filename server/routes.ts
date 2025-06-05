@@ -5,8 +5,11 @@ import { db } from "./db";
 import { consultationRequests, insertConsultationRequestSchema } from "@shared/schema";
 import { desc } from "drizzle-orm";
 import Stripe from "stripe";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup authentication
+  await setupAuth(app);
   // API routes for consultation requests
   app.post("/api/consultation-requests", async (req, res) => {
     try {
@@ -62,6 +65,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("Stripe error:", error);
       res.status(500).json({ error: "Payment setup failed" });
+    }
+  });
+
+  // Authentication routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Route to grant course access after payment
+  app.post('/api/grant-course-access', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      await storage.grantCourseAccess(userId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error granting course access:", error);
+      res.status(500).json({ error: "Failed to grant access" });
     }
   });
 
