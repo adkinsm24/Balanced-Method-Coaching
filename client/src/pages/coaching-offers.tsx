@@ -105,9 +105,11 @@ export default function CoachingOffers() {
                 <li>• Affordable option</li>
                 <li>• Proven system that works</li>
               </ul>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white">
-                Get Started
-              </Button>
+              <a href="/checkout">
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                  Get Started
+                </Button>
+              </a>
             </div>
 
             {/* Coaching Calls */}
