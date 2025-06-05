@@ -11,6 +11,8 @@ import Footer from "@/components/footer";
 import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react";
 
 // Video data structure for each course part
+// To add Vimeo videos: Replace empty videoUrl with your Vimeo video URLs
+// Example: "https://vimeo.com/123456789" or "https://player.vimeo.com/video/123456789"
 const courseVideos = [
   { id: 0, title: "Introduction & Program Overview", videoUrl: "", badge: "Start Here" },
   { id: 1, title: "Downloading MyFitnessPal", videoUrl: "", badge: "Essential" },
@@ -170,22 +172,41 @@ export default function Course() {
                       <p className="text-gray-600 mb-4">
                         {videoDescriptions[index]}
                       </p>
-                      <div className="flex gap-2">
+                      <div className="space-y-3">
                         {video.videoUrl ? (
-                          <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">
-                            <Button className={`flex items-center gap-2 ${video.id === 11 ? 'bg-primary hover:bg-primary/90' : ''}`}>
-                              <Play className="w-4 h-4" />
-                              Watch Video
-                            </Button>
-                          </a>
+                          <>
+                            {/* Embedded Vimeo Player */}
+                            <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                              <iframe
+                                src={video.videoUrl.includes('player.vimeo.com') 
+                                  ? video.videoUrl 
+                                  : video.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/')
+                                }
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                allowFullScreen
+                                title={`Part ${video.id}: ${video.title}`}
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                              <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">
+                                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                                  <Play className="w-4 h-4" />
+                                  Open in New Tab
+                                </Button>
+                              </a>
+                            </div>
+                          </>
                         ) : (
-                          <Button 
-                            disabled 
-                            className="flex items-center gap-2 opacity-50 cursor-not-allowed"
-                          >
-                            <Play className="w-4 h-4" />
-                            Video Coming Soon
-                          </Button>
+                          <div className="aspect-video bg-gray-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-200">
+                            <div className="text-center">
+                              <Play className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                              <p className="text-gray-500 font-medium">Video Coming Soon</p>
+                              <p className="text-sm text-gray-400">This lesson will be available shortly</p>
+                            </div>
+                          </div>
                         )}
                       </div>
                     </CardContent>
