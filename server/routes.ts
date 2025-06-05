@@ -37,6 +37,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Stripe payment route for course purchase
+  app.post("/api/create-payment-intent", async (req, res) => {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return res.status(500).json({ error: "Stripe not configured" });
+    }
+
+    try {
+      const Stripe = require("stripe");
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+      
+      const { amount } = req.body;
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100), // Convert to cents
+        currency: "usd",
+        metadata: {
+          product: "Self-Paced Nutrition Course"
+        }
+      });
+      
+      res.json({ clientSecret: paymentIntent.client_secret });
+    } catch (error: any) {
+      console.error("Stripe error:", error);
+      res.status(500).json({ error: "Payment setup failed" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

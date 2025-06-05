@@ -9,6 +9,8 @@ import Home from "@/pages/home";
 import About from "@/pages/about";
 import CoachingOffers from "@/pages/coaching-offers";
 import BookCall from "@/pages/book-call";
+import Checkout from "@/pages/checkout";
+import Success from "@/pages/success";
 import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 
