@@ -173,10 +173,7 @@ export default function BookCall() {
                 </div>
 
                 <div>
-                  <Label htmlFor="eatingOut" className="text-sm font-medium text-gray-700">How many times a week do you eat out?
-                  This includes social events such as birthday parties or other get togethers
-
-</Label>
+                  <Label htmlFor="eatingOut" className="text-sm font-medium text-gray-700">On average, how many times per week do you eat meals away from home — including restaurants, takeout, or social events like birthdays and get-togethers?</Label>
                   <Input
                     id="eatingOut"
                     value={formData.eatingOut}
