@@ -11,7 +11,11 @@ export default function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-50/95 via-red-50/95 to-pink-50/95 backdrop-blur-sm shadow-lg border-b border-orange-200/30">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/">
-          <h1 className="text-2xl font-bold text-secondary">Coach Mark</h1>
+          <img 
+            src="/attached_assets/Balancemethodcoachingjpg_1749150656854.jpg" 
+            alt="Balanced Method Coaching" 
+            className="h-12 w-auto object-contain"
+          />
         </Link>
         
         <div className="flex space-x-4">
