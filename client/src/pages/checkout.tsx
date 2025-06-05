@@ -182,10 +182,14 @@ export default function Checkout() {
               
               <div>
                 <h4 className="font-semibold mb-2">Disclaimer</h4>
+                <p className="mb-2">
+                  This self-paced nutrition course is intended for educational and informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. I am not a licensed physician, dietitian, or mental health professional, and the information provided in this course should not be interpreted as medical advice.
+                </p>
+                <p className="mb-2">
+                  Always consult your doctor or a qualified healthcare provider before starting any new diet, exercise, or lifestyle program—especially if you have pre-existing medical conditions, are pregnant or breastfeeding, or are taking prescription medications.
+                </p>
                 <p>
-                  This nutrition course is for educational purposes only and is not intended as medical advice. 
-                  Results may vary based on individual circumstances. Please consult with a healthcare professional 
-                  before making significant dietary changes, especially if you have existing health conditions.
+                  By enrolling in this course, you acknowledge that you are responsible for your own health decisions and outcomes. The strategies and recommendations shared in this course are based on my personal experience and coaching methodology and may not be appropriate for every individual. Results may vary and are dependent on your consistency, effort, and individual circumstances.
                 </p>
               </div>
               
