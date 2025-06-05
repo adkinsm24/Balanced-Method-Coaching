@@ -31,7 +31,7 @@ export default function Course() {
 
   // Check if user has course access
   useEffect(() => {
-    if (user && !user.hasCourseAccess) {
+    if (user && !(user as any).hasCourseAccess) {
       toast({
         title: "Course Access Required",
         description: "Please purchase the course to access this content.",
@@ -52,7 +52,7 @@ export default function Course() {
     );
   }
 
-  if (!user?.hasCourseAccess) {
+  if (!(user as any)?.hasCourseAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md">

@@ -1,8 +1,11 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { User, LogOut } from "lucide-react";
 
 export default function Navigation() {
   const [location] = useLocation();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-50/95 via-red-50/95 to-pink-50/95 backdrop-blur-sm shadow-lg border-b border-orange-200/30">
@@ -36,6 +39,42 @@ export default function Navigation() {
               className={location === "/coaching-offers" ? "bg-primary text-primary-foreground" : ""}
             >Coaching Offers</Button>
           </Link>
+
+          {/* Course access for authenticated users */}
+          {isAuthenticated && (user as any)?.hasCourseAccess && (
+            <Link href="/course">
+              <Button 
+                variant={location === "/course" ? "default" : "ghost"}
+                className={location === "/course" ? "bg-primary text-primary-foreground" : ""}
+              >My Course</Button>
+            </Link>
+          )}
+
+          {/* Authentication buttons */}
+          {isAuthenticated ? (
+            <div className="flex items-center gap-2 ml-4">
+              <span className="text-sm text-gray-600">Welcome, {(user as any)?.firstName || 'User'}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.location.href = '/api/logout'}
+                className="flex items-center gap-1"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.location.href = '/api/login'}
+              className="flex items-center gap-1 ml-4"
+            >
+              <User className="w-4 h-4" />
+              Login
+            </Button>
+          )}
           
           {/* Social Media Quick Access */}
           <div className="flex items-center gap-2 ml-4">
