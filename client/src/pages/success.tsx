@@ -8,6 +8,28 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Success() {
+  const { isAuthenticated, user } = useAuth();
+  const { toast } = useToast();
+
+  // Grant course access after successful payment
+  useEffect(() => {
+    const grantAccess = async () => {
+      if (isAuthenticated) {
+        try {
+          await apiRequest("POST", "/api/grant-course-access", {});
+          toast({
+            title: "Course Access Granted!",
+            description: "You now have access to your nutrition course.",
+          });
+        } catch (error) {
+          console.error("Error granting course access:", error);
+        }
+      }
+    };
+
+    grantAccess();
+  }, [isAuthenticated, toast]);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-indigo-50 pt-20">
       <div className="max-w-2xl mx-auto px-4 py-16">
@@ -43,16 +65,25 @@ export default function Success() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button 
-                  onClick={() => window.location.href = '/'}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  Return to Home
-                </Button>
+                {isAuthenticated ? (
+                  <Button 
+                    onClick={() => window.location.href = '/course'}
+                    className="flex-1 bg-primary hover:bg-primary/90"
+                  >
+                    Access Your Course
+                  </Button>
+                ) : (
+                  <Button 
+                    onClick={() => window.location.href = '/api/login'}
+                    className="flex-1 bg-primary hover:bg-primary/90"
+                  >
+                    Login to Access Course
+                  </Button>
+                )}
                 <Button 
                   onClick={() => window.location.href = '/book-call'}
-                  className="flex-1 bg-primary hover:bg-primary/90"
+                  variant="outline"
+                  className="flex-1"
                 >
                   Book a Support Call
                 </Button>
