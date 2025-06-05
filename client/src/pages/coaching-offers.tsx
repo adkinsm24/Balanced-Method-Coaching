@@ -34,6 +34,10 @@ export default function CoachingOffers() {
             {/* One-on-One Coaching */}
             <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-8 shadow-lg border border-orange-200">
               <h3 className="text-2xl font-bold text-secondary mb-4 text-center">1-on-1 Nutrition Coaching</h3>
+              <div className="text-center mb-6">
+                <span className="text-3xl font-bold text-primary">$399</span>
+                <span className="text-lg text-gray-600 ml-2">/ 4 weeks</span>
+              </div>
               
               {/* Video Section */}
               <div className="mb-6">
@@ -70,6 +74,10 @@ export default function CoachingOffers() {
             {/* Self-Paced Course */}
             <div id="self-paced-course" className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 shadow-lg border border-blue-200">
               <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Self-Paced Nutrition Course</h3>
+              <div className="text-center mb-6">
+                <span className="text-3xl font-bold text-primary">$149</span>
+                <span className="text-lg text-gray-600 ml-2">one-time</span>
+              </div>
               
               {/* Video Section */}
               <div className="mb-6">
@@ -105,6 +113,14 @@ export default function CoachingOffers() {
             {/* Coaching Calls */}
             <div id="coaching-calls" className="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-8 shadow-lg border border-green-200">
               <h3 className="text-2xl font-bold text-secondary mb-4 text-center">Coaching Calls</h3>
+              <div className="text-center mb-6">
+                <div className="text-lg text-gray-700 mb-2">Choose your session:</div>
+                <div className="space-y-1">
+                  <div><span className="text-xl font-bold text-primary">$50</span> <span className="text-gray-600">/ 30 min</span></div>
+                  <div><span className="text-xl font-bold text-primary">$70</span> <span className="text-gray-600">/ 45 min</span></div>
+                  <div><span className="text-xl font-bold text-primary">$85</span> <span className="text-gray-600">/ 60 min</span></div>
+                </div>
+              </div>
               
               {/* Video Section */}
               <div className="mb-6">
