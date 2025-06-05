@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { db } from "./db";
 import { consultationRequests, insertConsultationRequestSchema } from "@shared/schema";
 import { desc } from "drizzle-orm";
+import Stripe from "stripe";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes for consultation requests
@@ -44,8 +45,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const Stripe = require("stripe");
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: "2023-10-16",
+      });
       
       const { amount } = req.body;
       const paymentIntent = await stripe.paymentIntents.create({
