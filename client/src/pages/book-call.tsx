@@ -13,8 +13,7 @@ export default function BookCall() {
     lastName: "",
     email: "",
     phone: "",
-    timeZone: "",
-    preferredTime: "",
+    selectedTimeSlot: "",
     goals: "",
     experience: "",
     eatingOut: "",
@@ -136,36 +135,27 @@ export default function BookCall() {
                   </Select>
                 </div>
 
-                {/* Scheduling Preferences */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">Time Zone *</Label>
-                    <Select onValueChange={(value) => handleInputChange("timeZone", value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select your time zone" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="PST">Pacific Time (PST)</SelectItem>
-                        <SelectItem value="MST">Mountain Time (MST)</SelectItem>
-                        <SelectItem value="CST">Central Time (CST)</SelectItem>
-                        <SelectItem value="EST">Eastern Time (EST)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">Preferred Call Time</Label>
-                    <Select onValueChange={(value) => handleInputChange("preferredTime", value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Best time for you" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="morning">Morning (8am-12pm)</SelectItem>
-                        <SelectItem value="afternoon">Afternoon (12pm-5pm)</SelectItem>
-                        <SelectItem value="evening">Evening (5pm-8pm)</SelectItem>
-                        <SelectItem value="flexible">I'm flexible</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                {/* Available Time Slots */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Select Your Preferred Time Slot *</Label>
+                  <Select onValueChange={(value) => handleInputChange("selectedTimeSlot", value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Choose an available time slot" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="mon-9am-est">Monday 9:00 AM EST (3:00 PM CET)</SelectItem>
+                      <SelectItem value="mon-1pm-est">Monday 1:00 PM EST (7:00 PM CET)</SelectItem>
+                      <SelectItem value="tue-10am-est">Tuesday 10:00 AM EST (4:00 PM CET)</SelectItem>
+                      <SelectItem value="tue-3pm-est">Tuesday 3:00 PM EST (9:00 PM CET)</SelectItem>
+                      <SelectItem value="wed-8am-est">Wednesday 8:00 AM EST (2:00 PM CET)</SelectItem>
+                      <SelectItem value="wed-2pm-est">Wednesday 2:00 PM EST (8:00 PM CET)</SelectItem>
+                      <SelectItem value="thu-9am-est">Thursday 9:00 AM EST (3:00 PM CET)</SelectItem>
+                      <SelectItem value="thu-1pm-est">Thursday 1:00 PM EST (7:00 PM CET)</SelectItem>
+                      <SelectItem value="fri-10am-est">Friday 10:00 AM EST (4:00 PM CET)</SelectItem>
+                      <SelectItem value="fri-2pm-est">Friday 2:00 PM EST (8:00 PM CET)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-gray-500 mt-1">Times shown in US Eastern Time with Swiss Central European Time for reference</p>
                 </div>
 
                 {/* Goals and Background */}
