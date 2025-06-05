@@ -10,6 +10,37 @@ import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react";
 
+// Video data structure for each course part
+const courseVideos = [
+  { id: 0, title: "Introduction & Program Overview", videoUrl: "", badge: "Start Here" },
+  { id: 1, title: "Downloading MyFitnessPal", videoUrl: "", badge: "Essential" },
+  { id: 2, title: "Logging on MyFitnessPal", videoUrl: "", badge: "Tutorial" },
+  { id: 3, title: "Establishing Your Nutritional Goals", videoUrl: "", badge: "Foundation" },
+  { id: 4, title: "Roadmap to Achieving Your Nutritional Goals", videoUrl: "", badge: "Strategy" },
+  { id: 5, title: "Strategies to Achieving Your Nutritional Goals Over Time", videoUrl: "", badge: "Long-term" },
+  { id: 6, title: "Other Factors Influencing Fat Loss", videoUrl: "", badge: "Advanced" },
+  { id: 7, title: "Tracking Progress", videoUrl: "", badge: "Monitoring" },
+  { id: 8, title: "Progress Expectations and Interpreting Check-in Results", videoUrl: "", badge: "Analysis" },
+  { id: 9, title: "Breaking Through Plateaus", videoUrl: "", badge: "Problem-solving" },
+  { id: 10, title: "Post-Goal Mindset", videoUrl: "", badge: "Maintenance" },
+  { id: 11, title: "Getting Started", videoUrl: "", badge: "Action Time" },
+];
+
+const videoDescriptions = [
+  "Welcome to your nutrition transformation journey. Get an overview of what to expect and how to get the most out of this course.",
+  "Step-by-step guide to downloading and setting up MyFitnessPal, the essential tool for tracking your nutrition.",
+  "Learn how to effectively log your food and track your daily nutrition using MyFitnessPal's features.",
+  "Learn how to set realistic, achievable nutritional goals that align with your lifestyle and objectives.",
+  "Create a clear roadmap with actionable steps to achieve your specific nutritional goals.",
+  "Develop sustainable strategies to maintain progress and stay consistent with your nutrition goals over time.",
+  "Understand the additional factors beyond nutrition that impact fat loss and body composition.",
+  "Learn effective methods to track your progress beyond just the scale for sustainable success.",
+  "Set realistic expectations and learn how to properly interpret your check-in results.",
+  "Overcome plateaus and stalls in your progress with proven strategies and adjustments.",
+  "Develop the right mindset for maintaining your results after achieving your goals.",
+  "Put everything together and take your first steps toward achieving your nutrition goals.",
+];
+
 export default function Course() {
   const { toast } = useToast();
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -117,257 +148,49 @@ export default function Course() {
 
             <TabsContent value="videos" className="space-y-4">
               <div className="grid gap-4">
-                {/* Part 0 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 0: Introduction & Program Overview</CardTitle>
-                      <Badge variant="outline">Start Here</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Welcome to your nutrition transformation journey. Get an overview of what to expect and how to get the most out of this course.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 1 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 1: Downloading MyFitnessPal</CardTitle>
-                      <Badge variant="outline">Essential</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Step-by-step guide to downloading and setting up MyFitnessPal, the essential tool for tracking your nutrition.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 2 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 2: Logging on MyFitnessPal</CardTitle>
-                      <Badge variant="outline">Tutorial</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Learn how to effectively log your food and track your daily nutrition using MyFitnessPal's features.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 3 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 3: Establishing Your Nutritional Goals</CardTitle>
-                      <Badge variant="outline">Foundation</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Learn how to set realistic, achievable nutritional goals that align with your lifestyle and objectives.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 4 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 4: Roadmap to Achieving Your Nutritional Goals</CardTitle>
-                      <Badge variant="outline">Strategy</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Create a clear roadmap with actionable steps to achieve your specific nutritional goals.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 5 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 5: Strategies to Achieving Your Nutritional Goals Over Time</CardTitle>
-                      <Badge variant="outline">Long-term</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Develop sustainable strategies to maintain progress and stay consistent with your nutrition goals over time.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 6 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 6: Other Factors Influencing Fat Loss</CardTitle>
-                      <Badge variant="outline">Advanced</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Understand the additional factors beyond nutrition that impact fat loss and body composition.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 7 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 7: Tracking Progress</CardTitle>
-                      <Badge variant="outline">Monitoring</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Learn effective methods to track your progress beyond just the scale for sustainable success.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 8 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 8: Progress Expectations and Interpreting Check-in Results</CardTitle>
-                      <Badge variant="outline">Analysis</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Set realistic expectations and learn how to properly interpret your check-in results.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 9 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 9: Breaking Through Plateaus</CardTitle>
-                      <Badge variant="outline">Problem-solving</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Overcome plateaus and stalls in your progress with proven strategies and adjustments.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 10 */}
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 10: Post-Goal Mindset</CardTitle>
-                      <Badge variant="outline">Maintenance</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Develop the right mindset for maintaining your results after achieving your goals.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Part 11 */}
-                <Card className="hover:shadow-lg transition-shadow border-2 border-primary">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl">Part 11: Getting Started</CardTitle>
-                      <Badge className="bg-primary text-white">Action Time</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Put everything together and take your first steps toward achieving your nutrition goals.
-                    </p>
-                    <div className="flex gap-2">
-                      <Button className="flex items-center gap-2 bg-primary hover:bg-primary/90">
-                        <Play className="w-4 h-4" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                {courseVideos.map((video, index) => (
+                  <Card 
+                    key={video.id} 
+                    className={`hover:shadow-lg transition-shadow ${video.id === 11 ? 'border-2 border-primary' : ''}`}
+                  >
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-xl">
+                          Part {video.id}: {video.title}
+                        </CardTitle>
+                        <Badge 
+                          variant={video.id === 11 ? "default" : "outline"}
+                          className={video.id === 11 ? "bg-primary text-white" : ""}
+                        >
+                          {video.badge}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-4">
+                        {videoDescriptions[index]}
+                      </p>
+                      <div className="flex gap-2">
+                        {video.videoUrl ? (
+                          <a href={video.videoUrl} target="_blank" rel="noopener noreferrer">
+                            <Button className={`flex items-center gap-2 ${video.id === 11 ? 'bg-primary hover:bg-primary/90' : ''}`}>
+                              <Play className="w-4 h-4" />
+                              Watch Video
+                            </Button>
+                          </a>
+                        ) : (
+                          <Button 
+                            disabled 
+                            className="flex items-center gap-2 opacity-50 cursor-not-allowed"
+                          >
+                            <Play className="w-4 h-4" />
+                            Video Coming Soon
+                          </Button>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </TabsContent>
 
