@@ -23,7 +23,7 @@ const courseVideos = [
   { id: 6, title: "Other Factors Influencing Fat Loss", videoUrl: "https://player.vimeo.com/video/1090999246", badge: "Advanced" },
   { id: 7, title: "Tracking Progress", videoUrl: "https://player.vimeo.com/video/1090999757", badge: "Monitoring" },
   { id: 8, title: "Progress Expectations and Interpreting Check-in Results", videoUrl: "https://player.vimeo.com/video/1091000786", badge: "Analysis" },
-  { id: 9, title: "Breaking Through Plateaus", videoUrl: "", badge: "Problem-solving" },
+  { id: 9, title: "Breaking Through Plateaus", videoUrl: "https://player.vimeo.com/video/1091001199", badge: "Problem-solving" },
   { id: 10, title: "Post-Goal Mindset", videoUrl: "", badge: "Maintenance" },
   { id: 11, title: "Getting Started", videoUrl: "", badge: "Action Time" },
 ];
