@@ -64,9 +64,7 @@ export default function BookCall() {
                 <p className="text-sm text-blue-700 mb-1">
                   Calls are conducted via <strong>FaceTime Audio</strong> (iPhone required) or <strong>WhatsApp</strong>.
                 </p>
-                <p className="text-xs text-blue-600">
-                  International calls from Switzerland - no additional charges for you.
-                </p>
+                <p className="text-xs text-blue-600">Allows me to call you from abroad with no extra charge.</p>
               </div>
             </CardHeader>
             
