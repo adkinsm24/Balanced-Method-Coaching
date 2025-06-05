@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { User, LogOut } from "lucide-react";
-import logoImage from "@assets/Balancemethodcoachingjpg_1749150656854.jpg";
+import logoImage from "@assets/bmc_1749151545858.jpg";
 
 export default function Navigation() {
   const [location] = useLocation();
