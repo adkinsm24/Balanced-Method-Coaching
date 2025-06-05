@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
 import { consultationRequests, insertConsultationRequestSchema } from "@shared/schema";
+import { desc } from "drizzle-orm";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes for consultation requests
@@ -27,7 +28,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const requests = await db
         .select()
         .from(consultationRequests)
-        .orderBy(consultationRequests.createdAt);
+        .orderBy(desc(consultationRequests.createdAt));
 
       res.json(requests);
     } catch (error) {

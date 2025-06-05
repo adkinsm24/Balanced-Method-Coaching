@@ -11,6 +11,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 export default function BookCall() {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,16 +23,58 @@ export default function BookCall() {
     eatingOut: "",
     typicalDay: "",
     drinks: "",
-
     emotionalEating: "",
     medications: "",
     contactMethod: ""
   });
 
+  const submitMutation = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      const response = await fetch("/api/consultation-requests", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) throw new Error("Failed to submit");
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success!",
+        description: "Your consultation request has been submitted. I'll be in touch soon!",
+      });
+      // Reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        selectedTimeSlot: "",
+        goals: "",
+        experience: "",
+        eatingOut: "",
+        typicalDay: "",
+        drinks: "",
+        emotionalEating: "",
+        medications: "",
+        contactMethod: ""
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your request. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Submission error:", error);
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    submitMutation.mutate(formData);
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -299,9 +342,10 @@ export default function BookCall() {
 
                 <Button 
                   type="submit" 
+                  disabled={submitMutation.isPending}
                   className="w-full bg-primary hover:bg-primary/90 text-white py-3 text-lg font-medium"
                 >
-                  Submit & Schedule Your Free Call
+                  {submitMutation.isPending ? "Submitting..." : "Submit & Schedule Your Free Call"}
                 </Button>
               </form>
             </CardContent>
