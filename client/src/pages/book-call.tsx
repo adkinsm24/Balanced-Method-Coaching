@@ -58,6 +58,16 @@ export default function BookCall() {
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl text-secondary">Let's Get Started</CardTitle>
               <p className="text-gray-600">This quick form helps me prepare for our conversation and make the most of your time.</p>
+              
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                <h3 className="text-sm font-semibold text-blue-800 mb-2">Call Information</h3>
+                <p className="text-sm text-blue-700 mb-1">
+                  Calls are conducted via <strong>FaceTime Audio</strong> (iPhone required) or <strong>WhatsApp</strong>.
+                </p>
+                <p className="text-xs text-blue-600">
+                  International calls from Switzerland - no additional charges for you.
+                </p>
+              </div>
             </CardHeader>
             
             <CardContent>
