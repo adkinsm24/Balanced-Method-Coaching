@@ -139,9 +139,16 @@ export default function CoachingOffers() {
                 </div>
               </div>
               
-              <p className="text-gray-700 mb-6 leading-relaxed">
+              <p className="text-gray-700 mb-4 leading-relaxed">
                 Book a personalized call with Coach Mark to get answers to your specific questions about nutrition, food tracking, exercise, or any health-related concerns.
               </p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p className="text-sm text-blue-800 font-medium mb-1">Call Method:</p>
+                <p className="text-sm text-blue-700">
+                  Calls conducted via <strong>FaceTime Audio</strong> (iPhone required) or <strong>WhatsApp</strong>. 
+                  International calls from Switzerland.
+                </p>
+              </div>
               <ul className="text-gray-700 mb-6 space-y-2">
                 <li>• Direct access to me</li>
                 <li>• Personalized guidance and advice</li>
