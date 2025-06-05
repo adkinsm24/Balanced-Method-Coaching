@@ -156,17 +156,9 @@ export default function Course() {
                     className={`hover:shadow-lg transition-shadow ${video.id === 11 ? 'border-2 border-primary' : ''}`}
                   >
                     <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-xl">
-                          Part {video.id}: {video.title}
-                        </CardTitle>
-                        <Badge 
-                          variant={video.id === 11 ? "default" : "outline"}
-                          className={video.id === 11 ? "bg-primary text-white" : ""}
-                        >
-                          {video.badge}
-                        </Badge>
-                      </div>
+                      <CardTitle className="text-xl">
+                        Part {video.id}: {video.title}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-600 mb-4">
