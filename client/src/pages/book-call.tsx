@@ -20,7 +20,7 @@ export default function BookCall() {
     eatingOut: "",
     typicalDay: "",
     drinks: "",
-    snacking: "",
+
     emotionalEating: "",
     medications: ""
   });
@@ -204,17 +204,6 @@ export default function BookCall() {
                     className="mt-1"
                     rows={2}
                     placeholder="Type and frequency of beverages you regularly consume..."
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="snacking" className="text-sm font-medium text-gray-700">Do you snack?</Label>
-                  <Input
-                    id="snacking"
-                    value={formData.snacking}
-                    onChange={(e) => handleInputChange("snacking", e.target.value)}
-                    className="mt-1"
-                    placeholder="e.g., yes - chips and crackers, no, only fruit..."
                   />
                 </div>
 
