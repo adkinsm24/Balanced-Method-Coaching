@@ -51,7 +51,6 @@ export default function BookCall() {
           </p>
         </div>
       </section>
-
       {/* Booking Form Section */}
       <section className="pb-16">
         <div className="max-w-2xl mx-auto px-4">
@@ -174,7 +173,10 @@ export default function BookCall() {
                 </div>
 
                 <div>
-                  <Label htmlFor="eatingOut" className="text-sm font-medium text-gray-700">How many times a week do you eat out?</Label>
+                  <Label htmlFor="eatingOut" className="text-sm font-medium text-gray-700">How many times a week do you eat out?
+                  This includes social events such as birthday parties or other get togethers
+
+</Label>
                   <Input
                     id="eatingOut"
                     value={formData.eatingOut}
@@ -254,7 +256,6 @@ export default function BookCall() {
           </Card>
         </div>
       </section>
-
       {/* What to Expect Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4">
@@ -296,7 +297,6 @@ export default function BookCall() {
           </div>
         </div>
       </section>
-
       <Footer />
     </main>
   );
