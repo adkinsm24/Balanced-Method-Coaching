@@ -14,7 +14,7 @@ import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react
 // To add Vimeo videos: Replace empty videoUrl with your Vimeo video URLs
 // Example: "https://vimeo.com/123456789" or "https://player.vimeo.com/video/123456789"
 const courseVideos = [
-  { id: 0, title: "Introduction & Program Overview", videoUrl: "https://player.vimeo.com/video/1090975324?h=33e6312e9d", badge: "Start Here" },
+  { id: 0, title: "Introduction & Program Overview", videoUrl: "https://player.vimeo.com/video/1090975324", badge: "Start Here" },
   { id: 1, title: "Downloading MyFitnessPal", videoUrl: "", badge: "Essential" },
   { id: 2, title: "Logging on MyFitnessPal", videoUrl: "", badge: "Tutorial" },
   { id: 3, title: "Establishing Your Nutritional Goals", videoUrl: "", badge: "Foundation" },
