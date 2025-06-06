@@ -6,12 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Footer from "@/components/footer";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 export default function BookCall() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -28,6 +29,12 @@ export default function BookCall() {
     contactMethod: ""
   });
 
+  // Query to fetch available time slots
+  const { data: availableSlots, isLoading: slotsLoading } = useQuery({
+    queryKey: ["/api/available-time-slots"],
+    retry: false,
+  });
+
   const submitMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
       const response = await fetch("/api/consultation-requests", {
@@ -37,14 +44,24 @@ export default function BookCall() {
           "Content-Type": "application/json",
         },
       });
-      if (!response.ok) throw new Error("Failed to submit");
-      return response.json();
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit");
+      }
+      
+      return result;
     },
     onSuccess: () => {
       toast({
         title: "Success!",
         description: "Your consultation request has been submitted. I'll be in touch soon!",
       });
+      
+      // Refresh available slots
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+      
       // Reset form
       setFormData({
         firstName: "",
@@ -62,12 +79,16 @@ export default function BookCall() {
         contactMethod: ""
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
-        title: "Error",
-        description: "There was a problem submitting your request. Please try again.",
+        title: "Booking Error",
+        description: error.message,
         variant: "destructive",
       });
+      
+      // Refresh available slots in case of conflict
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+      
       console.error("Submission error:", error);
     },
   });
@@ -184,75 +205,31 @@ export default function BookCall() {
                 {/* Available Time Slots */}
                 <div>
                   <Label className="text-sm font-medium text-gray-700">Select Your Preferred Time Slot *</Label>
-                  <Select onValueChange={(value) => handleInputChange("selectedTimeSlot", value)}>
+                  <Select 
+                    onValueChange={(value) => handleInputChange("selectedTimeSlot", value)}
+                    disabled={slotsLoading}
+                    value={formData.selectedTimeSlot}
+                  >
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Choose an available time slot" />
+                      <SelectValue placeholder={slotsLoading ? "Loading available slots..." : "Choose an available time slot"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {/* Monday */}
-                      <SelectItem value="mon-6am">Monday 6:00 AM EST</SelectItem>
-                      <SelectItem value="mon-630am">Monday 6:30 AM EST</SelectItem>
-                      <SelectItem value="mon-730am">Monday 7:30 AM EST</SelectItem>
-                      <SelectItem value="mon-8am">Monday 8:00 AM EST</SelectItem>
-                      <SelectItem value="mon-830am">Monday 8:30 AM EST</SelectItem>
-                      <SelectItem value="mon-930am">Monday 9:30 AM EST</SelectItem>
-                      <SelectItem value="mon-10am">Monday 10:00 AM EST</SelectItem>
-                      <SelectItem value="mon-1030am">Monday 10:30 AM EST</SelectItem>
-                      <SelectItem value="mon-11am">Monday 11:00 AM EST</SelectItem>
-                      <SelectItem value="mon-1130am">Monday 11:30 AM EST</SelectItem>
-                      <SelectItem value="mon-12pm">Monday 12:00 PM EST</SelectItem>
-                      
-                      {/* Tuesday */}
-                      <SelectItem value="tue-6am">Tuesday 6:00 AM EST</SelectItem>
-                      <SelectItem value="tue-630am">Tuesday 6:30 AM EST</SelectItem>
-                      <SelectItem value="tue-7am">Tuesday 7:00 AM EST</SelectItem>
-                      <SelectItem value="tue-730am">Tuesday 7:30 AM EST</SelectItem>
-                      <SelectItem value="tue-8am">Tuesday 8:00 AM EST</SelectItem>
-                      <SelectItem value="tue-830am">Tuesday 8:30 AM EST</SelectItem>
-                      <SelectItem value="tue-9am">Tuesday 9:00 AM EST</SelectItem>
-                      <SelectItem value="tue-930am">Tuesday 9:30 AM EST</SelectItem>
-                      <SelectItem value="tue-1030am">Tuesday 10:30 AM EST</SelectItem>
-                      <SelectItem value="tue-11am">Tuesday 11:00 AM EST</SelectItem>
-                      <SelectItem value="tue-1130am">Tuesday 11:30 AM EST</SelectItem>
-                      <SelectItem value="tue-12pm">Tuesday 12:00 PM EST</SelectItem>
-                      
-                      {/* Wednesday */}
-                      <SelectItem value="wed-6am">Wednesday 6:00 AM EST</SelectItem>
-                      <SelectItem value="wed-630am">Wednesday 6:30 AM EST</SelectItem>
-                      <SelectItem value="wed-7am">Wednesday 7:00 AM EST</SelectItem>
-                      <SelectItem value="wed-730am">Wednesday 7:30 AM EST</SelectItem>
-                      <SelectItem value="wed-830am">Wednesday 8:30 AM EST</SelectItem>
-                      <SelectItem value="wed-9am">Wednesday 9:00 AM EST</SelectItem>
-                      <SelectItem value="wed-930am">Wednesday 9:30 AM EST</SelectItem>
-                      <SelectItem value="wed-1030am">Wednesday 10:30 AM EST</SelectItem>
-                      <SelectItem value="wed-1130am">Wednesday 11:30 AM EST</SelectItem>
-                      
-                      {/* Thursday */}
-                      <SelectItem value="thu-6am">Thursday 6:00 AM EST</SelectItem>
-                      <SelectItem value="thu-630am">Thursday 6:30 AM EST</SelectItem>
-                      <SelectItem value="thu-7am">Thursday 7:00 AM EST</SelectItem>
-                      <SelectItem value="thu-8am">Thursday 8:00 AM EST</SelectItem>
-                      <SelectItem value="thu-830am">Thursday 8:30 AM EST</SelectItem>
-                      <SelectItem value="thu-930am">Thursday 9:30 AM EST</SelectItem>
-                      <SelectItem value="thu-10am">Thursday 10:00 AM EST</SelectItem>
-                      <SelectItem value="thu-11am">Thursday 11:00 AM EST</SelectItem>
-                      <SelectItem value="thu-1130am">Thursday 11:30 AM EST</SelectItem>
-                      <SelectItem value="thu-12pm">Thursday 12:00 PM EST</SelectItem>
-                      
-                      {/* Friday */}
-                      <SelectItem value="fri-6am">Friday 6:00 AM EST</SelectItem>
-                      <SelectItem value="fri-630am">Friday 6:30 AM EST</SelectItem>
-                      <SelectItem value="fri-7am">Friday 7:00 AM EST</SelectItem>
-                      <SelectItem value="fri-730am">Friday 7:30 AM EST</SelectItem>
-                      <SelectItem value="fri-8am">Friday 8:00 AM EST</SelectItem>
-                      <SelectItem value="fri-830am">Friday 8:30 AM EST</SelectItem>
-                      <SelectItem value="fri-1030am">Friday 10:30 AM EST</SelectItem>
-                      <SelectItem value="fri-11am">Friday 11:00 AM EST</SelectItem>
-                      <SelectItem value="fri-1130am">Friday 11:30 AM EST</SelectItem>
-                      <SelectItem value="fri-12pm">Friday 12:00 PM EST</SelectItem>
+                      {availableSlots && availableSlots.length > 0 ? (
+                        availableSlots.map((slot: { value: string; label: string }) => (
+                          <SelectItem key={slot.value} value={slot.value}>
+                            {slot.label}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="" disabled>
+                          {slotsLoading ? "Loading..." : "No available slots"}
+                        </SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-gray-500 mt-1">All times shown in US Eastern Time</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    All times shown in US Eastern Time {availableSlots && `(${availableSlots.length} slots available)`}
+                  </p>
                 </div>
 
                 {/* Goals and Background */}

@@ -52,6 +52,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // API endpoint to get available time slots
+  app.get("/api/available-time-slots", async (req, res) => {
+    try {
+      const bookedSlots = await storage.getBookedSlots();
+      const bookedTimeSlots = bookedSlots.map(slot => slot.timeSlot);
+      
+      // Define all possible time slots
+      const allTimeSlots = [
+        // Monday
+        { value: "mon-6am", label: "Monday 6:00 AM EST" },
+        { value: "mon-630am", label: "Monday 6:30 AM EST" },
+        { value: "mon-730am", label: "Monday 7:30 AM EST" },
+        { value: "mon-8am", label: "Monday 8:00 AM EST" },
+        { value: "mon-830am", label: "Monday 8:30 AM EST" },
+        { value: "mon-930am", label: "Monday 9:30 AM EST" },
+        { value: "mon-10am", label: "Monday 10:00 AM EST" },
+        { value: "mon-1030am", label: "Monday 10:30 AM EST" },
+        { value: "mon-11am", label: "Monday 11:00 AM EST" },
+        { value: "mon-1130am", label: "Monday 11:30 AM EST" },
+        { value: "mon-12pm", label: "Monday 12:00 PM EST" },
+        
+        // Tuesday
+        { value: "tue-6am", label: "Tuesday 6:00 AM EST" },
+        { value: "tue-630am", label: "Tuesday 6:30 AM EST" },
+        { value: "tue-7am", label: "Tuesday 7:00 AM EST" },
+        { value: "tue-730am", label: "Tuesday 7:30 AM EST" },
+        { value: "tue-8am", label: "Tuesday 8:00 AM EST" },
+        { value: "tue-830am", label: "Tuesday 8:30 AM EST" },
+        { value: "tue-9am", label: "Tuesday 9:00 AM EST" },
+        { value: "tue-930am", label: "Tuesday 9:30 AM EST" },
+        { value: "tue-1030am", label: "Tuesday 10:30 AM EST" },
+        { value: "tue-11am", label: "Tuesday 11:00 AM EST" },
+        { value: "tue-1130am", label: "Tuesday 11:30 AM EST" },
+        { value: "tue-12pm", label: "Tuesday 12:00 PM EST" },
+        
+        // Wednesday
+        { value: "wed-6am", label: "Wednesday 6:00 AM EST" },
+        { value: "wed-630am", label: "Wednesday 6:30 AM EST" },
+        { value: "wed-7am", label: "Wednesday 7:00 AM EST" },
+        { value: "wed-730am", label: "Wednesday 7:30 AM EST" },
+        { value: "wed-830am", label: "Wednesday 8:30 AM EST" },
+        { value: "wed-9am", label: "Wednesday 9:00 AM EST" },
+        { value: "wed-930am", label: "Wednesday 9:30 AM EST" },
+        { value: "wed-1030am", label: "Wednesday 10:30 AM EST" },
+        { value: "wed-1130am", label: "Wednesday 11:30 AM EST" },
+        
+        // Thursday
+        { value: "thu-6am", label: "Thursday 6:00 AM EST" },
+        { value: "thu-630am", label: "Thursday 6:30 AM EST" },
+        { value: "thu-7am", label: "Thursday 7:00 AM EST" },
+        { value: "thu-8am", label: "Thursday 8:00 AM EST" },
+        { value: "thu-830am", label: "Thursday 8:30 AM EST" },
+        { value: "thu-930am", label: "Thursday 9:30 AM EST" },
+        { value: "thu-10am", label: "Thursday 10:00 AM EST" },
+        { value: "thu-11am", label: "Thursday 11:00 AM EST" },
+        { value: "thu-1130am", label: "Thursday 11:30 AM EST" },
+        { value: "thu-12pm", label: "Thursday 12:00 PM EST" },
+        
+        // Friday
+        { value: "fri-6am", label: "Friday 6:00 AM EST" },
+        { value: "fri-630am", label: "Friday 6:30 AM EST" },
+        { value: "fri-7am", label: "Friday 7:00 AM EST" },
+        { value: "fri-730am", label: "Friday 7:30 AM EST" },
+        { value: "fri-8am", label: "Friday 8:00 AM EST" },
+        { value: "fri-830am", label: "Friday 8:30 AM EST" },
+        { value: "fri-1030am", label: "Friday 10:30 AM EST" },
+        { value: "fri-11am", label: "Friday 11:00 AM EST" },
+        { value: "fri-1130am", label: "Friday 11:30 AM EST" },
+        { value: "fri-12pm", label: "Friday 12:00 PM EST" },
+      ];
+      
+      // Filter out booked slots
+      const availableSlots = allTimeSlots.filter(slot => !bookedTimeSlots.includes(slot.value));
+      
+      res.json(availableSlots);
+    } catch (error) {
+      console.error("Error fetching available time slots:", error);
+      res.status(500).json({ error: "Failed to fetch available slots" });
+    }
+  });
+
   // Stripe payment route for course purchase
   app.post("/api/create-payment-intent", async (req, res) => {
     if (!process.env.STRIPE_SECRET_KEY) {
