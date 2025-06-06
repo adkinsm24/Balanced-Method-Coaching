@@ -74,8 +74,9 @@ export default function BookCoachingCall() {
         title: "Redirecting to Payment",
         description: "Please complete your payment to confirm your coaching call.",
       });
-      // Redirect to checkout with the payment intent
-      setLocation(`/checkout-coaching?clientSecret=${data.clientSecret}&callId=${data.callId}`);
+      // Redirect to checkout with the payment intent and session details
+      const selectedOption = DURATION_OPTIONS.find(opt => opt.value === selectedDuration);
+      setLocation(`/checkout-coaching?clientSecret=${data.clientSecret}&callId=${data.callId}&duration=${selectedDuration}&price=${selectedOption?.price}`);
     },
     onError: (error: Error) => {
       toast({
@@ -87,10 +88,6 @@ export default function BookCoachingCall() {
   });
 
   const onSubmit = (data: CoachingCallForm) => {
-    console.log("Form submitted with data:", data);
-    console.log("Selected duration:", selectedDuration);
-    console.log("Form errors:", form.formState.errors);
-    
     if (!selectedDuration) {
       toast({
         title: "Please select a duration",
