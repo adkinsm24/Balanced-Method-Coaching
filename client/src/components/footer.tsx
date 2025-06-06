@@ -31,14 +31,19 @@ export default function Footer() {
               </Button>
             </Link>
             
-            <Link href="/about">
-              <Button 
-                variant={location === "/about" ? "default" : "ghost"}
-                className={location === "/about" ? "bg-primary text-primary-foreground" : ""}
-              >
-                About Me
-              </Button>
-            </Link>
+            <Button 
+              variant={location === "/about" ? "default" : "ghost"}
+              className={location === "/about" ? "bg-primary text-primary-foreground" : ""}
+              onClick={() => {
+                if (location === "/about") {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                  window.location.href = "/about";
+                }
+              }}
+            >
+              About Me
+            </Button>
             
             <Link href="/coaching-offers">
               <Button 
