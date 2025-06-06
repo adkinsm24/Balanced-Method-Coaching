@@ -278,9 +278,7 @@ export default function Course() {
                                     variant="outline" 
                                     className="flex-1"
                                     onClick={() => window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC2951287/#:~:text=Sleep%20curtailment%20decreased%20the%20fraction,towards%20oxidation%20of%20less%20fat', '_blank')}
-                                  >
-                                    Consequences of lack of sleep
-                                  </Button>
+                                  >Research Article on the Lack of Sleep</Button>
                                 </div>
                                 <Button 
                                   variant="outline" 
