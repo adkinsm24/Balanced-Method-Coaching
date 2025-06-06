@@ -350,6 +350,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete coaching call (admin only)
+  app.delete('/api/admin/coaching-calls/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const callId = parseInt(req.params.id);
+      
+      // First get the coaching call to find associated booked slot
+      const call = await storage.getCoachingCall(callId);
+      if (!call) {
+        return res.status(404).json({ error: "Coaching call not found" });
+      }
+      
+      // Delete any associated booked slot
+      const bookedSlots = await storage.getBookedSlots();
+      const associatedSlot = bookedSlots.find(slot => slot.coachingCallId === callId);
+      if (associatedSlot) {
+        await storage.deleteBookedSlot(associatedSlot.id);
+      }
+      
+      // Delete the coaching call
+      await db
+        .delete(coachingCalls)
+        .where(eq(coachingCalls.id, callId));
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting coaching call:", error);
+      res.status(500).json({ error: "Failed to delete coaching call" });
+    }
+  });
+
   // Coaching calls endpoints
   app.post('/api/coaching-calls/create-payment-intent', async (req, res) => {
     if (!process.env.STRIPE_SECRET_KEY) {

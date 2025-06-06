@@ -124,6 +124,33 @@ export default function Admin() {
     },
   });
 
+  // Delete coaching call mutation
+  const deleteCoachingCallMutation = useMutation({
+    mutationFn: async (callId: number) => {
+      const response = await fetch(`/api/admin/coaching-calls/${callId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete coaching call");
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Coaching call has been deleted and time slot is now available.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/coaching-calls"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/booked-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete coaching call.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const deleteRequestMutation = useMutation({
     mutationFn: async (requestId: number) => {
       const response = await fetch(`/api/admin/consultation-requests/${requestId}`, {
@@ -159,6 +186,12 @@ export default function Admin() {
   const handleDeleteRequest = (requestId: number) => {
     if (confirm("Are you sure you want to delete this consultation request? This action cannot be undone.")) {
       deleteRequestMutation.mutate(requestId);
+    }
+  };
+
+  const handleDeleteCoachingCall = (callId: number) => {
+    if (confirm("Are you sure you want to delete this coaching call? This action cannot be undone and will free up the time slot.")) {
+      deleteCoachingCallMutation.mutate(callId);
     }
   };
 
