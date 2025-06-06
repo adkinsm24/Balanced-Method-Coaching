@@ -45,12 +45,17 @@ export default function Footer() {
               About Me
             </Button>
             
-            <Link href="/coaching-offers">
-              <Button 
-                variant={location === "/coaching-offers" ? "default" : "ghost"}
-                className={location === "/coaching-offers" ? "bg-primary text-primary-foreground" : ""}
-              >Coaching Offers</Button>
-            </Link>
+            <Button 
+              variant={location === "/coaching-offers" ? "default" : "ghost"}
+              className={location === "/coaching-offers" ? "bg-primary text-primary-foreground" : ""}
+              onClick={() => {
+                if (location === "/coaching-offers") {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                  window.location.href = "/coaching-offers";
+                }
+              }}
+            >Coaching Offers</Button>
 
             {/* Course access for authenticated users */}
             {isAuthenticated && (user as any)?.hasCourseAccess && (
