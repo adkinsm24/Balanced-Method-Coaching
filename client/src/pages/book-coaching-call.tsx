@@ -163,17 +163,12 @@ export default function BookCoachingCall() {
                   <Calendar className="w-5 h-5" />
                   Book Your Session
                 </CardTitle>
-                <CardDescription>
-                  Complete your details to secure your coaching call
-                </CardDescription>
-                
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-                  <h3 className="text-sm font-semibold text-blue-800 mb-2">Call Information</h3>
-                  <p className="text-sm text-blue-700 mb-1">
-                    Calls are conducted via <strong>FaceTime</strong> (iPhone required) or <strong>WhatsApp video call</strong>.
+                <CardDescription className="space-y-2">
+                  <p>Complete your details to secure your coaching call</p>
+                  <p className="text-sm text-blue-700">
+                    <strong>Calls via FaceTime (iPhone) or WhatsApp video</strong> - allows international calling at no extra charge.
                   </p>
-                  <p className="text-xs text-blue-600">Allows me to call you from abroad with no extra charge.</p>
-                </div>
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Form {...form}>
