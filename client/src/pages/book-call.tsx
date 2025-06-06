@@ -30,7 +30,7 @@ export default function BookCall() {
   });
 
   // Query to fetch available time slots
-  const { data: availableSlots, isLoading: slotsLoading } = useQuery({
+  const { data: availableSlots, isLoading: slotsLoading } = useQuery<Array<{value: string, label: string}>>({
     queryKey: ["/api/available-time-slots"],
     retry: false,
   });
@@ -214,21 +214,21 @@ export default function BookCall() {
                       <SelectValue placeholder={slotsLoading ? "Loading available slots..." : "Choose an available time slot"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableSlots && availableSlots.length > 0 ? (
-                        availableSlots.map((slot: { value: string; label: string }) => (
+                      {availableSlots && Array.isArray(availableSlots) && availableSlots.length > 0 ? (
+                        availableSlots.map((slot) => (
                           <SelectItem key={slot.value} value={slot.value}>
                             {slot.label}
                           </SelectItem>
                         ))
                       ) : (
-                        <SelectItem value="" disabled>
+                        <SelectItem value="no-slots" disabled>
                           {slotsLoading ? "Loading..." : "No available slots"}
                         </SelectItem>
                       )}
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-gray-500 mt-1">
-                    All times shown in US Eastern Time {availableSlots && `(${availableSlots.length} slots available)`}
+                    All times shown in US Eastern Time {availableSlots && Array.isArray(availableSlots) ? `(${availableSlots.length} slots available)` : ''}
                   </p>
                 </div>
 
