@@ -330,6 +330,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete consultation request (admin only)
+  app.delete('/api/admin/consultation-requests/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const requestId = parseInt(req.params.id);
+      
+      // Also delete any associated booked slot
+      await storage.deleteBookedSlotByRequestId(requestId);
+      
+      // Delete the consultation request
+      await db
+        .delete(consultationRequests)
+        .where(eq(consultationRequests.id, requestId));
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting consultation request:", error);
+      res.status(500).json({ error: "Failed to delete consultation request" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

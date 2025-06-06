@@ -101,9 +101,41 @@ export default function Admin() {
     },
   });
 
+  const deleteRequestMutation = useMutation({
+    mutationFn: async (requestId: number) => {
+      const response = await fetch(`/api/admin/consultation-requests/${requestId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete consultation request");
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Consultation request deleted successfully.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/consultation-requests"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/booked-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete consultation request.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleDeleteSlot = (slotId: number) => {
     if (confirm("Are you sure you want to free up this time slot? It will become available for new bookings.")) {
       deleteSlotMutation.mutate(slotId);
+    }
+  };
+
+  const handleDeleteRequest = (requestId: number) => {
+    if (confirm("Are you sure you want to delete this consultation request? This action cannot be undone.")) {
+      deleteRequestMutation.mutate(requestId);
     }
   };
 
@@ -310,9 +342,21 @@ export default function Admin() {
                             </Badge>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500">
-                          {new Date(request.createdAt).toLocaleDateString()} at {new Date(request.createdAt).toLocaleTimeString()}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-gray-500">
+                            {new Date(request.createdAt).toLocaleDateString()} at {new Date(request.createdAt).toLocaleTimeString()}
+                          </p>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteRequest(request.id)}
+                            className="text-red-600 hover:text-red-700"
+                            disabled={deleteRequestMutation.isPending}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Delete
+                          </Button>
+                        </div>
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
