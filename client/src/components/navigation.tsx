@@ -15,7 +15,7 @@ export default function Navigation() {
           <img 
             src={logoImage}
             alt="Balanced Method Coaching" 
-            className="h-12 w-auto object-contain mix-blend-multiply"
+            className="h-12 w-auto object-contain mix-blend-screen"
           />
         </Link>
         
