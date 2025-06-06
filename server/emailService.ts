@@ -37,7 +37,7 @@ export async function sendBookingConfirmation(
   timeSlot: string,
   fromEmail: string
 ): Promise<boolean> {
-  const subject = "Consultation Call Confirmed - Coach Mark Nutrition";
+  const subject = "Consultation Call Confirmed - Balanced Method Coaching";
   
   const html = `
     <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
@@ -45,7 +45,7 @@ export async function sendBookingConfirmation(
       
       <p>Hi ${clientName},</p>
       
-      <p>Thank you for booking your free introductory consultation call with Coach Mark. Your appointment has been confirmed for:</p>
+      <p>Thank you for booking your free introductory consultation call with Mark from Balanced Method Coaching. Your appointment has been confirmed for:</p>
       
       <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
         <p style="margin: 0; font-weight: bold; color: #1f2937;">${timeSlot}</p>
@@ -64,7 +64,8 @@ export async function sendBookingConfirmation(
       
       <p style="margin-top: 30px;">
         Best regards,<br>
-        <strong>Coach Mark</strong><br>
+        <strong>Mark</strong><br>
+        Balanced Method Coaching<br>
         Certified Nutrition Coach
       </p>
       
@@ -80,7 +81,7 @@ export async function sendBookingConfirmation(
     from: fromEmail,
     subject,
     html,
-    text: `Hi ${clientName}, your consultation call with Coach Mark is confirmed for ${timeSlot}. Looking forward to speaking with you!`
+    text: `Hi ${clientName}, your consultation call with Mark from Balanced Method Coaching is confirmed for ${timeSlot}. Looking forward to speaking with you!`
   });
 }
 

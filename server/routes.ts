@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
 import { consultationRequests, insertConsultationRequestSchema } from "@shared/schema";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, and } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { sendBookingConfirmation, sendCoachNotification } from "./emailService";
@@ -89,7 +89,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const timeSlotFormatted = formatTimeSlotForEmail(validatedData.selectedTimeSlot);
       
       // Send confirmation email to client
-      const coachEmail = "YOUR_EMAIL_HERE"; // Will be updated with your actual email
+      const coachEmail = "mark@balancedmethodcoaching.com";
       await sendBookingConfirmation(
         validatedData.email,
         `${validatedData.firstName} ${validatedData.lastName}`,
@@ -298,9 +298,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const [request] = await db
         .select()
         .from(consultationRequests)
-        .where(eq(consultationRequests.email, email))
-        .where(eq(consultationRequests.selectedTimeSlot, timeSlot))
-        .where(eq(consultationRequests.status, "confirmed"))
+        .where(and(
+          eq(consultationRequests.email, email),
+          eq(consultationRequests.selectedTimeSlot, timeSlot),
+          eq(consultationRequests.status, "confirmed")
+        ))
         .limit(1);
 
       if (!request) {
