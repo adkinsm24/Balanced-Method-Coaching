@@ -203,6 +203,26 @@ export default function Course() {
                               </div>
                             )}
 
+                            {/* Part 3 specific links */}
+                            {video.id === 3 && (
+                              <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                                <Button 
+                                  variant="outline" 
+                                  className="flex-1"
+                                  onClick={() => window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC5568065/', '_blank')}
+                                >
+                                  Meta-analysis on fat/carb ratios
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  className="flex-1"
+                                  onClick={() => window.open('https://www.mayoclinic.org/healthy-lifestyle/weight-loss/in-depth/calorie-calculator/itt-20402304', '_blank')}
+                                >
+                                  Maintenance calorie calculator
+                                </Button>
+                              </div>
+                            )}
+
                           </>
                         ) : (
                           <div className="aspect-video bg-gray-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-200">
