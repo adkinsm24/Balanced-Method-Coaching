@@ -32,7 +32,7 @@ const videoDescriptions = [
   "Welcome to your nutrition transformation journey. Get an overview of what to expect and how to get the most out of this course.",
   "Step-by-step guide to downloading and setting up MyFitnessPal, the essential tool for tracking your nutrition.",
   "Learn how to effectively log your food and track your daily nutrition using MyFitnessPal's features.",
-  "Learn how to set realistic, achievable nutritional goals that align with your lifestyle and objectives.",
+  "Learn how to determine your nutritional goals and adjust them in MyfitnessPal.",
   "Create a clear roadmap with actionable steps to achieve your specific nutritional goals.",
   "Develop sustainable strategies to maintain progress and stay consistent with your nutrition goals over time.",
   "Understand the additional factors beyond nutrition that impact fat loss and body composition.",
