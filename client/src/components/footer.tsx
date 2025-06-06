@@ -9,10 +9,10 @@ export default function Footer() {
   const { isAuthenticated, user } = useAuth();
 
   return (
-    <footer>
-      {/* Navigation Bar */}
-      <div className="bg-gradient-to-r from-orange-50/95 via-red-50/95 to-pink-50/95 backdrop-blur-sm shadow-lg border-t border-orange-200/30">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <footer className="bg-gradient-to-r from-orange-50/95 via-red-50/95 to-pink-50/95 backdrop-blur-sm shadow-lg border-t border-orange-200/30">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Navigation Section */}
+        <div className="py-4 flex justify-between items-center">
           <Link href="/">
             <img 
               src={logoImage}
@@ -107,12 +107,10 @@ export default function Footer() {
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Copyright Section */}
-      <div className="bg-secondary text-secondary-foreground py-4">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-secondary-foreground/60">© 2024 Balanced Method Coaching. All rights reserved. | B.S., CSCS, Pn1 Coach</p>
+        
+        {/* Copyright Section */}
+        <div className="border-t border-orange-200/30 py-4 text-center">
+          <p className="text-gray-600/80">© 2024 Balanced Method Coaching. All rights reserved. | B.S., CSCS, Pn1 Coach</p>
         </div>
       </div>
     </footer>
