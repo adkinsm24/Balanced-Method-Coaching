@@ -352,7 +352,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Coaching calls endpoints
   app.post('/api/coaching-calls/create-payment-intent', async (req, res) => {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return res.status(500).json({ error: "Stripe not configured" });
+    }
+
     try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
       const validatedData = insertCoachingCallSchema.parse(req.body);
       
       // Check if time slot is available
@@ -399,7 +404,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post('/api/coaching-calls/:id/confirm-payment', async (req, res) => {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return res.status(500).json({ error: "Stripe not configured" });
+    }
+
     try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
       const callId = parseInt(req.params.id);
       const { paymentIntentId } = req.body;
 
@@ -418,22 +428,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
             coachingCallId: callId,
           });
           
-          // Send confirmation emails (you may want to create specific templates for coaching calls)
-          await sendBookingConfirmation({
-            to: coachingCall.email,
-            firstName: coachingCall.firstName,
-            timeSlot: formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
-            bookingType: `${coachingCall.duration}-minute Coaching Call`,
-          });
+          // Send confirmation emails
+          await sendBookingConfirmation(
+            coachingCall.email,
+            coachingCall.firstName,
+            formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
+            `${coachingCall.duration}-minute Coaching Call`
+          );
           
-          await sendCoachNotification({
-            firstName: coachingCall.firstName,
-            lastName: coachingCall.lastName,
-            email: coachingCall.email,
-            phone: coachingCall.phone,
-            timeSlot: formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
-            bookingType: `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100})`,
-          });
+          await sendCoachNotification(
+            coachingCall.firstName,
+            coachingCall.lastName,
+            coachingCall.email,
+            coachingCall.phone,
+            formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
+            `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100})`
+          );
         }
         
         res.json({ success: true, message: "Payment confirmed and coaching call booked" });

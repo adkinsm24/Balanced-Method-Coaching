@@ -61,7 +61,8 @@ export default function BookCoachingCall() {
         ...data,
         amount: selectedOption!.price * 100, // Convert to cents
       });
-      return response;
+      const result = await response.json();
+      return result;
     },
     onSuccess: (data) => {
       toast({
@@ -242,11 +243,11 @@ export default function BookCoachingCall() {
                               {slotsLoading ? (
                                 <SelectItem value="loading" disabled>Loading available slots...</SelectItem>
                               ) : (
-                                availableSlots?.map((slot: any) => (
+                                Array.isArray(availableSlots) ? availableSlots.map((slot: any) => (
                                   <SelectItem key={slot.value} value={slot.value}>
                                     {slot.label}
                                   </SelectItem>
-                                ))
+                                )) : null
                               )}
                             </SelectContent>
                           </Select>
