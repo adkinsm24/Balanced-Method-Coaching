@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Shield, Calendar, DollarSign } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -22,6 +23,7 @@ const coachingCallSchema = z.object({
   email: z.string().email("Valid email is required"),
   phone: z.string().min(1, "Phone number is required"),
   contactMethod: z.string().min(1, "Please select a contact method"),
+  goals: z.string().min(1, "Please let us know what you'd like to cover"),
   selectedTimeSlot: z.string().min(1, "Please select a time slot"),
   duration: z.number().min(30).max(60),
 });
@@ -47,6 +49,7 @@ export default function BookCoachingCall() {
       email: "",
       phone: "",
       contactMethod: "",
+      goals: "",
       selectedTimeSlot: "",
       duration: 30,
     },
@@ -204,6 +207,24 @@ export default function BookCoachingCall() {
                               <SelectItem value="whatsapp">WhatsApp</SelectItem>
                             </SelectContent>
                           </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="goals"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>What would you like us to cover during the call? *</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Please describe your goals, questions, or specific topics you'd like to discuss..."
+                              className="min-h-[100px]"
+                              {...field} 
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
