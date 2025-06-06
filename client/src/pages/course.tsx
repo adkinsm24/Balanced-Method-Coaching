@@ -290,6 +290,19 @@ export default function Course() {
                               </div>
                             )}
 
+                            {/* Part 7 specific links */}
+                            {video.id === 7 && (
+                              <div className="mt-4">
+                                <Button 
+                                  variant="outline" 
+                                  className="w-full"
+                                  onClick={() => window.open('', '_blank')}
+                                >
+                                  Learn how to set your nutritional goals and adjust them in MyfitnessPal.
+                                </Button>
+                              </div>
+                            )}
+
                           </>
                         ) : (
                           <div className="aspect-video bg-gray-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-200">
