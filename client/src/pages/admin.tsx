@@ -13,7 +13,8 @@ import Footer from "@/components/footer";
 type BookedSlot = {
   id: number;
   timeSlot: string;
-  consultationRequestId: number;
+  consultationRequestId?: number;
+  coachingCallId?: number;
   bookedAt: string;
 };
 
@@ -33,6 +34,22 @@ type ConsultationRequest = {
   emotionalEating?: string;
   medications?: string;
   status: string;
+  createdAt: string;
+};
+
+type CoachingCall = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  contactMethod: string;
+  selectedTimeSlot: string;
+  goals: string;
+  duration: number;
+  amount: number;
+  status: string;
+  stripePaymentIntentId?: string;
   createdAt: string;
 };
 
@@ -66,6 +83,12 @@ export default function Admin() {
   // Fetch consultation requests
   const { data: consultationRequests, isLoading: requestsLoading } = useQuery<ConsultationRequest[]>({
     queryKey: ["/api/consultation-requests"],
+    retry: false,
+  });
+
+  // Fetch coaching calls
+  const { data: coachingCalls, isLoading: coachingCallsLoading } = useQuery<CoachingCall[]>({
+    queryKey: ["/api/coaching-calls"],
     retry: false,
   });
 
@@ -424,6 +447,85 @@ export default function Admin() {
             ) : (
               <div className="text-center py-8 text-gray-500">
                 No consultation requests yet. When people fill out the booking form, they'll appear here.
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Coaching Calls */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              Paid Coaching Calls ({coachingCalls?.length || 0})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {coachingCallsLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <RefreshCw className="w-6 h-6 animate-spin text-gray-400" />
+                <span className="ml-2 text-gray-500">Loading coaching calls...</span>
+              </div>
+            ) : coachingCalls && coachingCalls.length > 0 ? (
+              <div className="space-y-4">
+                {coachingCalls.map((call) => {
+                  const isBooked = bookedSlots?.some(slot => slot.coachingCallId === call.id);
+                  return (
+                    <div key={call.id} className="p-4 border rounded-lg bg-green-50">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">{formatTimeSlot(call.selectedTimeSlot)}</Badge>
+                          <Badge variant="default" className="bg-green-100 text-green-800">
+                            Paid
+                          </Badge>
+                          <Badge variant="default" className="bg-blue-100 text-blue-800">
+                            {call.duration} min - ${call.amount / 100}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-gray-500">
+                            {new Date(call.createdAt).toLocaleDateString()} at {new Date(call.createdAt).toLocaleTimeString()}
+                          </p>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteCoachingCall(call.id)}
+                            className="text-red-600 hover:text-red-700"
+                            disabled={deleteCoachingCallMutation.isPending}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Contact Info</h4>
+                          <p className="text-sm"><strong>Name:</strong> {call.firstName} {call.lastName}</p>
+                          <p className="text-sm"><strong>Email:</strong> {call.email}</p>
+                          <p className="text-sm"><strong>Phone:</strong> {call.phone}</p>
+                          <p className="text-sm"><strong>Contact Method:</strong> {call.contactMethod}</p>
+                          {call.stripePaymentIntentId && (
+                            <p className="text-sm"><strong>Payment ID:</strong> {call.stripePaymentIntentId}</p>
+                          )}
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Session Details</h4>
+                          <p className="text-sm"><strong>Duration:</strong> {call.duration} minutes</p>
+                          <p className="text-sm"><strong>Amount Paid:</strong> ${call.amount / 100}</p>
+                          <p className="text-sm"><strong>Goals:</strong></p>
+                          <p className="text-sm text-gray-700 mt-1">{call.goals}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                No paid coaching calls yet. When clients complete payment for coaching sessions, they'll appear here.
               </div>
             )}
           </CardContent>
