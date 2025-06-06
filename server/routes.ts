@@ -6,6 +6,59 @@ import { consultationRequests, insertConsultationRequestSchema } from "@shared/s
 import { desc } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { sendBookingConfirmation, sendCoachNotification } from "./emailService";
+
+// Helper function to format time slots for emails
+function formatTimeSlotForEmail(timeSlot: string): string {
+  const timeSlotMap: { [key: string]: string } = {
+    "mon-6am": "Monday 6:00 AM EST",
+    "mon-630am": "Monday 6:30 AM EST", 
+    "mon-7am": "Monday 7:00 AM EST",
+    "mon-730am": "Monday 7:30 AM EST",
+    "mon-8am": "Monday 8:00 AM EST",
+    "mon-830am": "Monday 8:30 AM EST",
+    "mon-9am": "Monday 9:00 AM EST",
+    "mon-930am": "Monday 9:30 AM EST",
+    "mon-10am": "Monday 10:00 AM EST",
+    "tue-6am": "Tuesday 6:00 AM EST",
+    "tue-630am": "Tuesday 6:30 AM EST",
+    "tue-7am": "Tuesday 7:00 AM EST",
+    "tue-730am": "Tuesday 7:30 AM EST",
+    "tue-8am": "Tuesday 8:00 AM EST",
+    "tue-830am": "Tuesday 8:30 AM EST",
+    "tue-9am": "Tuesday 9:00 AM EST",
+    "tue-930am": "Tuesday 9:30 AM EST",
+    "tue-10am": "Tuesday 10:00 AM EST",
+    "wed-6am": "Wednesday 6:00 AM EST",
+    "wed-630am": "Wednesday 6:30 AM EST",
+    "wed-7am": "Wednesday 7:00 AM EST",
+    "wed-730am": "Wednesday 7:30 AM EST",
+    "wed-8am": "Wednesday 8:00 AM EST",
+    "wed-830am": "Wednesday 8:30 AM EST",
+    "wed-9am": "Wednesday 9:00 AM EST",
+    "wed-930am": "Wednesday 9:30 AM EST",
+    "wed-10am": "Wednesday 10:00 AM EST",
+    "thu-6am": "Thursday 6:00 AM EST",
+    "thu-630am": "Thursday 6:30 AM EST",
+    "thu-7am": "Thursday 7:00 AM EST",
+    "thu-730am": "Thursday 7:30 AM EST",
+    "thu-8am": "Thursday 8:00 AM EST",
+    "thu-830am": "Thursday 8:30 AM EST",
+    "thu-9am": "Thursday 9:00 AM EST",
+    "thu-930am": "Thursday 9:30 AM EST",
+    "thu-10am": "Thursday 10:00 AM EST",
+    "fri-6am": "Friday 6:00 AM EST",
+    "fri-630am": "Friday 6:30 AM EST",
+    "fri-7am": "Friday 7:00 AM EST",
+    "fri-730am": "Friday 7:30 AM EST",
+    "fri-8am": "Friday 8:00 AM EST",
+    "fri-830am": "Friday 8:30 AM EST",
+    "fri-9am": "Friday 9:00 AM EST",
+    "fri-930am": "Friday 9:30 AM EST",
+    "fri-10am": "Friday 10:00 AM EST"
+  };
+  return timeSlotMap[timeSlot] || timeSlot;
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
@@ -24,12 +77,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Create consultation request and book the time slot atomically
-      const newRequest = await storage.createConsultationRequest(validatedData);
+      // Create consultation request with confirmed status and book the time slot atomically
+      const requestData = { ...validatedData, status: "confirmed" };
+      const newRequest = await storage.createConsultationRequest(requestData);
       await storage.bookTimeSlot({
         timeSlot: validatedData.selectedTimeSlot,
         consultationRequestId: newRequest.id,
       });
+
+      // Format time slot for email
+      const timeSlotFormatted = formatTimeSlotForEmail(validatedData.selectedTimeSlot);
+      
+      // Send confirmation email to client
+      const coachEmail = "YOUR_EMAIL_HERE"; // Will be updated with your actual email
+      await sendBookingConfirmation(
+        validatedData.email,
+        `${validatedData.firstName} ${validatedData.lastName}`,
+        timeSlotFormatted,
+        coachEmail
+      );
+
+      // Send notification email to coach
+      await sendCoachNotification(
+        coachEmail,
+        `${validatedData.firstName} ${validatedData.lastName}`,
+        validatedData.email,
+        validatedData.phone,
+        timeSlotFormatted,
+        validatedData.goals
+      );
 
       res.json({ success: true, id: newRequest.id });
     } catch (error) {
