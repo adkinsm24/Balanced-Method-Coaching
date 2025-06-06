@@ -183,23 +183,25 @@ export default function Course() {
                               />
                             </div>
 
-                            {/* Additional Resources Links */}
-                            <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                              <Button 
-                                variant="outline" 
-                                className="flex-1"
-                                onClick={() => window.open('https://balancedmethodcoaching.com/resources', '_blank')}
-                              >
-                                Download Resources
-                              </Button>
-                              <Button 
-                                variant="outline" 
-                                className="flex-1"
-                                onClick={() => window.location.href = '/book-coaching-call'}
-                              >
-                                Book Coaching Call
-                              </Button>
-                            </div>
+                            {/* Part 2 specific links */}
+                            {video.id === 2 && (
+                              <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                                <Button 
+                                  variant="outline" 
+                                  className="flex-1"
+                                  onClick={() => window.open('', '_blank')}
+                                >
+                                  Link 1
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  className="flex-1"
+                                  onClick={() => window.open('', '_blank')}
+                                >
+                                  Link 2
+                                </Button>
+                              </div>
+                            )}
 
                           </>
                         ) : (
