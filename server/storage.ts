@@ -23,6 +23,7 @@ export interface IStorage {
   bookTimeSlot(slot: InsertBookedSlot): Promise<BookedSlot>;
   isTimeSlotAvailable(timeSlot: string): Promise<boolean>;
   deleteBookedSlot(slotId: number): Promise<void>;
+  deleteBookedSlotByRequestId(requestId: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -85,6 +86,12 @@ export class DatabaseStorage implements IStorage {
     await db
       .delete(bookedSlots)
       .where(eq(bookedSlots.id, slotId));
+  }
+
+  async deleteBookedSlotByRequestId(requestId: number): Promise<void> {
+    await db
+      .delete(bookedSlots)
+      .where(eq(bookedSlots.consultationRequestId, requestId));
   }
 }
 

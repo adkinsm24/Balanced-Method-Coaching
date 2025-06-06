@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
 import { consultationRequests, insertConsultationRequestSchema } from "@shared/schema";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { sendBookingConfirmation, sendCoachNotification } from "./emailService";
@@ -279,6 +279,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting booked slot:", error);
       res.status(500).json({ error: "Failed to delete booked slot" });
+    }
+  });
+
+  // Client cancellation route (public)
+  app.post("/api/cancel-booking", async (req, res) => {
+    try {
+      const { email, timeSlot } = req.body;
+      
+      if (!email || !timeSlot) {
+        return res.status(400).json({ 
+          success: false, 
+          error: "Email and time slot are required" 
+        });
+      }
+
+      // Find the consultation request
+      const [request] = await db
+        .select()
+        .from(consultationRequests)
+        .where(eq(consultationRequests.email, email))
+        .where(eq(consultationRequests.selectedTimeSlot, timeSlot))
+        .where(eq(consultationRequests.status, "confirmed"))
+        .limit(1);
+
+      if (request.length === 0) {
+        return res.status(404).json({ 
+          success: false, 
+          error: "No confirmed booking found with that email and time slot" 
+        });
+      }
+
+      const consultationRequest = request[0];
+      
+      // Delete the booked slot
+      await storage.deleteBookedSlotByRequestId(consultationRequest.id);
+      
+      // Update consultation request status to cancelled
+      await db
+        .update(consultationRequests)
+        .set({ status: "cancelled" })
+        .where(eq(consultationRequests.id, consultationRequest.id));
+
+      res.json({ success: true, message: "Booking cancelled successfully" });
+    } catch (error) {
+      console.error("Error cancelling booking:", error);
+      res.status(500).json({ success: false, error: "Failed to cancel booking" });
     }
   });
 
