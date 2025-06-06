@@ -98,7 +98,6 @@ export default function BookCoachingCall() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <Navigation />
-      
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
@@ -122,7 +121,7 @@ export default function BookCoachingCall() {
                 <CardDescription className="space-y-2">
                   <p>Complete your details to secure your coaching call</p>
                   <p className="text-sm text-blue-700">
-                    <strong>Calls via FaceTime (iPhone) or WhatsApp video</strong> - allows international calling at no extra charge.
+                    <strong>Calls via FaceTime (iPhone) or WhatsApp </strong> - allows international calling at no extra charge.
                   </p>
                 </CardDescription>
               </CardHeader>
@@ -313,7 +312,6 @@ export default function BookCoachingCall() {
           </Card>
         </div>
       </div>
-
       <Footer />
     </main>
   );
