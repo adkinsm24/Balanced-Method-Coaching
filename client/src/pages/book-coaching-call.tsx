@@ -273,13 +273,15 @@ export default function BookCoachingCall() {
                             </FormControl>
                             <SelectContent>
                               {slotsLoading ? (
-                                <SelectItem value="loading" disabled>Loading available slots...</SelectItem>
+                                <SelectItem value="loading-placeholder" disabled>Loading available slots...</SelectItem>
                               ) : (
-                                Array.isArray(availableSlots) ? availableSlots.map((slot: any) => (
+                                Array.isArray(availableSlots) && availableSlots.length > 0 ? availableSlots.map((slot: any) => (
                                   <SelectItem key={slot.value} value={slot.value}>
                                     {slot.label}
                                   </SelectItem>
-                                )) : null
+                                )) : (
+                                  <SelectItem value="no-slots" disabled>No available slots</SelectItem>
+                                )
                               )}
                             </SelectContent>
                           </Select>

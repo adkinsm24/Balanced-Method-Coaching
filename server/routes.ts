@@ -217,7 +217,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     try {
       const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: "2023-10-16",
+        apiVersion: "2025-05-28.basil",
       });
       
       const { amount } = req.body;
@@ -295,7 +295,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Find the consultation request
-      const [request] = await db
+      const requests = await db
         .select()
         .from(consultationRequests)
         .where(and(
@@ -305,14 +305,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ))
         .limit(1);
 
-      if (!request) {
+      if (!requests || requests.length === 0) {
         return res.status(404).json({ 
           success: false, 
           error: "No confirmed booking found with that email and time slot" 
         });
       }
 
-      const consultationRequest = request[0];
+      const consultationRequest = requests[0];
       
       // Delete the booked slot
       await storage.deleteBookedSlotByRequestId(consultationRequest.id);
