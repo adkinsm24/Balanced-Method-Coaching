@@ -87,6 +87,10 @@ export default function BookCoachingCall() {
   });
 
   const onSubmit = (data: CoachingCallForm) => {
+    console.log("Form submitted with data:", data);
+    console.log("Selected duration:", selectedDuration);
+    console.log("Form errors:", form.formState.errors);
+    
     if (!selectedDuration) {
       toast({
         title: "Please select a duration",
@@ -306,6 +310,12 @@ export default function BookCoachingCall() {
                       type="submit" 
                       className="w-full" 
                       disabled={!selectedDuration || bookingMutation.isPending}
+                      onClick={(e) => {
+                        console.log("Button clicked!");
+                        console.log("Selected duration:", selectedDuration);
+                        console.log("Form valid:", form.formState.isValid);
+                        console.log("Form values:", form.getValues());
+                      }}
                     >
                       {bookingMutation.isPending ? (
                         "Processing..."
