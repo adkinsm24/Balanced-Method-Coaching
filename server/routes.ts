@@ -184,6 +184,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin API endpoints
+  app.get('/api/admin/booked-slots', isAuthenticated, async (req: any, res) => {
+    try {
+      const bookedSlots = await storage.getBookedSlots();
+      res.json(bookedSlots);
+    } catch (error) {
+      console.error("Error fetching booked slots:", error);
+      res.status(500).json({ error: "Failed to fetch booked slots" });
+    }
+  });
+
+  app.delete('/api/admin/booked-slots/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const slotId = parseInt(req.params.id);
+      await storage.deleteBookedSlot(slotId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting booked slot:", error);
+      res.status(500).json({ error: "Failed to delete booked slot" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
