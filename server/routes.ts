@@ -303,7 +303,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .where(eq(consultationRequests.status, "confirmed"))
         .limit(1);
 
-      if (request.length === 0) {
+      if (!request) {
         return res.status(404).json({ 
           success: false, 
           error: "No confirmed booking found with that email and time slot" 
