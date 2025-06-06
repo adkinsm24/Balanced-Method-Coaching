@@ -41,7 +41,16 @@ export const consultationRequests = pgTable("consultation_requests", {
   drinks: text("drinks"),
   emotionalEating: text("emotional_eating"),
   medications: text("medications"),
+  status: varchar("status", { length: 20 }).default("pending").notNull(), // pending, confirmed, cancelled
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Table to track booked appointments and prevent double-bookings
+export const bookedSlots = pgTable("booked_slots", {
+  id: serial("id").primaryKey(),
+  timeSlot: varchar("time_slot", { length: 50 }).notNull().unique(),
+  consultationRequestId: integer("consultation_request_id").references(() => consultationRequests.id),
+  bookedAt: timestamp("booked_at").defaultNow().notNull(),
 });
 
 export const upsertUserSchema = createInsertSchema(users).pick({
@@ -55,9 +64,17 @@ export const upsertUserSchema = createInsertSchema(users).pick({
 export const insertConsultationRequestSchema = createInsertSchema(consultationRequests).omit({
   id: true,
   createdAt: true,
+  status: true,
+});
+
+export const insertBookedSlotSchema = createInsertSchema(bookedSlots).omit({
+  id: true,
+  bookedAt: true,
 });
 
 export type UpsertUser = z.infer<typeof upsertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertConsultationRequest = z.infer<typeof insertConsultationRequestSchema>;
 export type ConsultationRequest = typeof consultationRequests.$inferSelect;
+export type BookedSlot = typeof bookedSlots.$inferSelect;
+export type InsertBookedSlot = z.infer<typeof insertBookedSlotSchema>;

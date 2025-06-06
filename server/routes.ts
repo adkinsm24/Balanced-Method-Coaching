@@ -15,10 +15,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertConsultationRequestSchema.parse(req.body);
       
-      const [newRequest] = await db
-        .insert(consultationRequests)
-        .values(validatedData)
-        .returning();
+      // Check if time slot is still available
+      const isAvailable = await storage.isTimeSlotAvailable(validatedData.selectedTimeSlot);
+      if (!isAvailable) {
+        return res.status(400).json({ 
+          success: false, 
+          error: "Selected time slot is no longer available. Please choose another time." 
+        });
+      }
+
+      // Create consultation request and book the time slot atomically
+      const newRequest = await storage.createConsultationRequest(validatedData);
+      await storage.bookTimeSlot({
+        timeSlot: validatedData.selectedTimeSlot,
+        consultationRequestId: newRequest.id,
+      });
 
       res.json({ success: true, id: newRequest.id });
     } catch (error) {
