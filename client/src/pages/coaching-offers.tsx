@@ -150,7 +150,10 @@ export default function CoachingOffers() {
                 <li>• Flexible scheduling options</li>
                 <li>• Nutrition and exercise expertise</li>
               </ul>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90 text-white"
+                onClick={() => window.location.href = '/book-coaching-call'}
+              >
                 Book a Call
               </Button>
             </div>
