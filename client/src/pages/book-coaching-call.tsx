@@ -111,51 +111,7 @@ export default function BookCoachingCall() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Duration Selection */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
-                  Choose Your Duration
-                </CardTitle>
-                <CardDescription>
-                  Select the coaching call duration that best fits your needs
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {DURATION_OPTIONS.map((option) => (
-                  <div
-                    key={option.value}
-                    className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                      selectedDuration === option.value
-                        ? "border-primary bg-primary/5"
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
-                    onClick={() => {
-                      setSelectedDuration(option.value);
-                      form.setValue("duration", option.value);
-                    }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">{option.label}</h3>
-                        <p className="text-sm text-gray-600">
-                          Perfect for {option.value === 30 ? "quick guidance" : 
-                                     option.value === 45 ? "focused coaching" : 
-                                     "comprehensive planning"}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-primary">${option.price}</div>
-                        <div className="text-sm text-gray-500">per session</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
+          <div className="max-w-2xl mx-auto">
             {/* Booking Form */}
             <Card>
               <CardHeader>
@@ -225,6 +181,35 @@ export default function BookCoachingCall() {
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="duration"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Session Duration</FormLabel>
+                          <Select onValueChange={(value) => {
+                            const duration = parseInt(value);
+                            setSelectedDuration(duration);
+                            field.onChange(duration);
+                          }} value={field.value?.toString()}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose session duration" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {DURATION_OPTIONS.map((option) => (
+                                <SelectItem key={option.value} value={option.value.toString()}>
+                                  {option.label} - ${option.price}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
