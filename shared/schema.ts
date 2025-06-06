@@ -51,6 +51,7 @@ export const coachingCalls = pgTable("coaching_calls", {
   lastName: varchar("last_name", { length: 100 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }).notNull(),
+  contactMethod: varchar("contact_method", { length: 20 }).notNull(),
   selectedTimeSlot: varchar("selected_time_slot", { length: 50 }).notNull(),
   duration: integer("duration").notNull(), // 30, 45, or 60 minutes
   amount: integer("amount").notNull(), // price in cents

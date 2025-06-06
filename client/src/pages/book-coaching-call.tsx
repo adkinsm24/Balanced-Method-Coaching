@@ -21,6 +21,7 @@ const coachingCallSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
   phone: z.string().min(1, "Phone number is required"),
+  contactMethod: z.string().min(1, "Please select a contact method"),
   selectedTimeSlot: z.string().min(1, "Please select a time slot"),
   duration: z.number().min(30).max(60),
 });
@@ -45,6 +46,7 @@ export default function BookCoachingCall() {
       lastName: "",
       email: "",
       phone: "",
+      contactMethod: "",
       selectedTimeSlot: "",
       duration: 30,
     },
@@ -134,7 +136,7 @@ export default function BookCoachingCall() {
                         name="firstName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>First Name*</FormLabel>
+                            <FormLabel>First Name *</FormLabel>
                             <FormControl>
                               <Input {...field} />
                             </FormControl>
@@ -147,7 +149,7 @@ export default function BookCoachingCall() {
                         name="lastName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Last Name</FormLabel>
+                            <FormLabel>Last Name *</FormLabel>
                             <FormControl>
                               <Input {...field} />
                             </FormControl>
@@ -162,7 +164,7 @@ export default function BookCoachingCall() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>Email *</FormLabel>
                           <FormControl>
                             <Input type="email" {...field} />
                           </FormControl>
@@ -176,7 +178,7 @@ export default function BookCoachingCall() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
+                          <FormLabel>Phone Number *</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -187,10 +189,32 @@ export default function BookCoachingCall() {
 
                     <FormField
                       control={form.control}
+                      name="contactMethod"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>How would you prefer to be contacted? *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose your preferred contact method" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="facetime">FaceTime (iPhone required)</SelectItem>
+                              <SelectItem value="whatsapp">WhatsApp</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
                       name="duration"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Session Duration</FormLabel>
+                          <FormLabel>Session Duration *</FormLabel>
                           <Select onValueChange={(value) => {
                             const duration = parseInt(value);
                             setSelectedDuration(duration);
@@ -219,7 +243,7 @@ export default function BookCoachingCall() {
                       name="selectedTimeSlot"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Preferred Time Slot</FormLabel>
+                          <FormLabel>Preferred Time Slot *</FormLabel>
                           <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
