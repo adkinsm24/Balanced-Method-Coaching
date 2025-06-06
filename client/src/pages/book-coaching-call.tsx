@@ -39,7 +39,7 @@ const DURATION_OPTIONS = [
 export default function BookCoachingCall() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const [selectedDuration, setSelectedDuration] = useState<number | null>(null);
+  const [selectedDuration, setSelectedDuration] = useState<number>(30);
 
   const form = useForm<CoachingCallForm>({
     resolver: zodResolver(coachingCallSchema),
@@ -88,18 +88,10 @@ export default function BookCoachingCall() {
   });
 
   const onSubmit = (data: CoachingCallForm) => {
-    if (!selectedDuration) {
-      toast({
-        title: "Please select a duration",
-        description: "Choose your preferred coaching call duration.",
-        variant: "destructive",
-      });
-      return;
-    }
     bookingMutation.mutate({ ...data, duration: selectedDuration });
   };
 
-  const selectedOption = selectedDuration ? DURATION_OPTIONS.find(opt => opt.value === selectedDuration) : null;
+  const selectedOption = DURATION_OPTIONS.find(opt => opt.value === selectedDuration);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
