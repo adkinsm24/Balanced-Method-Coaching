@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trash2, Plus, RefreshCw } from "lucide-react";
+import { Trash2, Plus, RefreshCw, Users } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
@@ -23,8 +23,15 @@ type ConsultationRequest = {
   lastName: string;
   email: string;
   phone: string;
+  contactMethod: string;
   selectedTimeSlot: string;
   goals: string;
+  experience?: string;
+  eatingOut?: string;
+  typicalDay?: string;
+  drinks?: string;
+  emotionalEating?: string;
+  medications?: string;
   status: string;
   createdAt: string;
 };
@@ -266,6 +273,113 @@ export default function Admin() {
             ) : (
               <div className="text-center py-8 text-gray-500">
                 No bookings yet. When people book consultation calls, they'll appear here.
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* All Consultation Requests */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              All Consultation Requests
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {requestsLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin w-6 h-6 border-4 border-primary border-t-transparent rounded-full mx-auto" />
+                <p className="mt-2 text-gray-600">Loading requests...</p>
+              </div>
+            ) : consultationRequests && consultationRequests.length > 0 ? (
+              <div className="space-y-4">
+                {consultationRequests.map((request) => {
+                  const isBooked = bookedSlots?.some(slot => slot.consultationRequestId === request.id);
+                  return (
+                    <div key={request.id} className="p-4 border rounded-lg">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">{formatTimeSlot(request.selectedTimeSlot)}</Badge>
+                          <Badge variant={request.status === 'confirmed' ? 'default' : 'secondary'}>
+                            {request.status}
+                          </Badge>
+                          {isBooked && (
+                            <Badge variant="default" className="bg-green-100 text-green-800">
+                              Booked
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          {new Date(request.createdAt).toLocaleDateString()} at {new Date(request.createdAt).toLocaleTimeString()}
+                        </p>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Contact Info</h4>
+                          <p className="text-sm"><strong>Name:</strong> {request.firstName} {request.lastName}</p>
+                          <p className="text-sm"><strong>Email:</strong> {request.email}</p>
+                          <p className="text-sm"><strong>Phone:</strong> {request.phone}</p>
+                          <p className="text-sm"><strong>Contact Method:</strong> {request.contactMethod}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Goals</h4>
+                          <p className="text-sm text-gray-700">{request.goals}</p>
+                        </div>
+                      </div>
+                      
+                      {(request.experience || request.eatingOut || request.typicalDay || request.drinks || request.emotionalEating || request.medications) && (
+                        <div className="mt-4 pt-4 border-t">
+                          <h4 className="font-semibold text-gray-900 mb-2">Additional Details</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                            {request.experience && (
+                              <div>
+                                <strong>Previous Experience:</strong>
+                                <p className="text-gray-700 mt-1">{request.experience}</p>
+                              </div>
+                            )}
+                            {request.eatingOut && (
+                              <div>
+                                <strong>Eating Out:</strong>
+                                <p className="text-gray-700 mt-1">{request.eatingOut}</p>
+                              </div>
+                            )}
+                            {request.typicalDay && (
+                              <div>
+                                <strong>Typical Day:</strong>
+                                <p className="text-gray-700 mt-1">{request.typicalDay}</p>
+                              </div>
+                            )}
+                            {request.drinks && (
+                              <div>
+                                <strong>Drinks:</strong>
+                                <p className="text-gray-700 mt-1">{request.drinks}</p>
+                              </div>
+                            )}
+                            {request.emotionalEating && (
+                              <div>
+                                <strong>Emotional Eating:</strong>
+                                <p className="text-gray-700 mt-1">{request.emotionalEating}</p>
+                              </div>
+                            )}
+                            {request.medications && (
+                              <div>
+                                <strong>Medications:</strong>
+                                <p className="text-gray-700 mt-1">{request.medications}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                No consultation requests yet. When people fill out the booking form, they'll appear here.
               </div>
             )}
           </CardContent>
