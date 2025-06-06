@@ -130,7 +130,7 @@ export default function CheckoutCoaching() {
               <ul className="space-y-2 text-gray-700">
                 <li>• One-on-one personalized coaching with Coach Mark</li>
                 <li>• {sessionDetails?.duration} focused nutrition and fitness guidance</li>
-                <li>• FaceTime or WhatsApp video call</li>
+                <li>• FaceTime or WhatsApp call</li>
                 <li>• Customized recommendations for your goals</li>
                 <li>• Follow-up resources and action plan</li>
               </ul>
