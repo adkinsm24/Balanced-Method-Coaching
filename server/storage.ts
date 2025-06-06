@@ -2,12 +2,15 @@ import {
   users,
   consultationRequests,
   bookedSlots,
+  coachingCalls,
   type User,
   type UpsertUser,
   type InsertConsultationRequest,
   type ConsultationRequest,
   type BookedSlot,
   type InsertBookedSlot,
+  type CoachingCall,
+  type InsertCoachingCall,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -24,6 +27,12 @@ export interface IStorage {
   isTimeSlotAvailable(timeSlot: string): Promise<boolean>;
   deleteBookedSlot(slotId: number): Promise<void>;
   deleteBookedSlotByRequestId(requestId: number): Promise<void>;
+  
+  // Coaching calls operations
+  createCoachingCall(call: InsertCoachingCall): Promise<CoachingCall>;
+  getCoachingCalls(): Promise<CoachingCall[]>;
+  updateCoachingCallStatus(callId: number, status: string, paymentIntentId?: string): Promise<void>;
+  getCoachingCall(callId: number): Promise<CoachingCall | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -92,6 +101,36 @@ export class DatabaseStorage implements IStorage {
     await db
       .delete(bookedSlots)
       .where(eq(bookedSlots.consultationRequestId, requestId));
+  }
+
+  // Coaching calls operations
+  async createCoachingCall(call: InsertCoachingCall): Promise<CoachingCall> {
+    const [newCall] = await db
+      .insert(coachingCalls)
+      .values(call)
+      .returning();
+    return newCall;
+  }
+
+  async getCoachingCalls(): Promise<CoachingCall[]> {
+    return await db.select().from(coachingCalls);
+  }
+
+  async updateCoachingCallStatus(callId: number, status: string, paymentIntentId?: string): Promise<void> {
+    const updateData: any = { status };
+    if (paymentIntentId) {
+      updateData.stripePaymentIntentId = paymentIntentId;
+    }
+    
+    await db
+      .update(coachingCalls)
+      .set(updateData)
+      .where(eq(coachingCalls.id, callId));
+  }
+
+  async getCoachingCall(callId: number): Promise<CoachingCall | undefined> {
+    const [call] = await db.select().from(coachingCalls).where(eq(coachingCalls.id, callId));
+    return call;
   }
 }
 

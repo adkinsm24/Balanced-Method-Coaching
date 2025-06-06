@@ -45,11 +45,27 @@ export const consultationRequests = pgTable("consultation_requests", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const coachingCalls = pgTable("coaching_calls", {
+  id: serial("id").primaryKey(),
+  firstName: varchar("first_name", { length: 100 }).notNull(),
+  lastName: varchar("last_name", { length: 100 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 20 }).notNull(),
+  selectedTimeSlot: varchar("selected_time_slot", { length: 50 }).notNull(),
+  duration: integer("duration").notNull(), // 30, 45, or 60 minutes
+  amount: integer("amount").notNull(), // price in cents
+  stripePaymentIntentId: varchar("stripe_payment_intent_id"),
+  status: varchar("status", { length: 20 }).default("pending").notNull(), // pending, paid, confirmed, completed, cancelled
+  rolloverMinutes: integer("rollover_minutes").default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Table to track booked appointments and prevent double-bookings
 export const bookedSlots = pgTable("booked_slots", {
   id: serial("id").primaryKey(),
   timeSlot: varchar("time_slot", { length: 50 }).notNull().unique(),
   consultationRequestId: integer("consultation_request_id").references(() => consultationRequests.id),
+  coachingCallId: integer("coaching_call_id").references(() => coachingCalls.id),
   bookedAt: timestamp("booked_at").defaultNow().notNull(),
 });
 
@@ -72,9 +88,18 @@ export const insertBookedSlotSchema = createInsertSchema(bookedSlots).omit({
   bookedAt: true,
 });
 
+export const insertCoachingCallSchema = createInsertSchema(coachingCalls).omit({
+  id: true,
+  createdAt: true,
+  status: true,
+  rolloverMinutes: true,
+});
+
 export type UpsertUser = z.infer<typeof upsertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertConsultationRequest = z.infer<typeof insertConsultationRequestSchema>;
 export type ConsultationRequest = typeof consultationRequests.$inferSelect;
 export type BookedSlot = typeof bookedSlots.$inferSelect;
 export type InsertBookedSlot = z.infer<typeof insertBookedSlotSchema>;
+export type CoachingCall = typeof coachingCalls.$inferSelect;
+export type InsertCoachingCall = z.infer<typeof insertCoachingCallSchema>;
