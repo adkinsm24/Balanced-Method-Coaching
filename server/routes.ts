@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
-import { consultationRequests, insertConsultationRequestSchema } from "@shared/schema";
+import { consultationRequests, insertConsultationRequestSchema, coachingCalls, insertCoachingCallSchema, bookedSlots } from "@shared/schema";
 import { desc, eq, and } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./replitAuth";
@@ -347,6 +347,102 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting consultation request:", error);
       res.status(500).json({ error: "Failed to delete consultation request" });
+    }
+  });
+
+  // Coaching calls endpoints
+  app.post('/api/coaching-calls/create-payment-intent', async (req, res) => {
+    try {
+      const validatedData = insertCoachingCallSchema.parse(req.body);
+      
+      // Check if time slot is available
+      const isAvailable = await storage.isTimeSlotAvailable(validatedData.selectedTimeSlot);
+      if (!isAvailable) {
+        return res.status(400).json({ error: "Selected time slot is no longer available" });
+      }
+
+      // Create coaching call record
+      const coachingCall = await storage.createCoachingCall(validatedData);
+
+      // Create Stripe payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: validatedData.amount,
+        currency: "usd",
+        metadata: {
+          coachingCallId: coachingCall.id.toString(),
+          duration: validatedData.duration.toString(),
+          timeSlot: validatedData.selectedTimeSlot,
+        },
+      });
+
+      // Update coaching call with payment intent ID
+      await storage.updateCoachingCallStatus(coachingCall.id, "pending", paymentIntent.id);
+
+      res.json({ 
+        clientSecret: paymentIntent.client_secret,
+        callId: coachingCall.id 
+      });
+    } catch (error: any) {
+      console.error("Error creating coaching call payment:", error);
+      res.status(500).json({ error: "Failed to create payment intent" });
+    }
+  });
+
+  app.get('/api/coaching-calls', isAuthenticated, async (req, res) => {
+    try {
+      const calls = await storage.getCoachingCalls();
+      res.json(calls);
+    } catch (error) {
+      console.error("Error fetching coaching calls:", error);
+      res.status(500).json({ error: "Failed to fetch coaching calls" });
+    }
+  });
+
+  app.post('/api/coaching-calls/:id/confirm-payment', async (req, res) => {
+    try {
+      const callId = parseInt(req.params.id);
+      const { paymentIntentId } = req.body;
+
+      // Verify payment with Stripe
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      
+      if (paymentIntent.status === 'succeeded') {
+        // Update coaching call status and book the time slot
+        await storage.updateCoachingCallStatus(callId, "paid", paymentIntentId);
+        
+        const coachingCall = await storage.getCoachingCall(callId);
+        if (coachingCall) {
+          // Book the time slot
+          await storage.bookTimeSlot({
+            timeSlot: coachingCall.selectedTimeSlot,
+            coachingCallId: callId,
+          });
+          
+          // Send confirmation emails (you may want to create specific templates for coaching calls)
+          await sendBookingConfirmation({
+            to: coachingCall.email,
+            firstName: coachingCall.firstName,
+            timeSlot: formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
+            bookingType: `${coachingCall.duration}-minute Coaching Call`,
+          });
+          
+          await sendCoachNotification({
+            firstName: coachingCall.firstName,
+            lastName: coachingCall.lastName,
+            email: coachingCall.email,
+            phone: coachingCall.phone,
+            timeSlot: formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
+            bookingType: `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100})`,
+          });
+        }
+        
+        res.json({ success: true, message: "Payment confirmed and coaching call booked" });
+      } else {
+        res.status(400).json({ error: "Payment not successful" });
+      }
+    } catch (error) {
+      console.error("Error confirming coaching call payment:", error);
+      res.status(500).json({ error: "Failed to confirm payment" });
     }
   });
 
