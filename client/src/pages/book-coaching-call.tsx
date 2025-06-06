@@ -134,7 +134,7 @@ export default function BookCoachingCall() {
                         name="firstName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>First Name</FormLabel>
+                            <FormLabel>First Name*</FormLabel>
                             <FormControl>
                               <Input {...field} />
                             </FormControl>
