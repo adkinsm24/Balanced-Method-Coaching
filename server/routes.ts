@@ -357,7 +357,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: "2025-05-28.basil",
+      });
       const validatedData = insertCoachingCallSchema.parse(req.body);
       
       // Check if time slot is available
@@ -409,7 +411,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: "2025-05-28.basil",
+      });
       const callId = parseInt(req.params.id);
       const { paymentIntentId } = req.body;
 
@@ -429,20 +433,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
           
           // Send confirmation emails
+          const coachEmail = "mark@balancedmethodcoaching.com";
           await sendBookingConfirmation(
             coachingCall.email,
-            coachingCall.firstName,
+            `${coachingCall.firstName} ${coachingCall.lastName}`,
             formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
-            `${coachingCall.duration}-minute Coaching Call`
+            coachEmail
           );
           
           await sendCoachNotification(
-            coachingCall.firstName,
-            coachingCall.lastName,
+            coachEmail,
+            `${coachingCall.firstName} ${coachingCall.lastName}`,
             coachingCall.email,
             coachingCall.phone,
             formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
-            `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100})`
+            `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100}) - Goals: ${coachingCall.goals}`
           );
         }
         
