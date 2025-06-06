@@ -281,12 +281,91 @@ export default function Admin() {
           </CardHeader>
           <CardContent>
             {availableSlots && availableSlots.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                {availableSlots.map((slot) => (
-                  <Badge key={slot.value} variant="secondary" className="p-2 text-center">
-                    {slot.label}
-                  </Badge>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                {/* Monday */}
+                <div>
+                  <h4 className="font-semibold text-sm text-gray-700 mb-3 text-center">Monday</h4>
+                  <div className="space-y-2">
+                    {availableSlots
+                      .filter(slot => slot.value.startsWith('mon-'))
+                      .map((slot) => (
+                        <Badge key={slot.value} variant="secondary" className="w-full p-2 text-center text-xs">
+                          {slot.label.replace('Monday ', '')}
+                        </Badge>
+                      ))}
+                    {availableSlots.filter(slot => slot.value.startsWith('mon-')).length === 0 && (
+                      <p className="text-xs text-gray-400 text-center italic">All booked</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Tuesday */}
+                <div>
+                  <h4 className="font-semibold text-sm text-gray-700 mb-3 text-center">Tuesday</h4>
+                  <div className="space-y-2">
+                    {availableSlots
+                      .filter(slot => slot.value.startsWith('tue-'))
+                      .map((slot) => (
+                        <Badge key={slot.value} variant="secondary" className="w-full p-2 text-center text-xs">
+                          {slot.label.replace('Tuesday ', '')}
+                        </Badge>
+                      ))}
+                    {availableSlots.filter(slot => slot.value.startsWith('tue-')).length === 0 && (
+                      <p className="text-xs text-gray-400 text-center italic">All booked</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Wednesday */}
+                <div>
+                  <h4 className="font-semibold text-sm text-gray-700 mb-3 text-center">Wednesday</h4>
+                  <div className="space-y-2">
+                    {availableSlots
+                      .filter(slot => slot.value.startsWith('wed-'))
+                      .map((slot) => (
+                        <Badge key={slot.value} variant="secondary" className="w-full p-2 text-center text-xs">
+                          {slot.label.replace('Wednesday ', '')}
+                        </Badge>
+                      ))}
+                    {availableSlots.filter(slot => slot.value.startsWith('wed-')).length === 0 && (
+                      <p className="text-xs text-gray-400 text-center italic">All booked</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Thursday */}
+                <div>
+                  <h4 className="font-semibold text-sm text-gray-700 mb-3 text-center">Thursday</h4>
+                  <div className="space-y-2">
+                    {availableSlots
+                      .filter(slot => slot.value.startsWith('thu-'))
+                      .map((slot) => (
+                        <Badge key={slot.value} variant="secondary" className="w-full p-2 text-center text-xs">
+                          {slot.label.replace('Thursday ', '')}
+                        </Badge>
+                      ))}
+                    {availableSlots.filter(slot => slot.value.startsWith('thu-')).length === 0 && (
+                      <p className="text-xs text-gray-400 text-center italic">All booked</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Friday */}
+                <div>
+                  <h4 className="font-semibold text-sm text-gray-700 mb-3 text-center">Friday</h4>
+                  <div className="space-y-2">
+                    {availableSlots
+                      .filter(slot => slot.value.startsWith('fri-'))
+                      .map((slot) => (
+                        <Badge key={slot.value} variant="secondary" className="w-full p-2 text-center text-xs">
+                          {slot.label.replace('Friday ', '')}
+                        </Badge>
+                      ))}
+                    {availableSlots.filter(slot => slot.value.startsWith('fri-')).length === 0 && (
+                      <p className="text-xs text-gray-400 text-center italic">All booked</p>
+                    )}
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="text-center py-8 text-gray-500">
