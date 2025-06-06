@@ -309,13 +309,7 @@ export default function BookCoachingCall() {
                     <Button 
                       type="submit" 
                       className="w-full" 
-                      disabled={!selectedDuration || bookingMutation.isPending}
-                      onClick={(e) => {
-                        console.log("Button clicked!");
-                        console.log("Selected duration:", selectedDuration);
-                        console.log("Form valid:", form.formState.isValid);
-                        console.log("Form values:", form.getValues());
-                      }}
+                      disabled={bookingMutation.isPending}
                     >
                       {bookingMutation.isPending ? (
                         "Processing..."
