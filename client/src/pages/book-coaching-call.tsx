@@ -166,6 +166,14 @@ export default function BookCoachingCall() {
                 <CardDescription>
                   Complete your details to secure your coaching call
                 </CardDescription>
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                  <h3 className="text-sm font-semibold text-blue-800 mb-2">Call Information</h3>
+                  <p className="text-sm text-blue-700 mb-1">
+                    Calls are conducted via <strong>FaceTime</strong> (iPhone required) or <strong>WhatsApp video call</strong>.
+                  </p>
+                  <p className="text-xs text-blue-600">Allows me to call you from abroad with no extra charge.</p>
+                </div>
               </CardHeader>
               <CardContent>
                 <Form {...form}>
