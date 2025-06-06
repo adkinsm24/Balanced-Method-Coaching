@@ -189,16 +189,16 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1j3L_knPu0nGylpNZ1BdE6CqGQaGQNXRvSpZSss4i22o/edit?gid=1193774805#gid=1193774805', '_blank')}
                                 >
-                                  Link 1
+                                  Calories in Foods & Drinks + Substitutes
                                 </Button>
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1nQwBITawpOLODsuVve0hFD7QckwgGWvwcE4y6MItdoE/edit?gid=0#gid=0', '_blank')}
                                 >
-                                  Link 2
+                                  Weight Change in Cooked Foods
                                 </Button>
                               </div>
                             )}
