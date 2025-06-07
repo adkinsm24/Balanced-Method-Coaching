@@ -409,9 +409,7 @@ export default function Course() {
                     <CardTitle>Research Articles & Other Resources</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Scientific research and professional tools to support your nutrition journey.
-                    </p>
+                    <p className="text-gray-600 mb-4">Scientific research and other various articles from the course.</p>
                     <div className="space-y-3">
                       <Button 
                         variant="outline" 
