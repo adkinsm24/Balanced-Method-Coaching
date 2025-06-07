@@ -391,7 +391,16 @@ export default function Course() {
                         variant="outline" 
                         className="w-full justify-start"
                         onClick={() => window.open('https://docs.google.com/spreadsheets/d/11L8fft6894kZKf6JcBaKvSpcpGoLvoSzTzPmkqGlv_A/edit?gid=369675530#gid=369675530', '_blank')}
-                      >Measurements Tracker (go to "File" then "Make a Copy" to use it)</Button>
+                      >
+                        Measurements Tracker
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://www.mayoclinic.org/healthy-lifestyle/weight-loss/in-depth/calorie-calculator/itt-20402304', '_blank')}
+                      >
+                        Maintenance calorie calculator
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -411,13 +420,6 @@ export default function Course() {
                         onClick={() => window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC5568065/', '_blank')}
                       >
                         Meta-analysis on fat/carb ratios
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="w-full justify-start"
-                        onClick={() => window.open('https://www.mayoclinic.org/healthy-lifestyle/weight-loss/in-depth/calorie-calculator/itt-20402304', '_blank')}
-                      >
-                        Maintenance calorie calculator
                       </Button>
                       <Button 
                         variant="outline" 
