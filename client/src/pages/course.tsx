@@ -355,9 +355,8 @@ export default function Course() {
                     <CardTitle>Google Sheets Resources</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Essential nutrition tracking sheets and reference tables. Remember to go to "File" then "Make a Copy" to use them.
-                    </p>
+                    <p className="text-gray-600 mb-4">Essential nutrition tracking sheets and reference tables. 
+</p>
                     <div className="space-y-3">
                       <Button 
                         variant="outline" 
