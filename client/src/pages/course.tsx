@@ -424,7 +424,7 @@ export default function Course() {
                 I'm here to help you succeed.
               </p>
               <div className="flex justify-center max-w-md mx-auto">
-                <Button variant="outline" onClick={() => window.location.href = '/book-call'}>
+                <Button variant="outline" onClick={() => window.location.href = '/book-coaching-call'}>
                   Book Support Call
                 </Button>
               </div>
