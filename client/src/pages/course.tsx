@@ -356,8 +356,7 @@ export default function Course() {
 </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 mb-4">Essential nutrition tracking sheets and reference tables. 
-</p>
+                    <p className="text-gray-600 mb-4">Essential nutrition documents to help guide you through your fat loss journey.</p>
                     <div className="space-y-3">
                       <Button 
                         variant="outline" 
