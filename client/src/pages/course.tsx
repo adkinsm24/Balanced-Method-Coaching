@@ -319,6 +319,19 @@ export default function Course() {
                               </div>
                             )}
 
+                            {/* Part 8 specific links */}
+                            {video.id === 8 && (
+                              <div className="mt-4">
+                                <Button 
+                                  variant="outline" 
+                                  className="w-full"
+                                  onClick={() => window.open('https://inbodyusa.com/blogs/inbodyblog/why-does-my-weight-fluctuate-day-to-day/', '_blank')}
+                                >
+                                  Weight fluctuations due to water retention
+                                </Button>
+                              </div>
+                            )}
+
                           </>
                         ) : (
                           <div className="aspect-video bg-gray-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-200">
