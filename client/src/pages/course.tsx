@@ -349,64 +349,134 @@ export default function Course() {
             </TabsContent>
 
             <TabsContent value="resources" className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Meal Planning Templates</CardTitle>
+                    <CardTitle>Google Sheets Resources</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      Ready-to-use meal planning sheets and shopping lists to streamline your nutrition journey.
+                      Essential nutrition tracking sheets and reference tables. Remember to go to "File" then "Make a Copy" to use them.
                     </p>
-                    <Button variant="outline" className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Templates
-                    </Button>
+                    <div className="space-y-3">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1j3L_knPu0nGylpNZ1BdE6CqGQaGQNXRvSpZSss4i22o/edit?gid=1193774805#gid=1193774805', '_blank')}
+                      >
+                        Calories in Foods & Drinks + Substitutes
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1nQwBITawpOLODsuVve0hFD7QckwgGWvwcE4y6MItdoE/edit?gid=0#gid=0', '_blank')}
+                      >
+                        Weight Change in Cooked Foods
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1PiKDrp6GBfLuW06iqCT24W2zVANycrU5UAg1huJpymc/edit?gid=634280370#gid=634280370', '_blank')}
+                      >
+                        Table of Protein
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1a7wqi8zM7Evggw00XQrZR-n11eg-ATdMQc0p9MDl8pI/edit?pli=1&gid=689816511#gid=689816511', '_blank')}
+                      >
+                        Carbs and Fiber
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/11L8fft6894kZKf6JcBaKvSpcpGoLvoSzTzPmkqGlv_A/edit?gid=369675530#gid=369675530', '_blank')}
+                      >
+                        Measurements Tracker
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Recipe Collection</CardTitle>
+                    <CardTitle>Research Articles & Tools</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      50+ nutritious recipes that are simple, delicious, and align with the course principles.
+                      Scientific research and professional tools to support your nutrition journey.
                     </p>
-                    <Button variant="outline" className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Recipes
-                    </Button>
+                    <div className="space-y-3">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC5568065/', '_blank')}
+                      >
+                        Meta-analysis on fat/carb ratios
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://www.mayoclinic.org/healthy-lifestyle/weight-loss/in-depth/calorie-calculator/itt-20402304', '_blank')}
+                      >
+                        Maintenance calorie calculator
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://pmc.ncbi.nlm.nih.gov/articles/PMC2951287/#:~:text=Sleep%20curtailment%20decreased%20the%20fraction,towards%20oxidation%20of%20less%20fat', '_blank')}
+                      >
+                        Research Article on the Lack of Sleep
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://www.stevegranthealth.com/articles-posts/what-is-an-appropriate-body-fat-percentage-goal/#:~:text=Is%20there%20an%20ideal%20body,and%20below%206%25%20for%20males.', '_blank')}
+                      >
+                        Article by Steve Grant (Body Fat Goals)
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://www.webmd.com/fitness-exercise/what-is-body-composition', '_blank')}
+                      >
+                        WebMD body fat recommendations by age
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Progress Tracking Sheets</CardTitle>
+                    <CardTitle>Health & Wellness Resources</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      Tools to monitor your progress, habits, and celebrate your wins along the way.
+                      Additional resources for body composition, weight fluctuations, and stress management.
                     </p>
-                    <Button variant="outline" className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Trackers
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Quick Reference Guides</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Handy cheat sheets for portion sizes, nutrient timing, and troubleshooting common issues.
-                    </p>
-                    <Button variant="outline" className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Guides
-                    </Button>
+                    <div className="space-y-3">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://inbodyusa.com/blogs/inbodyblog/how-to-tell-if-youre-skinny-fat-and-what-to-do-if-you-are/', '_blank')}
+                      >
+                        Skinny fat article
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://inbodyusa.com/blogs/inbodyblog/why-does-my-weight-fluctuate-day-to-day/', '_blank')}
+                      >
+                        Weight fluctuations due to water retention
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://www.youtube.com/watch?v=AKGrmY8OSHM&t=38s', '_blank')}
+                      >
+                        NSDR with Andrew Huberman
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
