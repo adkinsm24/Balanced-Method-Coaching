@@ -290,7 +290,34 @@ export default function Course() {
                               </div>
                             )}
 
-
+                            {/* Part 7 specific links */}
+                            {video.id === 7 && (
+                              <div className="space-y-3 mt-4">
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                  <Button 
+                                    variant="outline" 
+                                    className="flex-1"
+                                    onClick={() => window.open('https://www.stevegranthealth.com/articles-posts/what-is-an-appropriate-body-fat-percentage-goal/#:~:text=Is%20there%20an%20ideal%20body,and%20below%206%25%20for%20males.', '_blank')}
+                                  >
+                                    Article by Steve Grant
+                                  </Button>
+                                  <Button 
+                                    variant="outline" 
+                                    className="flex-1"
+                                    onClick={() => window.open('https://www.webmd.com/fitness-exercise/what-is-body-composition', '_blank')}
+                                  >
+                                    WebMD body fat recommendations by age
+                                  </Button>
+                                </div>
+                                <Button 
+                                  variant="outline" 
+                                  className="w-full"
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/11L8fft6894kZKf6JcBaKvSpcpGoLvoSzTzPmkqGlv_A/edit?gid=369675530#gid=369675530', '_blank')}
+                                >
+                                  Measurements Tracker (Go to "File" then "Make a Copy" to use it)
+                                </Button>
+                              </div>
+                            )}
 
                           </>
                         ) : (
