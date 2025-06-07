@@ -120,7 +120,7 @@ export default function Footer() {
         
         {/* Copyright Section */}
         <div className="border-t border-orange-200/30 py-4 text-center">
-          <p className="text-gray-600/80">© 2024 Balanced Method Coaching. All rights reserved. | B.S., CSCS, Pn1 Coach</p>
+          <p className="text-gray-600/80">© 2025 Balanced Method Coaching. All rights reserved. | B.S., CSCS, Pn1 Coach</p>
         </div>
       </div>
     </footer>
