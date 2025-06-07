@@ -423,12 +423,9 @@ export default function Course() {
                 Have questions about the course content or need personalized guidance? 
                 I'm here to help you succeed.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <Button variant="outline" className="flex-1" onClick={() => window.location.href = '/book-call'}>
+              <div className="flex justify-center max-w-md mx-auto">
+                <Button variant="outline" onClick={() => window.location.href = '/book-call'}>
                   Book Support Call
-                </Button>
-                <Button variant="outline" className="flex-1">
-                  Contact Support
                 </Button>
               </div>
             </CardContent>
