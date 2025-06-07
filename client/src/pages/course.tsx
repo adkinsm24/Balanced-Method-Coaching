@@ -444,6 +444,13 @@ export default function Course() {
                       >
                         WebMD body fat recommendations by age
                       </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://inbodyusa.com/blogs/inbodyblog/how-to-tell-if-youre-skinny-fat-and-what-to-do-if-you-are/', '_blank')}
+                      >
+                        Skinny fat article
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -457,13 +464,6 @@ export default function Course() {
                       Additional resources for body composition, weight fluctuations, and stress management.
                     </p>
                     <div className="space-y-3">
-                      <Button 
-                        variant="outline" 
-                        className="w-full justify-start"
-                        onClick={() => window.open('https://inbodyusa.com/blogs/inbodyblog/how-to-tell-if-youre-skinny-fat-and-what-to-do-if-you-are/', '_blank')}
-                      >
-                        Skinny fat article
-                      </Button>
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
