@@ -40,7 +40,7 @@ const videoDescriptions = [
   "Learn what real progress looks like and how to interpret your check-in results.",
   "Overcome plateaus and stalls in your progress with proven strategies and adjustments.",
   "Develop the right mindset for maintaining your results after achieving your goals.",
-  "Put everything together and take your first steps toward achieving your nutrition goals.",
+  "Take your first steps towards a leaner physique and better health by putting the theory into practice.",
 ];
 
 export default function Course() {
