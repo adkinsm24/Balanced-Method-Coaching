@@ -400,6 +400,13 @@ export default function Course() {
                       >
                         Maintenance calorie calculator
                       </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => window.open('https://www.youtube.com/watch?v=AKGrmY8OSHM&t=38s', '_blank')}
+                      >
+                        NSDR with Andrew Huberman
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -465,13 +472,6 @@ export default function Course() {
                         onClick={() => window.open('https://inbodyusa.com/blogs/inbodyblog/why-does-my-weight-fluctuate-day-to-day/', '_blank')}
                       >
                         Weight fluctuations due to water retention
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="w-full justify-start"
-                        onClick={() => window.open('https://www.youtube.com/watch?v=AKGrmY8OSHM&t=38s', '_blank')}
-                      >
-                        NSDR with Andrew Huberman
                       </Button>
                     </div>
                   </CardContent>
