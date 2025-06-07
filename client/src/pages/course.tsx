@@ -25,7 +25,7 @@ const courseVideos = [
   { id: 8, title: "Progress Expectations and Interpreting Check-in Results", videoUrl: "https://player.vimeo.com/video/1091000786", badge: "Analysis" },
   { id: 9, title: "Breaking Through Plateaus", videoUrl: "https://player.vimeo.com/video/1091001199", badge: "Problem-solving" },
   { id: 10, title: "Post-Goal Mindset", videoUrl: "https://player.vimeo.com/video/1091001699", badge: "Maintenance" },
-  { id: 11, title: "Getting Started", videoUrl: "https://player.vimeo.com/video/1091002509", badge: "Action Time" },
+  { id: 11, title: "Getting Started & Closing Words", videoUrl: "https://player.vimeo.com/video/1091002509", badge: "Action Time" },
 ];
 
 const videoDescriptions = [
