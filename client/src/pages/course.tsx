@@ -451,19 +451,6 @@ export default function Course() {
                       >
                         Skinny fat article
                       </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Health & Wellness Resources</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      Additional resources for body composition, weight fluctuations, and stress management.
-                    </p>
-                    <div className="space-y-3">
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
@@ -474,6 +461,8 @@ export default function Course() {
                     </div>
                   </CardContent>
                 </Card>
+
+
               </div>
             </TabsContent>
 
