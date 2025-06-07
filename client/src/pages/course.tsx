@@ -404,9 +404,7 @@ export default function Course() {
                         variant="outline" 
                         className="w-full justify-start"
                         onClick={() => window.open('https://www.youtube.com/watch?v=AKGrmY8OSHM&t=38s', '_blank')}
-                      >
-                        NSDR with Andrew Huberman
-                      </Button>
+                      >NSDR with Andrew Huberman (10-minute relaxation meditation)</Button>
                     </div>
                   </CardContent>
                 </Card>
