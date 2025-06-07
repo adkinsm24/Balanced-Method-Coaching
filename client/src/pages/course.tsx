@@ -37,7 +37,7 @@ const videoDescriptions = [
   "Develop sustainable strategies to maintain progress and stay consistent with your nutrition goals over time.",
   "Understand the additional factors beyond nutrition that impact fat loss and body composition.",
   "Learn effective methods to track your progress beyond just the scale for sustainable success.",
-  "Set realistic expectations and learn how to properly interpret your check-in results.",
+  "Learn what real progress looks like and how to interpret your check-in results.",
   "Overcome plateaus and stalls in your progress with proven strategies and adjustments.",
   "Develop the right mindset for maintaining your results after achieving your goals.",
   "Put everything together and take your first steps toward achieving your nutrition goals.",
