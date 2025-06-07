@@ -407,7 +407,7 @@ export default function Course() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Research Articles & Tools</CardTitle>
+                    <CardTitle>Research Articles & Other Resources</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
