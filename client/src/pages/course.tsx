@@ -352,7 +352,8 @@ export default function Course() {
               <div className="grid gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Google Sheets Resources</CardTitle>
+                    <CardTitle>Google Sheets Resources & Tools
+</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">Essential nutrition tracking sheets and reference tables. 
