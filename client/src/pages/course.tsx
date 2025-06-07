@@ -142,10 +142,9 @@ export default function Course() {
 
           {/* Course Content */}
           <Tabs defaultValue="videos" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="videos">Video Lessons</TabsTrigger>
               <TabsTrigger value="resources">Resources</TabsTrigger>
-              <TabsTrigger value="progress">Your Progress</TabsTrigger>
             </TabsList>
 
             <TabsContent value="videos" className="space-y-4">
@@ -413,38 +412,7 @@ export default function Course() {
               </div>
             </TabsContent>
 
-            <TabsContent value="progress">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Your Learning Journey</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span className="font-medium">Course Completion</span>
-                        <span className="text-sm text-gray-600">0% Complete</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className="bg-primary h-2 rounded-full" style={{ width: '0%' }}></div>
-                      </div>
-                    </div>
 
-                    <Separator />
-
-                    <div className="text-center py-8">
-                      <h3 className="text-xl font-semibold mb-4">Ready to Begin?</h3>
-                      <p className="text-gray-600 mb-6">
-                        Start with Module 1 to lay the foundation for your nutrition transformation.
-                      </p>
-                      <Button size="lg" className="bg-primary hover:bg-primary/90">
-                        Begin Your Journey
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
           </Tabs>
 
           {/* Support Section */}
