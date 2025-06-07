@@ -390,9 +390,7 @@ export default function Course() {
                         variant="outline" 
                         className="w-full justify-start"
                         onClick={() => window.open('https://docs.google.com/spreadsheets/d/11L8fft6894kZKf6JcBaKvSpcpGoLvoSzTzPmkqGlv_A/edit?gid=369675530#gid=369675530', '_blank')}
-                      >
-                        Measurements Tracker
-                      </Button>
+                      >Measurements Tracker (go to "File" then "Make a Copy" to use it)</Button>
                     </div>
                   </CardContent>
                 </Card>
