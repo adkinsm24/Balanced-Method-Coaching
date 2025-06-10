@@ -16,7 +16,7 @@ import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react
 const courseVideos = [
   { id: 0, title: "Introduction & Program Overview", videoUrl: "https://player.vimeo.com/video/1090975324", badge: "Start Here" },
   { id: 1, title: "Downloading MyFitnessPal", videoUrl: "https://player.vimeo.com/video/1090987690", badge: "Essential" },
-  { id: 2, title: "Logging on MyFitnessPal", videoUrl: "https://player.vimeo.com/video/1091003401", badge: "Tutorial" },
+  { id: 2, title: "Logging on MyFitnessPal", videoUrl: "https://player.vimeo.com/video/1092200453", badge: "Tutorial" },
   { id: 3, title: "Establishing Your Nutritional Goals", videoUrl: "https://player.vimeo.com/video/1090997254", badge: "Foundation" },
   { id: 4, title: "Roadmap to Achieving Your Nutritional Goals", videoUrl: "https://player.vimeo.com/video/1090997641", badge: "Strategy" },
   { id: 5, title: "Strategies to Achieving Your Nutritional Goals Over Time", videoUrl: "https://player.vimeo.com/video/1090998630", badge: "Long-term" },
