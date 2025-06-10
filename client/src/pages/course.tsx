@@ -282,7 +282,7 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="w-full"
-                                  onClick={() => window.open('https://www.youtube.com/watch?v=4MdSNx-2Wy8', '_blank')}
+                                  onClick={() => window.open('https://www.youtube.com/watch?v=AKGrmY8OSHM&t=38s', '_blank')}
                                 >
                                   NSDR with Andrew Huberman
                                 </Button>
@@ -403,7 +403,7 @@ export default function Course() {
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
-                        onClick={() => window.open('https://www.youtube.com/watch?v=4MdSNx-2Wy8', '_blank')}
+                        onClick={() => window.open('https://www.youtube.com/watch?v=AKGrmY8OSHM&t=38s', '_blank')}
                       >NSDR with Andrew Huberman (10-minute relaxation meditation)</Button>
                     </div>
                   </CardContent>
