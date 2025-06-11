@@ -228,7 +228,7 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1PiKDrp6GBfLuW06iqCT24W2zVANycrU5UAg1huJpymc/edit?gid=634280370#gid=634280370', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1dWf-Dj6Ix7ZedD2mvwm4ZQuUi0PUA3T2fwhuMy43KrU/edit?gid=129396426#gid=129396426', '_blank')}
                                 >
                                   Table of Protein
                                 </Button>
@@ -255,7 +255,7 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1PiKDrp6GBfLuW06iqCT24W2zVANycrU5UAg1huJpymc/edit?gid=634280370#gid=634280370', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1dWf-Dj6Ix7ZedD2mvwm4ZQuUi0PUA3T2fwhuMy43KrU/edit?gid=129396426#gid=129396426', '_blank')}
                                 >
                                   Table of Protein
                                 </Button>
@@ -375,7 +375,7 @@ export default function Course() {
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
-                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1PiKDrp6GBfLuW06iqCT24W2zVANycrU5UAg1huJpymc/edit?gid=634280370#gid=634280370', '_blank')}
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1dWf-Dj6Ix7ZedD2mvwm4ZQuUi0PUA3T2fwhuMy43KrU/edit?gid=129396426#gid=129396426', '_blank')}
                       >
                         Table of Protein
                       </Button>
