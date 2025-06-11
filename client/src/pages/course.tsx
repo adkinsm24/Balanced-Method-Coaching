@@ -372,9 +372,7 @@ export default function Course() {
                         variant="outline" 
                         className="w-full justify-start"
                         onClick={() => window.open('https://docs.google.com/spreadsheets/d/1dWf-Dj6Ix7ZedD2mvwm4ZQuUi0PUA3T2fwhuMy43KrU/edit?gid=129396426#gid=129396426', '_blank')}
-                      >
-                        Table of Protein
-                      </Button>
+                      >Table of Proteins</Button>
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
