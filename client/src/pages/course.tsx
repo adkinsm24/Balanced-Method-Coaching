@@ -182,6 +182,22 @@ export default function Course() {
                               />
                             </div>
 
+                            {/* Summary Document Download */}
+                            <div className="mt-4">
+                              <Button 
+                                variant="default" 
+                                className="w-full bg-primary/10 hover:bg-primary/20 text-primary border-primary"
+                                onClick={() => {
+                                  const link = document.createElement('a');
+                                  link.href = `/Part-${video.id}-Summary.docx`;
+                                  link.download = `Part-${video.id}-Summary.docx`;
+                                  link.click();
+                                }}
+                              >
+                                📄 Download Part {video.id} Summary
+                              </Button>
+                            </div>
+
                             {/* Part 2 specific links */}
                             {video.id === 2 && (
                               <div className="flex flex-col sm:flex-row gap-3 mt-4">
