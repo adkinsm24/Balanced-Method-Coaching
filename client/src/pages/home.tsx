@@ -57,21 +57,20 @@ export default function Home() {
             Real Results from Real People
           </h2>
           
-          {/* Video Section - Replace VIDEO_ID with actual working YouTube video ID */}
+          {/* Video Section */}
           <div className="max-w-4xl mx-auto mb-16">
             <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center border-2 border-red-200">
-                <div className="text-center p-8">
-                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-red-700 mb-2">Video Configuration Required</h3>
-                  <p className="text-red-600 mb-3">The current video ID (4MdSNx-2Wy8) has been removed by the uploader</p>
-                  <p className="text-sm text-red-500">Please provide a new YouTube video ID to display client results</p>
-                </div>
-              </div>
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/4MdSNx-2Wy8?feature=oembed"
+                title="Client Results"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="absolute inset-0"
+              ></iframe>
             </div>
           </div>
         </div>

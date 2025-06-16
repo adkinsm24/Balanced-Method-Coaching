@@ -115,17 +115,17 @@ export default function About() {
             <div className="-mx-4 lg:-mx-8 xl:-mx-16">
               <div className="grid md:grid-cols-3 gap-1 md:gap-2">
                 <img 
-                  src="/1otf.jpg"
+                  src={otf1Image}
                   alt="Coach Mark with Orangetheory Fitness class group photo"
                   className="w-full h-auto max-h-[500px] object-contain shadow-lg"
                 />
                 <img 
-                  src="/2otf.jpg"
+                  src={otf2Image}
                   alt="Energetic Orangetheory Fitness class celebration with members"
                   className="w-full h-auto max-h-[500px] object-contain shadow-lg"
                 />
                 <img 
-                  src="/3otf.jpg"
+                  src={otf3Image}
                   alt="Orangetheory Fitness team and members group photo"
                   className="w-full h-auto max-h-[500px] object-contain shadow-lg"
                 />
