@@ -379,9 +379,7 @@ export default function Course() {
                         variant="outline" 
                         className="w-full justify-start"
                         onClick={() => window.open('https://docs.google.com/spreadsheets/d/1nQwBITawpOLODsuVve0hFD7QckwgGWvwcE4y6MItdoE/edit?gid=774705126#gid=774705126', '_blank')}
-                      >
-                        Weight Change in Cooked Foods
-                      </Button>
+                      >Weight Changes in Cooked Foods</Button>
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
