@@ -1,0 +1,83 @@
+Part 2 – Logging on MyFitnessPal
+
+Key Takeaways
+
+Accurate food logging is essential for understanding your intake and making the right adjustments.
+
+Use grams and a kitchen scale for the most precise entries—avoid logging in cups or ounces when possible.
+
+Always verify nutrition entries in the app by checking the calories, macros, fiber, sodium, and saturated fat.
+
+Create custom foods or meals when needed to avoid repeated searches and ensure accuracy.
+
+Action Steps
+
+Get a Digital Kitchen Scale
+- Inexpensive and available in most stores or online
+- Essential for weighing packaged and cooked items
+
+Log Using Grams
+- When possible, choose gram-based entries (e.g., 1g x serving weight)
+- Weigh items before cooking for the best accuracy
+
+Verify Nutritional Information
+- Match calories, macros, fiber, sodium, and sat fat with food labels
+- Prefer entries with a green checkmark, but always double-check
+
+Create Custom Foods
+- For packaged items not found in the app or when using international versions
+- Go to: More > My Meals, Recipes & Foods > Foods > Create a Food
+
+Create Meals & Recipes
+- Group items you eat together often
+- Save meals (like a protein shake or burrito bowl) to save time
+- Use "Create a Recipe" for mixed dishes like chili, stew, etc.
+
+Log All Food & Beverages
+- Don't forget sauces, snacks, bites while cooking, or restaurant meals
+- Estimate when necessary, but aim for consistency over perfection
+
+Log Meals Out 
+- Search for the restaurants' nutritional guide online
+- Use ChatGPT or other AI tools to help with logging your meals out
+
+Common Mistakes to Avoid
+
+- Logging by volume (e.g., cups) instead of weight (grams)
+- Trusting inaccurate entries without cross-checking
+- Skipping sauces, oils, or snacks
+- Assuming all meat logs are the same (check brand or label)
+
+Related Resources
+
+📈 Calories in Foods & Drinks + Substitutes (Excel)
+📈 Weight Change in Cooked Foods (Excel)
+
+Video Timestamps 
+
+00:00 Keys to Success 
+00:40 What to Type in the Search Bar 
+02:15 Verifying the Nutritional Facts Match 
+04:04 Adjusting Serving Size/Amount of Servings 
+05:51 Creating a Food 
+08:38 Advantages of Foods/Meals/Recipes 
+09:24 Which Foods to Create 
+11:33 Foods I Do Not Create 
+12:09 Short Recap 
+12:34 Why These 5 Nutritional Components Are Key to Your Health 
+15:26 Importance of Weighing Foods vs Logging in Volume 
+17:25 Process of Logging a Snack 
+19:17 Logging Cooked Foods (1 serving) 
+21:30 Comparing Uncooked Logs 
+21:47 Logging Cooked Foods in Bulk 
+22:44 Storing Food (option 1) 
+22:58 Storing Food (option 2) 
+23:48 Comparing Cooked Logs 
+25:17 My Morning Shake 
+27:03 Creating a Meal from Main Menu 
+29:01 Putting a Plate Together from Meal Prep 
+29:45 Creating a Meal from Items in Diary 
+30:45 Creating a Recipe 
+35:45 Editing Recipe + Adding a Created Food 
+37:21 Storing Recipe + Calculating Weight of 1 Serving 
+38:05 Logging Meals Out
