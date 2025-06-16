@@ -204,7 +204,7 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1j3L_knPu0nGylpNZ1BdE6CqGQaGQNXRvSpZSss4i22o/edit?gid=1193774805#gid=1193774805', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1LSU0hWU85rRtYBab6mXW4wdzF6BYhDcbb9twknvw_hg/edit?gid=2075152349#gid=2075152349', '_blank')}
                                 >
                                   Calories in Foods & Drinks + Substitutes
                                 </Button>
@@ -262,7 +262,7 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1j3L_knPu0nGylpNZ1BdE6CqGQaGQNXRvSpZSss4i22o/edit?gid=1193774805#gid=1193774805', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1LSU0hWU85rRtYBab6mXW4wdzF6BYhDcbb9twknvw_hg/edit?gid=2075152349#gid=2075152349', '_blank')}
                                 >
                                   Calories in Foods & Drinks + Substitutes
                                 </Button>
@@ -373,7 +373,7 @@ export default function Course() {
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
-                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1j3L_knPu0nGylpNZ1BdE6CqGQaGQNXRvSpZSss4i22o/edit?gid=1193774805#gid=1193774805', '_blank')}
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1LSU0hWU85rRtYBab6mXW4wdzF6BYhDcbb9twknvw_hg/edit?gid=2075152349#gid=2075152349', '_blank')}
                       >
                         Calories in Foods & Drinks + Substitutes
                       </Button>
