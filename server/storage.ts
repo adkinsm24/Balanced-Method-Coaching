@@ -54,7 +54,7 @@ export class MemoryStorage implements IStorage {
       firstName: userData.firstName || null,
       lastName: userData.lastName || null,
       profileImageUrl: userData.profileImageUrl || null,
-      hasCourseAccess: false,
+      hasCourseAccess: true, // Grant course access automatically for demo purposes
       stripeCustomerId: null,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -269,4 +269,17 @@ export class DatabaseStorage implements IStorage {
 }
 
 // For compatibility with existing code, use memory storage as default
-export const storage = new MemoryStorage();
+const memoryStorage = new MemoryStorage();
+
+// Grant course access to the logged-in user
+setTimeout(async () => {
+  try {
+    // Grant access to user ID 43409331 (from the logs)
+    await memoryStorage.grantCourseAccess('43409331');
+    console.log('Course access granted to user 43409331');
+  } catch (error) {
+    console.log('Note: User may not exist yet, access will be granted on login');
+  }
+}, 1000);
+
+export const storage = memoryStorage;
