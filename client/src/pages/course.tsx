@@ -188,13 +188,11 @@ export default function Course() {
                                 variant="default" 
                                 className="w-full bg-primary/10 hover:bg-primary/20 text-primary border-primary"
                                 onClick={() => {
-                                  const link = document.createElement('a');
-                                  link.href = `/Part-${video.id}-Summary.docx`;
-                                  link.download = `Part-${video.id}-Summary.docx`;
-                                  link.click();
+                                  window.open(`/api/download/Part-${video.id}-Summary.docx`, '_blank');
                                 }}
                               >
-                                📄 Download Part {video.id} Summary
+                                <Download className="w-4 h-4 mr-2" />
+                                Download Part {video.id} Summary
                               </Button>
                             </div>
 

@@ -491,6 +491,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Download route for course documents
+  app.get('/api/download/:filename', isAuthenticated, (req, res) => {
+    const filename = req.params.filename;
+    
+    // Security check - only allow specific document downloads
+    const allowedFiles = [
+      'Part-0-Summary.docx', 'Part-1-Summary.docx', 'Part-2-Summary.docx', 'Part-3-Summary.docx',
+      'Part-4-Summary.docx', 'Part-5-Summary.docx', 'Part-6-Summary.docx', 'Part-7-Summary.docx',
+      'Part-8-Summary.docx', 'Part-9-Summary.docx', 'Part-10-Summary.docx', 'Part-11-Summary.docx'
+    ];
+    
+    if (!allowedFiles.includes(filename)) {
+      return res.status(404).json({ error: "File not found" });
+    }
+    
+    const filePath = `./public/${filename}`;
+    
+    // Set proper headers for download
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    
+    res.download(filePath, filename, (error) => {
+      if (error) {
+        console.error('Download error:', error);
+        if (!res.headersSent) {
+          res.status(404).json({ error: "File not found" });
+        }
+      }
+    });
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
