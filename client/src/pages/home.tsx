@@ -63,10 +63,11 @@ export default function Home() {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/4MdSNx-2Wy8"
-                title="Real Results from Real People"
+                src="https://www.youtube.com/embed/4MdSNx-2Wy8?feature=oembed"
+                title="Client Results"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
                 className="absolute inset-0"
               ></iframe>
