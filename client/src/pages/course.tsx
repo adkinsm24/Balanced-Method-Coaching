@@ -189,8 +189,8 @@ export default function Course() {
                                 className="w-full bg-primary/10 hover:bg-primary/20 text-primary border-primary"
                                 onClick={() => {
                                   const link = document.createElement('a');
-                                  link.href = `/Part-${video.id}-Summary.txt`;
-                                  link.download = `Part-${video.id}-Summary.txt`;
+                                  link.href = `/Part-${video.id}-Summary.docx`;
+                                  link.download = `Part-${video.id}-Summary.docx`;
                                   link.click();
                                 }}
                               >
