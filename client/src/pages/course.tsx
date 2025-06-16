@@ -14,18 +14,141 @@ import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react
 // To add Vimeo videos: Replace empty videoUrl with your Vimeo video URLs
 // Example: "https://vimeo.com/123456789" or "https://player.vimeo.com/video/123456789"
 const courseVideos = [
-  { id: 0, title: "Introduction & Program Overview", videoUrl: "https://player.vimeo.com/video/1090975324", badge: "Start Here" },
-  { id: 1, title: "Downloading MyFitnessPal", videoUrl: "https://player.vimeo.com/video/1090987690", badge: "Essential" },
-  { id: 2, title: "Logging on MyFitnessPal", videoUrl: "https://player.vimeo.com/video/1092200453", badge: "Tutorial" },
-  { id: 3, title: "Establishing Your Nutritional Goals", videoUrl: "https://player.vimeo.com/video/1090997254", badge: "Foundation" },
-  { id: 4, title: "Roadmap to Achieving Your Nutritional Goals", videoUrl: "https://player.vimeo.com/video/1090997641", badge: "Strategy" },
-  { id: 5, title: "Strategies to Achieving Your Nutritional Goals Over Time", videoUrl: "https://player.vimeo.com/video/1090998630", badge: "Long-term" },
-  { id: 6, title: "Other Factors Influencing Fat Loss", videoUrl: "https://player.vimeo.com/video/1090999246", badge: "Advanced" },
-  { id: 7, title: "Tracking Progress", videoUrl: "https://player.vimeo.com/video/1090999757", badge: "Monitoring" },
-  { id: 8, title: "Progress Expectations and Interpreting Check-in Results", videoUrl: "https://player.vimeo.com/video/1091000786", badge: "Analysis" },
-  { id: 9, title: "Breaking Through Plateaus", videoUrl: "https://player.vimeo.com/video/1091001199", badge: "Problem-solving" },
-  { id: 10, title: "Post-Goal Mindset", videoUrl: "https://player.vimeo.com/video/1091001699", badge: "Maintenance" },
-  { id: 11, title: "Getting Started & Closing Words", videoUrl: "https://player.vimeo.com/video/1091002509", badge: "Action Time" },
+  { 
+    id: 0, 
+    title: "Introduction & Program Overview", 
+    videoUrl: "https://player.vimeo.com/video/1090975324", 
+    badge: "Start Here",
+    timestamps: [
+      { time: "0:00", label: "Welcome & Course Overview" },
+      { time: "2:30", label: "What You'll Learn" },
+      { time: "5:15", label: "Getting the Most Out of This Course" }
+    ]
+  },
+  { 
+    id: 1, 
+    title: "Downloading MyFitnessPal", 
+    videoUrl: "https://player.vimeo.com/video/1090987690", 
+    badge: "Essential",
+    timestamps: [
+      { time: "0:00", label: "Introduction" },
+      { time: "1:20", label: "Download Process" },
+      { time: "3:45", label: "Setting Up Your Account" }
+    ]
+  },
+  { 
+    id: 2, 
+    title: "Logging on MyFitnessPal", 
+    videoUrl: "https://player.vimeo.com/video/1092200453", 
+    badge: "Tutorial",
+    timestamps: [
+      { time: "0:00", label: "Getting Started with Logging" },
+      { time: "2:10", label: "Food Database Search" },
+      { time: "4:30", label: "Creating Custom Foods" },
+      { time: "7:00", label: "Barcode Scanner" }
+    ]
+  },
+  { 
+    id: 3, 
+    title: "Establishing Your Nutritional Goals", 
+    videoUrl: "https://player.vimeo.com/video/1090997254", 
+    badge: "Foundation",
+    timestamps: [
+      { time: "0:00", label: "Setting Realistic Goals" },
+      { time: "3:20", label: "Calorie Calculations" },
+      { time: "6:45", label: "Macronutrient Ratios" }
+    ]
+  },
+  { 
+    id: 4, 
+    title: "Roadmap to Achieving Your Nutritional Goals", 
+    videoUrl: "https://player.vimeo.com/video/1090997641", 
+    badge: "Strategy",
+    timestamps: [
+      { time: "0:00", label: "My Personal Approach" },
+      { time: "2:15", label: "Advanced Tracking Methods" },
+      { time: "5:30", label: "Making Multiple Changes" }
+    ]
+  },
+  { 
+    id: 5, 
+    title: "Strategies to Achieving Your Nutritional Goals Over Time", 
+    videoUrl: "https://player.vimeo.com/video/1090998630", 
+    badge: "Long-term",
+    timestamps: [
+      { time: "0:00", label: "Long-term Success Mindset" },
+      { time: "2:45", label: "Consistency Strategies" },
+      { time: "5:20", label: "Habit Formation" }
+    ]
+  },
+  { 
+    id: 6, 
+    title: "Other Factors Influencing Fat Loss", 
+    videoUrl: "https://player.vimeo.com/video/1090999246", 
+    badge: "Advanced",
+    timestamps: [
+      { time: "0:00", label: "Beyond Nutrition" },
+      { time: "1:30", label: "Sleep & Recovery" },
+      { time: "4:00", label: "Stress Management" },
+      { time: "6:15", label: "Exercise Considerations" }
+    ]
+  },
+  { 
+    id: 7, 
+    title: "Tracking Progress", 
+    videoUrl: "https://player.vimeo.com/video/1090999757", 
+    badge: "Monitoring",
+    timestamps: [
+      { time: "0:00", label: "Beyond the Scale" },
+      { time: "2:20", label: "Body Measurements" },
+      { time: "4:50", label: "Progress Photos" },
+      { time: "7:10", label: "Performance Metrics" }
+    ]
+  },
+  { 
+    id: 8, 
+    title: "Progress Expectations and Interpreting Check-in Results", 
+    videoUrl: "https://player.vimeo.com/video/1091000786", 
+    badge: "Analysis",
+    timestamps: [
+      { time: "0:00", label: "Realistic Expectations" },
+      { time: "3:00", label: "Reading Your Data" },
+      { time: "5:30", label: "When to Make Adjustments" }
+    ]
+  },
+  { 
+    id: 9, 
+    title: "Breaking Through Plateaus", 
+    videoUrl: "https://player.vimeo.com/video/1091001199", 
+    badge: "Problem-solving",
+    timestamps: [
+      { time: "0:00", label: "Understanding Plateaus" },
+      { time: "2:40", label: "Troubleshooting Strategies" },
+      { time: "5:15", label: "Making Strategic Changes" }
+    ]
+  },
+  { 
+    id: 10, 
+    title: "Post-Goal Mindset", 
+    videoUrl: "https://player.vimeo.com/video/1091001699", 
+    badge: "Maintenance",
+    timestamps: [
+      { time: "0:00", label: "Maintenance Phase" },
+      { time: "2:30", label: "Preventing Regain" },
+      { time: "4:45", label: "Long-term Success" }
+    ]
+  },
+  { 
+    id: 11, 
+    title: "Getting Started & Closing Words", 
+    videoUrl: "https://player.vimeo.com/video/1091002509", 
+    badge: "Action Time",
+    timestamps: [
+      { time: "0:00", label: "Your Next Steps" },
+      { time: "1:45", label: "Implementation Plan" },
+      { time: "3:30", label: "Final Motivation" }
+    ]
+  },
 ];
 
 const videoDescriptions = [
@@ -169,9 +292,10 @@ export default function Course() {
                             {/* Embedded Vimeo Player */}
                             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
                               <iframe
+                                id={`video-${video.id}`}
                                 src={video.videoUrl.includes('player.vimeo.com') 
-                                  ? video.videoUrl 
-                                  : video.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/')
+                                  ? `${video.videoUrl}?title=0&byline=0&portrait=0` 
+                                  : video.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/') + '?title=0&byline=0&portrait=0'
                                 }
                                 width="100%"
                                 height="100%"
@@ -181,6 +305,39 @@ export default function Course() {
                                 title={`Part ${video.id}: ${video.title}`}
                               />
                             </div>
+
+                            {/* Video Timestamps */}
+                            {video.timestamps && (
+                              <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+                                <h4 className="font-semibold text-sm text-gray-700 mb-3 flex items-center gap-2">
+                                  <Clock className="w-4 h-4" />
+                                  Video Timestamps
+                                </h4>
+                                <div className="grid gap-2">
+                                  {video.timestamps.map((timestamp, idx) => (
+                                    <button
+                                      key={idx}
+                                      onClick={() => {
+                                        const timeInSeconds = timestamp.time.split(':').reduce((acc, time) => (60 * acc) + +time, 0);
+                                        const iframe = document.getElementById(`video-${video.id}`) as HTMLIFrameElement;
+                                        if (iframe) {
+                                          const newSrc = iframe.src.split('#')[0] + `#t=${timeInSeconds}s`;
+                                          iframe.src = newSrc;
+                                        }
+                                      }}
+                                      className="flex items-center justify-between p-2 text-left bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded transition-colors group"
+                                    >
+                                      <span className="text-sm text-gray-700 group-hover:text-blue-700">
+                                        {timestamp.label}
+                                      </span>
+                                      <span className="text-xs font-mono text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                                        {timestamp.time}
+                                      </span>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
 
                             {/* Summary Document Download */}
                             <div className="mt-4">
