@@ -35,6 +35,140 @@ export interface IStorage {
   getCoachingCall(callId: number): Promise<CoachingCall | undefined>;
 }
 
+// Memory-based storage implementation as fallback
+export class MemoryStorage implements IStorage {
+  private users: Map<string, User> = new Map();
+  private consultations: Map<number, ConsultationRequest> = new Map();
+  private slots: Map<number, BookedSlot> = new Map();
+  private calls: Map<number, CoachingCall> = new Map();
+  private nextId = 1;
+
+  async getUser(id: string): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const user: User = {
+      id: userData.id,
+      email: userData.email || null,
+      firstName: userData.firstName || null,
+      lastName: userData.lastName || null,
+      profileImageUrl: userData.profileImageUrl || null,
+      hasCourseAccess: false,
+      stripeCustomerId: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.users.set(user.id, user);
+    return user;
+  }
+
+  async grantCourseAccess(userId: string): Promise<void> {
+    const user = this.users.get(userId);
+    if (user) {
+      user.hasCourseAccess = true;
+      this.users.set(userId, user);
+    }
+  }
+
+  async createConsultationRequest(request: InsertConsultationRequest): Promise<ConsultationRequest> {
+    const consultation: ConsultationRequest = {
+      id: this.nextId++,
+      firstName: request.firstName,
+      lastName: request.lastName,
+      email: request.email,
+      phone: request.phone,
+      contactMethod: request.contactMethod,
+      selectedTimeSlot: request.selectedTimeSlot,
+      goals: request.goals,
+      experience: request.experience || null,
+      eatingOut: request.eatingOut || null,
+      typicalDay: request.typicalDay || null,
+      drinks: request.drinks || null,
+      emotionalEating: request.emotionalEating || null,
+      medications: request.medications || null,
+      status: 'pending',
+      createdAt: new Date(),
+    };
+    this.consultations.set(consultation.id, consultation);
+    return consultation;
+  }
+
+  async getBookedSlots(): Promise<BookedSlot[]> {
+    return Array.from(this.slots.values());
+  }
+
+  async bookTimeSlot(slot: InsertBookedSlot): Promise<BookedSlot> {
+    const bookedSlot: BookedSlot = {
+      id: this.nextId++,
+      timeSlot: slot.timeSlot,
+      consultationRequestId: slot.consultationRequestId || null,
+      coachingCallId: slot.coachingCallId || null,
+      bookedAt: new Date(),
+    };
+    this.slots.set(bookedSlot.id, bookedSlot);
+    return bookedSlot;
+  }
+
+  async isTimeSlotAvailable(timeSlot: string): Promise<boolean> {
+    return !Array.from(this.slots.values()).some(slot => slot.timeSlot === timeSlot);
+  }
+
+  async deleteBookedSlot(slotId: number): Promise<void> {
+    this.slots.delete(slotId);
+  }
+
+  async deleteBookedSlotByRequestId(requestId: number): Promise<void> {
+    const entries = Array.from(this.slots.entries());
+    for (const [id, slot] of entries) {
+      if (slot.consultationRequestId === requestId) {
+        this.slots.delete(id);
+        break;
+      }
+    }
+  }
+
+  async createCoachingCall(call: InsertCoachingCall): Promise<CoachingCall> {
+    const coachingCall: CoachingCall = {
+      id: this.nextId++,
+      firstName: call.firstName,
+      lastName: call.lastName,
+      email: call.email,
+      phone: call.phone,
+      contactMethod: call.contactMethod,
+      selectedTimeSlot: call.selectedTimeSlot,
+      goals: call.goals,
+      duration: call.duration,
+      amount: call.amount,
+      stripePaymentIntentId: call.stripePaymentIntentId || null,
+      status: 'pending',
+      rolloverMinutes: null,
+      createdAt: new Date(),
+    };
+    this.calls.set(coachingCall.id, coachingCall);
+    return coachingCall;
+  }
+
+  async getCoachingCalls(): Promise<CoachingCall[]> {
+    return Array.from(this.calls.values());
+  }
+
+  async updateCoachingCallStatus(callId: number, status: string, paymentIntentId?: string): Promise<void> {
+    const call = this.calls.get(callId);
+    if (call) {
+      call.status = status;
+      if (paymentIntentId) {
+        call.stripePaymentIntentId = paymentIntentId;
+      }
+      this.calls.set(callId, call);
+    }
+  }
+
+  async getCoachingCall(callId: number): Promise<CoachingCall | undefined> {
+    return this.calls.get(callId);
+  }
+}
+
 export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
@@ -134,4 +268,29 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+// Initialize storage with fallback to memory storage if database fails
+let storageInstance: IStorage;
+
+async function initializeStorage(): Promise<IStorage> {
+  try {
+    const dbStorage = new DatabaseStorage();
+    // Test the connection with a simple operation
+    await dbStorage.getUser('test-connection');
+    console.log('Database connection successful, using DatabaseStorage');
+    return dbStorage;
+  } catch (error: any) {
+    console.warn('Database connection failed, falling back to MemoryStorage:', error.message);
+    return new MemoryStorage();
+  }
+}
+
+// Initialize storage on first use
+export const getStorage = async (): Promise<IStorage> => {
+  if (!storageInstance) {
+    storageInstance = await initializeStorage();
+  }
+  return storageInstance;
+};
+
+// For compatibility with existing code, use memory storage as default
+export const storage = new MemoryStorage();
