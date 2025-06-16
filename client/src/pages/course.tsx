@@ -211,7 +211,7 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1nQwBITawpOLODsuVve0hFD7QckwgGWvwcE4y6MItdoE/edit?gid=0#gid=0', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1nQwBITawpOLODsuVve0hFD7QckwgGWvwcE4y6MItdoE/edit?gid=774705126#gid=774705126', '_blank')}
                                 >
                                   Weight Change in Cooked Foods
                                 </Button>
@@ -380,7 +380,7 @@ export default function Course() {
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
-                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1nQwBITawpOLODsuVve0hFD7QckwgGWvwcE4y6MItdoE/edit?gid=0#gid=0', '_blank')}
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1nQwBITawpOLODsuVve0hFD7QckwgGWvwcE4y6MItdoE/edit?gid=774705126#gid=774705126', '_blank')}
                       >
                         Weight Change in Cooked Foods
                       </Button>
