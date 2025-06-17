@@ -45,26 +45,25 @@ const videoDescriptions = [
 
 export default function Course() {
   const { toast } = useToast();
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isLoading, user, isAuthenticated } = useAuth();
 
-  // Redirect to login if not authenticated
+  // Check authentication and course access
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (isLoading) return; // Wait for auth state to load
+    
+    if (!user) {
       toast({
         title: "Please log in",
         description: "You need to log in to access course content.",
         variant: "destructive",
       });
       setTimeout(() => {
-        window.location.href = "/api/login";
+        window.location.href = "/auth";
       }, 1000);
       return;
     }
-  }, [isAuthenticated, isLoading, toast]);
 
-  // Check if user has course access
-  useEffect(() => {
-    if (user && !(user as any).hasCourseAccess) {
+    if (!user.hasCourseAccess) {
       toast({
         title: "Course Access Required",
         description: "Please purchase the course to access this content.",
@@ -75,7 +74,7 @@ export default function Course() {
       }, 2000);
       return;
     }
-  }, [user, toast]);
+  }, [user, isLoading, toast]);
 
   if (isLoading) {
     return (
@@ -85,7 +84,7 @@ export default function Course() {
     );
   }
 
-  if (!(user as any)?.hasCourseAccess) {
+  if (!user || !user.hasCourseAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md">
