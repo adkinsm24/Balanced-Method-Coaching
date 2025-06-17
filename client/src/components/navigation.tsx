@@ -1,12 +1,12 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/useAuth";
 import { User, LogOut } from "lucide-react";
 import logoImage from "@assets/bmc_1749151545858.jpg";
 
 export default function Navigation() {
   const [location] = useLocation();
-  const { user, logoutMutation } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-50/95 via-red-50/95 to-pink-50/95 backdrop-blur-sm shadow-lg border-b border-orange-200/30">
@@ -46,7 +46,7 @@ export default function Navigation() {
           </Link>
 
           {/* Course access for authenticated users */}
-          {user && user.hasCourseAccess && (
+          {isAuthenticated && (user as any)?.hasCourseAccess && (
             <Link href="/course">
               <Button 
                 variant={location === "/course" ? "default" : "ghost"}
@@ -56,28 +56,26 @@ export default function Navigation() {
           )}
 
           {/* Authentication buttons */}
-          {user ? (
+          {isAuthenticated ? (
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => logoutMutation.mutate()}
+              onClick={() => window.location.href = '/api/logout'}
               className="flex items-center gap-1 ml-6"
-              disabled={logoutMutation.isPending}
             >
               <LogOut className="w-4 h-4" />
               Logout
             </Button>
           ) : (
-            <Link href="/auth">
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-1 ml-6"
-              >
-                <User className="w-4 h-4" />
-                Login
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.location.href = '/api/login'}
+              className="flex items-center gap-1 ml-6"
+            >
+              <User className="w-4 h-4" />
+              Login
+            </Button>
           )}
           
           {/* Social Media Quick Access */}

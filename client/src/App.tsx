@@ -3,8 +3,6 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/hooks/use-auth";
-import { ProtectedRoute } from "@/lib/protected-route";
 import Navigation from "@/components/navigation";
 import SocialMedia from "@/components/social-media";
 import Home from "@/pages/home";
@@ -18,24 +16,22 @@ import Success from "@/pages/success";
 import CoachingSuccess from "@/pages/coaching-success";
 import Course from "@/pages/course";
 import Admin from "@/pages/admin";
-import AuthPage from "@/pages/auth-page";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
-      <ProtectedRoute path="/" component={Home} />
+      <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/coaching-offers" component={CoachingOffers} />
-      <ProtectedRoute path="/book-call" component={BookCall} />
-      <ProtectedRoute path="/book-coaching-call" component={BookCoachingCall} />
-      <ProtectedRoute path="/checkout" component={Checkout} />
-      <ProtectedRoute path="/checkout-coaching" component={CheckoutCoaching} />
-      <ProtectedRoute path="/success" component={Success} />
-      <ProtectedRoute path="/coaching-success" component={CoachingSuccess} />
-      <ProtectedRoute path="/course" component={Course} />
-      <ProtectedRoute path="/admin" component={() => <Admin />} />
-      <Route path="/auth" component={AuthPage} />
+      <Route path="/book-call" component={BookCall} />
+      <Route path="/book-coaching-call" component={BookCoachingCall} />
+      <Route path="/checkout" component={Checkout} />
+      <Route path="/checkout-coaching" component={CheckoutCoaching} />
+      <Route path="/success" component={Success} />
+      <Route path="/coaching-success" component={CoachingSuccess} />
+      <Route path="/course" component={Course} />
+      <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -44,14 +40,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Navigation />
-          <SocialMedia variant="floating" />
-          <Router />
-        </TooltipProvider>
-      </AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Navigation />
+        <SocialMedia variant="floating" />
+        <Router />
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }
