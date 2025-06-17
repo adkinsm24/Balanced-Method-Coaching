@@ -244,7 +244,7 @@ export default function Course() {
                                 <Button 
                                   variant="outline" 
                                   className="flex-1"
-                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1a7wqi8zM7Evggw00XQrZR-n11eg-ATdMQc0p9MDl8pI/edit?pli=1&gid=689816511#gid=689816511', '_blank')}
+                                  onClick={() => window.open('https://docs.google.com/spreadsheets/d/1WtKHPO8zuJJjLg2feDBjpfGnNR9uQ9Crmp8ekbCoPCs/edit?gid=658011043#gid=658011043', '_blank')}
                                 >
                                   Carbs and Fiber
                                 </Button>
@@ -385,7 +385,7 @@ export default function Course() {
                       <Button 
                         variant="outline" 
                         className="w-full justify-start"
-                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1a7wqi8zM7Evggw00XQrZR-n11eg-ATdMQc0p9MDl8pI/edit?pli=1&gid=689816511#gid=689816511', '_blank')}
+                        onClick={() => window.open('https://docs.google.com/spreadsheets/d/1WtKHPO8zuJJjLg2feDBjpfGnNR9uQ9Crmp8ekbCoPCs/edit?gid=658011043#gid=658011043', '_blank')}
                       >
                         Carbs and Fiber
                       </Button>
