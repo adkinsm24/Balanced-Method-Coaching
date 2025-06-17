@@ -5,6 +5,7 @@ import {
   coachingCalls,
   type User,
   type UpsertUser,
+  type InsertUser,
   type InsertConsultationRequest,
   type ConsultationRequest,
   type BookedSlot,
@@ -16,9 +17,11 @@ import { db } from "./db";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
+  getUser(id: number): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
   upsertUser(user: UpsertUser): Promise<User>;
-  grantCourseAccess(userId: string): Promise<void>;
+  grantCourseAccess(userId: number): Promise<void>;
   
   // Booking operations
   createConsultationRequest(request: InsertConsultationRequest): Promise<ConsultationRequest>;
@@ -37,23 +40,65 @@ export interface IStorage {
 
 // Memory-based storage implementation as fallback
 export class MemoryStorage implements IStorage {
-  private users: Map<string, User> = new Map();
+  private users: Map<number, User> = new Map();
   private consultations: Map<number, ConsultationRequest> = new Map();
   private slots: Map<number, BookedSlot> = new Map();
   private calls: Map<number, CoachingCall> = new Map();
+  private nextUserId = 1;
   private nextId = 1;
 
-  async getUser(id: string): Promise<User | undefined> {
+  async getUser(id: number): Promise<User | undefined> {
     return this.users.get(id);
   }
 
-  async upsertUser(userData: UpsertUser): Promise<User> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    for (const user of this.users.values()) {
+      if (user.email === email) {
+        return user;
+      }
+    }
+    return undefined;
+  }
+
+  async createUser(userData: InsertUser): Promise<User> {
     const user: User = {
-      id: userData.id,
-      email: userData.email || null,
-      firstName: userData.firstName || null,
-      lastName: userData.lastName || null,
-      profileImageUrl: userData.profileImageUrl || null,
+      id: this.nextUserId++,
+      email: userData.email,
+      hashedPassword: userData.hashedPassword,
+      firstName: userData.firstName ?? null,
+      lastName: userData.lastName ?? null,
+      profileImageUrl: userData.profileImageUrl ?? null,
+      hasCourseAccess: userData.hasCourseAccess ?? false,
+      stripeCustomerId: userData.stripeCustomerId ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.users.set(user.id, user);
+    return user;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    if (userData.id) {
+      const existingUser = this.users.get(userData.id);
+      if (existingUser) {
+        const updatedUser: User = {
+          ...existingUser,
+          ...userData,
+          updatedAt: new Date(),
+        };
+        this.users.set(userData.id, updatedUser);
+        return updatedUser;
+      }
+    }
+    
+    // Create new user for upsert (backwards compatibility)
+    const user: User = {
+      id: userData.id ?? this.nextUserId++,
+      email: userData.email ?? '',
+      hashedPassword: '', // This method is for backwards compatibility
+      firstName: userData.firstName ?? null,
+      lastName: userData.lastName ?? null,
+      profileImageUrl: userData.profileImageUrl ?? null,
       hasCourseAccess: true, // Grant course access automatically for demo purposes
       stripeCustomerId: null,
       createdAt: new Date(),
@@ -63,10 +108,11 @@ export class MemoryStorage implements IStorage {
     return user;
   }
 
-  async grantCourseAccess(userId: string): Promise<void> {
+  async grantCourseAccess(userId: number): Promise<void> {
     const user = this.users.get(userId);
     if (user) {
       user.hasCourseAccess = true;
+      user.updatedAt = new Date();
       this.users.set(userId, user);
     }
   }
