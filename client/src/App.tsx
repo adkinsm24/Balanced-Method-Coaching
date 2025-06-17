@@ -3,6 +3,8 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/hooks/use-auth";
+import { ProtectedRoute } from "@/lib/protected-route";
 import Navigation from "@/components/navigation";
 import SocialMedia from "@/components/social-media";
 import Home from "@/pages/home";
@@ -16,6 +18,7 @@ import Success from "@/pages/success";
 import CoachingSuccess from "@/pages/coaching-success";
 import Course from "@/pages/course";
 import Admin from "@/pages/admin";
+import AuthPage from "@/pages/auth-page";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -30,8 +33,9 @@ function Router() {
       <Route path="/checkout-coaching" component={CheckoutCoaching} />
       <Route path="/success" component={Success} />
       <Route path="/coaching-success" component={CoachingSuccess} />
-      <Route path="/course" component={Course} />
-      <Route path="/admin" component={Admin} />
+      <ProtectedRoute path="/course" component={Course} />
+      <ProtectedRoute path="/admin" component={Admin} />
+      <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -41,10 +45,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Navigation />
-        <SocialMedia variant="floating" />
-        <Router />
+        <AuthProvider>
+          <Toaster />
+          <Navigation />
+          <SocialMedia variant="floating" />
+          <Router />
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
