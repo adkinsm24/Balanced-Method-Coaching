@@ -349,4 +349,4 @@ setTimeout(async () => {
   }
 }, 1000);
 
-export const storage = memoryStorage;
+export const storage = new DatabaseStorage();
