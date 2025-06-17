@@ -4,24 +4,13 @@ import { Express } from "express";
 import session from "express-session";
 import bcrypt from "bcrypt";
 import { storage } from "./storage";
-import { User, registerUserSchema, loginUserSchema } from "@shared/schema";
+import { User as DatabaseUser, registerUserSchema, loginUserSchema } from "@shared/schema";
 import connectPg from "connect-pg-simple";
 import { pool } from "./db";
 
 declare global {
   namespace Express {
-    interface User {
-      id: number;
-      email: string;
-      hashedPassword: string;
-      firstName: string | null;
-      lastName: string | null;
-      profileImageUrl: string | null;
-      hasCourseAccess: boolean | null;
-      stripeCustomerId: string | null;
-      createdAt: Date | null;
-      updatedAt: Date | null;
-    }
+    interface User extends DatabaseUser {}
   }
 }
 
@@ -76,7 +65,7 @@ export function setupAuth(app: Express) {
             return done(null, false, { message: 'Invalid email or password' });
           }
 
-          return done(null, user);
+          return done(null, user as Express.User);
         } catch (error) {
           return done(error);
         }
@@ -150,7 +139,7 @@ export function setupAuth(app: Express) {
       }
     }
 
-    passport.authenticate("local", (err: any, user: User | false, info: any) => {
+    passport.authenticate("local", (err: any, user: DatabaseUser | false, info: any) => {
       if (err) {
         console.error('Login error:', err);
         return res.status(500).json({ message: "Internal server error" });
