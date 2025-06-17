@@ -6,7 +6,8 @@ import logoImage from "@assets/bmc_1749151545858.jpg";
 
 export default function Navigation() {
   const [location] = useLocation();
-  const { isAuthenticated, user } = useAuth();
+  const { user, logoutMutation } = useAuth();
+  const isAuthenticated = !!user;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-50/95 via-red-50/95 to-pink-50/95 backdrop-blur-sm shadow-lg border-b border-orange-200/30">
@@ -60,22 +61,24 @@ export default function Navigation() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => window.location.href = '/api/logout'}
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
               className="flex items-center gap-1 ml-6"
             >
               <LogOut className="w-4 h-4" />
-              Logout
+              {logoutMutation.isPending ? "Logging out..." : "Logout"}
             </Button>
           ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => window.location.href = '/api/login'}
-              className="flex items-center gap-1 ml-6"
-            >
-              <User className="w-4 h-4" />
-              Login
-            </Button>
+            <Link href="/auth">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1 ml-6"
+              >
+                <User className="w-4 h-4" />
+                Login
+              </Button>
+            </Link>
           )}
           
           {/* Social Media Quick Access */}

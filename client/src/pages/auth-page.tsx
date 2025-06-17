@@ -18,7 +18,7 @@ export default function AuthPage() {
   // Redirect if already logged in
   if (user) {
     setLocation("/");
-    return null;
+    return <div>Redirecting...</div>;
   }
 
   const loginForm = useForm<LoginUser>({
