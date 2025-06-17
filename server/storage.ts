@@ -52,12 +52,8 @@ export class MemoryStorage implements IStorage {
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    for (const user of this.users.values()) {
-      if (user.email === email) {
-        return user;
-      }
-    }
-    return undefined;
+    const usersArray = Array.from(this.users.values());
+    return usersArray.find(user => user.email === email);
   }
 
   async createUser(userData: InsertUser): Promise<User> {
@@ -216,30 +212,55 @@ export class MemoryStorage implements IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
-  async getUser(id: string): Promise<User | undefined> {
+  async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user || undefined;
   }
 
-  async upsertUser(userData: UpsertUser): Promise<User> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
+  async createUser(userData: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
       .values(userData)
-      .onConflictDoUpdate({
-        target: users.id,
-        set: {
+      .returning();
+    return user;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    if (userData.id) {
+      const [user] = await db
+        .update(users)
+        .set({
           ...userData,
           updatedAt: new Date(),
-        },
+        })
+        .where(eq(users.id, userData.id))
+        .returning();
+      return user;
+    }
+    
+    // For backwards compatibility, create a user without required fields
+    const [user] = await db
+      .insert(users)
+      .values({
+        email: userData.email || '',
+        hashedPassword: '', // This shouldn't be used in practice
+        firstName: userData.firstName || null,
+        lastName: userData.lastName || null,
+        profileImageUrl: userData.profileImageUrl || null,
       })
       .returning();
     return user;
   }
 
-  async grantCourseAccess(userId: string): Promise<void> {
+  async grantCourseAccess(userId: number): Promise<void> {
     await db
       .update(users)
-      .set({ hasCourseAccess: true })
+      .set({ hasCourseAccess: true, updatedAt: new Date() })
       .where(eq(users.id, userId));
   }
 
@@ -320,8 +341,8 @@ const memoryStorage = new MemoryStorage();
 // Grant course access to the logged-in user
 setTimeout(async () => {
   try {
-    // Grant access to user ID 43409331 (from the logs)
-    await memoryStorage.grantCourseAccess('43409331');
+    // Grant access to user ID 43409331 (from the logs) - converted to number
+    await memoryStorage.grantCourseAccess(43409331);
     console.log('Course access granted to user 43409331');
   } catch (error) {
     console.log('Note: User may not exist yet, access will be granted on login');

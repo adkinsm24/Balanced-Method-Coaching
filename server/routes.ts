@@ -5,7 +5,7 @@ import { db } from "./db";
 import { consultationRequests, insertConsultationRequestSchema, coachingCalls, insertCoachingCallSchema, bookedSlots } from "@shared/schema";
 import { desc, eq, and } from "drizzle-orm";
 import Stripe from "stripe";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./auth";
 import { sendBookingConfirmation, sendCoachNotification } from "./emailService";
 
 // Helper function to format time slots for emails
