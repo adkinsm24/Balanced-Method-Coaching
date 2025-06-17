@@ -151,9 +151,18 @@ export function setupAuth(app: Express) {
     if (!req.isAuthenticated() || !req.user) {
       return res.sendStatus(401);
     }
-    // Don't send password hash back to client
-    const { hashedPassword: _, ...userWithoutPassword } = req.user;
-    res.json(userWithoutPassword);
+    // Don't send password hash back to client and ensure proper field mapping
+    const user = req.user as any;
+    const userResponse = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      hasCourseAccess: user.hasCourseAccess || user.has_course_access,
+      profileImageUrl: user.profileImageUrl,
+      stripeCustomerId: user.stripeCustomerId
+    };
+    res.json(userResponse);
   });
 }
 

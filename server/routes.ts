@@ -236,22 +236,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Authentication routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
-    }
-  });
+  // Authentication is handled in auth.ts
 
   // Route to grant course access after payment
-  app.post('/api/grant-course-access', isAuthenticated, async (req: any, res) => {
+  app.post('/api/grant-course-access', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      if (!req.isAuthenticated() || !req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      const userId = req.user.id;
       await storage.grantCourseAccess(userId);
       res.json({ success: true });
     } catch (error) {
