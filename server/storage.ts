@@ -52,7 +52,7 @@ export class MemoryStorage implements IStorage {
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    for (const user of this.users.values()) {
+    for (const user of Array.from(this.users.values())) {
       if (user.email === email) {
         return user;
       }
@@ -216,27 +216,57 @@ export class MemoryStorage implements IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
-  async getUser(id: string): Promise<User | undefined> {
+  async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user || undefined;
   }
 
-  async upsertUser(userData: UpsertUser): Promise<User> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
+  async createUser(userData: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
       .values(userData)
-      .onConflictDoUpdate({
-        target: users.id,
-        set: {
+      .returning();
+    return user;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    if (userData.id) {
+      const [user] = await db
+        .insert(users)
+        .values({
           ...userData,
-          updatedAt: new Date(),
-        },
+          hashedPassword: '', // For upsert compatibility
+        })
+        .onConflictDoUpdate({
+          target: users.email,
+          set: {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            profileImageUrl: userData.profileImageUrl,
+            updatedAt: new Date(),
+          },
+        })
+        .returning();
+      return user;
+    }
+    
+    // Create new user
+    const [user] = await db
+      .insert(users)
+      .values({
+        ...userData,
+        hashedPassword: '', // For upsert compatibility
       })
       .returning();
     return user;
   }
 
-  async grantCourseAccess(userId: string): Promise<void> {
+  async grantCourseAccess(userId: number): Promise<void> {
     await db
       .update(users)
       .set({ hasCourseAccess: true })
@@ -314,18 +344,7 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-// For compatibility with existing code, use memory storage as default
-const memoryStorage = new MemoryStorage();
+// Use database storage for production
+const databaseStorage = new DatabaseStorage();
 
-// Grant course access to the logged-in user
-setTimeout(async () => {
-  try {
-    // Grant access to user ID 43409331 (from the logs)
-    await memoryStorage.grantCourseAccess('43409331');
-    console.log('Course access granted to user 43409331');
-  } catch (error) {
-    console.log('Note: User may not exist yet, access will be granted on login');
-  }
-}, 1000);
-
-export const storage = memoryStorage;
+export const storage = databaseStorage;
