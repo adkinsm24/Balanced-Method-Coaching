@@ -1,11 +1,9 @@
-import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react";
@@ -44,57 +42,7 @@ const videoDescriptions = [
 ];
 
 export default function Course() {
-  const { toast } = useToast();
-  const { isLoading, user, isAuthenticated } = useAuth();
-
-  // Check authentication and course access
-  useEffect(() => {
-    if (isLoading) return; // Wait for auth state to load
-    
-    if (!user) {
-      toast({
-        title: "Please log in",
-        description: "You need to log in to access course content.",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        window.location.href = "/auth";
-      }, 1000);
-      return;
-    }
-
-    if (!user.hasCourseAccess) {
-      toast({
-        title: "Course Access Required",
-        description: "Please purchase the course to access this content.",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        window.location.href = "/coaching-offers";
-      }, 2000);
-      return;
-    }
-  }, [user, isLoading, toast]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
-      </div>
-    );
-  }
-
-  if (!user || !user.hasCourseAccess) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="max-w-md">
-          <CardContent className="pt-6 text-center">
-            <p>Checking course access...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  const { user } = useAuth();
 
   return (
     <>

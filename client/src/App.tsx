@@ -33,7 +33,7 @@ function Router() {
       <Route path="/checkout-coaching" component={CheckoutCoaching} />
       <Route path="/success" component={Success} />
       <Route path="/coaching-success" component={CoachingSuccess} />
-      <Route path="/course" component={Course} />
+      <ProtectedRoute path="/course" component={Course} />
       <ProtectedRoute path="/admin" component={Admin} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
