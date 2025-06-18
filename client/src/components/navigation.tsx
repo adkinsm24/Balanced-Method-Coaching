@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { User, LogOut } from "lucide-react";
 import logoImage from "@assets/bmc_1749151545858.jpg";
 
@@ -47,12 +47,15 @@ export default function Navigation() {
           </Link>
 
           {/* Course access for authenticated users */}
-          {isAuthenticated && (user as any)?.hasCourseAccess && (
+          {isAuthenticated && user?.hasCourseAccess && (
             <Link href="/course">
               <Button 
-                variant={location === "/course" ? "default" : "ghost"}
-                className={location === "/course" ? "bg-primary text-primary-foreground" : ""}
-              >My Course</Button>
+                variant={location === "/course" ? "default" : "outline"}
+                className={location === "/course" 
+                  ? "bg-primary text-primary-foreground" 
+                  : "border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold"
+                }
+              >📚 My Course</Button>
             </Link>
           )}
 
