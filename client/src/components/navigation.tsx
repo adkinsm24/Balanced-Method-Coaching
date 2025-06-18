@@ -46,8 +46,8 @@ export default function Navigation() {
             >Coaching Offers</Button>
           </Link>
 
-          {/* Course access for authenticated users */}
-          {isAuthenticated && user?.hasCourseAccess && (
+          {/* Course access for all authenticated users */}
+          {isAuthenticated && (
             <Link href="/course">
               <Button 
                 variant={location === "/course" ? "default" : "outline"}

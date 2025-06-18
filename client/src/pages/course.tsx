@@ -44,6 +44,71 @@ const videoDescriptions = [
 export default function Course() {
   const { user } = useAuth();
 
+  // If user doesn't have course access, show purchase prompt
+  if (user && !user.hasCourseAccess) {
+    return (
+      <>
+        <Navigation />
+        <main className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 pt-20">
+          <div className="max-w-4xl mx-auto px-4 py-12">
+            <div className="text-center space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-4xl font-bold text-gray-900">
+                  🔒 Course Access Required
+                </h1>
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                  Get instant access to the complete nutrition transformation course with 12 comprehensive video lessons.
+                </p>
+              </div>
+
+              <Card className="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardContent className="pt-8 pb-8">
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-3 gap-4 text-center">
+                      <div>
+                        <Play className="w-8 h-8 text-primary mx-auto mb-2" />
+                        <h3 className="font-semibold">12 Video Lessons</h3>
+                        <p className="text-sm text-gray-600">Step-by-step guidance</p>
+                      </div>
+                      <div>
+                        <Clock className="w-8 h-8 text-primary mx-auto mb-2" />
+                        <h3 className="font-semibold">Lifetime Access</h3>
+                        <p className="text-sm text-gray-600">Watch anytime, anywhere</p>
+                      </div>
+                      <div>
+                        <CheckCircle className="w-8 h-8 text-primary mx-auto mb-2" />
+                        <h3 className="font-semibold">Actionable Content</h3>
+                        <p className="text-sm text-gray-600">Real results guaranteed</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button 
+                        size="lg"
+                        onClick={() => window.location.href = '/coaching-offers'}
+                        className="bg-primary hover:bg-primary/90"
+                      >
+                        Get Course Access
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="lg"
+                        onClick={() => window.location.href = '/book-coaching-call'}
+                      >
+                        Book Coaching Call
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Navigation />
