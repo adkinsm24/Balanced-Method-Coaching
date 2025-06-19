@@ -24,9 +24,13 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
       text: params.text || '',
       html: params.html || '',
     });
+    console.log(`Email sent successfully to ${params.to}`);
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error('SendGrid email error:', error);
+    if (error.response && error.response.body) {
+      console.error('SendGrid error details:', JSON.stringify(error.response.body, null, 2));
+    }
     return false;
   }
 }
@@ -175,7 +179,7 @@ export async function sendCourseAccessEmail(
   
   return await sendEmail({
     to: clientEmail,
-    from: "mark@balancedmethodcoaching.com",
+    from: process.env.SENDGRID_VERIFIED_SENDER_EMAIL || "support@balancedmethodcoaching.com",
     subject,
     html,
   });
