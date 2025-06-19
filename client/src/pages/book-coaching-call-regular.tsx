@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import CalendarScheduler from "@/components/calendar-scheduler";
 
 const coachingCallSchema = z.object({
   firstName: z.string().min(1, "First name is required"),

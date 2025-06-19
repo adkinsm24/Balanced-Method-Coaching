@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import CalendarScheduler from "@/components/calendar-scheduler";
 
 const coachingCallSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -257,27 +258,14 @@ export default function BookCoachingCall() {
                       name="selectedTimeSlot"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Preferred Time Slot *</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a time slot" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {slotsLoading ? (
-                                <SelectItem value="loading-placeholder" disabled>Loading available slots...</SelectItem>
-                              ) : (
-                                Array.isArray(availableSlots) && availableSlots.length > 0 ? availableSlots.map((slot: any) => (
-                                  <SelectItem key={slot.value} value={slot.value}>
-                                    {slot.label}
-                                  </SelectItem>
-                                )) : (
-                                  <SelectItem value="no-slots" disabled>No available slots</SelectItem>
-                                )
-                              )}
-                            </SelectContent>
-                          </Select>
+                          <FormLabel>Preferred Date & Time *</FormLabel>
+                          <FormControl>
+                            <CalendarScheduler
+                              availableSlots={Array.isArray(availableSlots) ? availableSlots : []}
+                              selectedSlot={field.value}
+                              onSlotSelect={field.onChange}
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
