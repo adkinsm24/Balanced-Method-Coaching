@@ -17,13 +17,26 @@ interface EmailParams {
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
   try {
-    await mailService.send({
+    const emailData: any = {
       to: params.to,
       from: params.from,
       subject: params.subject,
-      text: params.text || '',
-      html: params.html || '',
-    });
+    };
+
+    // Add content based on what's provided
+    if (params.html) {
+      emailData.html = params.html;
+    }
+    if (params.text) {
+      emailData.text = params.text;
+    }
+    
+    // Ensure we have at least one content type
+    if (!params.html && !params.text) {
+      emailData.text = "This email was sent from Balanced Method Coaching.";
+    }
+
+    await mailService.send(emailData);
     console.log(`Email sent successfully to ${params.to}`);
     return true;
   } catch (error: any) {
@@ -177,10 +190,42 @@ export async function sendCourseAccessEmail(
     </div>
   `;
   
+  const textVersion = `
+Welcome to Your Self-Paced Nutrition Course!
+
+Dear ${clientName},
+
+Thank you for your purchase! Your payment has been successfully processed and you now have access to the complete Self-Paced Nutrition Course.
+
+Your Login Information:
+Email: ${loginEmail}
+Temporary Password: ${temporaryPassword}
+Course URL: ${process.env.NODE_ENV === 'production' ? 'https://your-domain.com' : 'http://localhost:5000'}/course
+
+Important: Please change your password after your first login for security.
+
+What's Included in Your Course:
+- 11 comprehensive modules covering all aspects of nutrition and weight management
+- Downloadable guides and worksheets for each section  
+- Practical strategies for sustainable lifestyle changes
+- Access to Coach Mark's proven methods
+- Lifetime access to all course materials
+
+You can log in anytime to access your course materials, track your progress, and download the included resources.
+
+If you have any questions or need assistance, please don't hesitate to reach out to us.
+
+Best regards,
+Coach Mark
+Balanced Method Coaching
+Email: mark@balancedmethodcoaching.com
+  `;
+
   return await sendEmail({
     to: clientEmail,
     from: process.env.SENDGRID_VERIFIED_SENDER_EMAIL || "support@balancedmethodcoaching.com",
     subject,
     html,
+    text: textVersion,
   });
 }
