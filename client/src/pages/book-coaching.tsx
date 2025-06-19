@@ -117,9 +117,8 @@ export default function BookCoaching() {
         <div className="max-w-4xl mx-auto px-4 py-8">
           {/* Header Section */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Book Your 1-on-1 Nutrition Coaching
-            </h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Book Your Free Introductory Call
+</h1>
             <div className="bg-green-100 border border-green-300 rounded-lg p-4 mb-6">
               <p className="text-green-800 font-semibold text-lg">
                 🎉 Course Member Discount: 20% OFF Regular Pricing
