@@ -525,21 +525,21 @@ export default function Course() {
                       Focused sessions for specific questions and guidance
                     </p>
                     <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-center gap-4">
                         <span className="text-sm">30 min:</span>
                         <div className="text-lg font-bold text-green-600">
                           <span className="line-through text-gray-400 text-sm mr-2">$50</span>
                           $40
                         </div>
                       </div>
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-center gap-4">
                         <span className="text-sm">45 min:</span>
                         <div className="text-lg font-bold text-green-600">
                           <span className="line-through text-gray-400 text-sm mr-2">$70</span>
                           $56
                         </div>
                       </div>
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-center gap-4">
                         <span className="text-sm">60 min:</span>
                         <div className="text-lg font-bold text-green-600">
                           <span className="line-through text-gray-400 text-sm mr-2">$85</span>
