@@ -494,8 +494,7 @@ export default function Course() {
               <h3 className="text-2xl font-bold mb-4 text-green-800">20% OFF 1-on-1 Nutrition Coaching + Coaching Calls
 </h3>
               <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-                Take your nutrition journey to the next level with personalized coaching and support. 
-                As a course member, you get <strong>20% off</strong> all 1-on-1 coaching sessions and calls.
+                Are you looking for extra support? As a course member, you get <strong>20% off</strong> my 1-on-1 nutrition coaching sessions and coaching calls.
               </p>
               
               <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6">
