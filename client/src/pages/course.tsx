@@ -485,17 +485,69 @@ export default function Course() {
 
           </Tabs>
 
-          {/* Support Section */}
-          <Card className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-0">
+          {/* Exclusive Member Discount Section */}
+          <Card className="mt-8 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200">
             <CardContent className="pt-6 text-center">
-              <h3 className="text-xl font-semibold mb-4">Need Support?</h3>
-              <p className="text-gray-600 mb-6">
-                Have questions about the course content or need personalized guidance? 
-                I'm here to help you succeed.
+              <Badge className="mb-4 bg-green-600 text-white px-4 py-1 text-sm font-semibold">
+                🎉 EXCLUSIVE MEMBER DISCOUNT
+              </Badge>
+              <h3 className="text-2xl font-bold mb-4 text-green-800">
+                20% OFF 1-on-1 Nutrition Coaching
+              </h3>
+              <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
+                Take your nutrition journey to the next level with personalized coaching and support. 
+                As a course member, you get <strong>20% off</strong> all 1-on-1 coaching sessions and calls.
               </p>
-              <div className="flex justify-center max-w-md mx-auto">
-                <Button variant="outline" onClick={() => window.location.href = '/book-coaching-call'}>Coaching Call</Button>
+              
+              <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6">
+                <Card className="bg-white/80 backdrop-blur-sm">
+                  <CardContent className="pt-4 pb-4">
+                    <h4 className="font-semibold text-lg mb-2">1-on-1 Nutrition Coaching</h4>
+                    <p className="text-gray-600 text-sm mb-3">
+                      Comprehensive nutrition coaching with personalized meal plans and ongoing support
+                    </p>
+                    <div className="text-2xl font-bold text-green-600 mb-2">
+                      <span className="line-through text-gray-400 text-lg mr-2">$150</span>
+                      $120/session
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-white/80 backdrop-blur-sm">
+                  <CardContent className="pt-4 pb-4">
+                    <h4 className="font-semibold text-lg mb-2">Quick Coaching Call</h4>
+                    <p className="text-gray-600 text-sm mb-3">
+                      30-60 minute focused sessions for specific questions and guidance
+                    </p>
+                    <div className="text-2xl font-bold text-green-600 mb-2">
+                      <span className="line-through text-gray-400 text-lg mr-2">$75</span>
+                      $60/call
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                <Button 
+                  size="lg"
+                  onClick={() => window.location.href = '/coaching-offers'}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  Get 20% OFF Coaching
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  onClick={() => window.location.href = '/book-coaching-call'}
+                  className="border-green-600 text-green-600 hover:bg-green-50"
+                >
+                  Book Discounted Call
+                </Button>
+              </div>
+              
+              <p className="text-xs text-gray-500 mt-4">
+                * Discount automatically applied for course members during checkout
+              </p>
             </CardContent>
           </Card>
         </div>
