@@ -504,7 +504,7 @@ export default function Course() {
                     <p className="text-gray-600 text-sm mb-3">Get completely personalized nutrition coaching based on your individual needs and goals.  I take the time to understand your current eating habits and guide you through meaningful changes that stick.</p>
                     <div className="text-2xl font-bold text-green-600 mb-2">
                       <span className="line-through text-gray-400 text-lg mr-2">$399</span>
-                      $120/session
+                      $319/4 weeks
                     </div>
                   </CardContent>
                 </Card>
