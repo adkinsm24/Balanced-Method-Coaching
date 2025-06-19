@@ -549,9 +549,7 @@ export default function Course() {
                         size="lg"
                         onClick={() => window.location.href = '/book-coaching-call'}
                         className="border-green-600 text-green-600 hover:bg-green-50"
-                      >
-                        Book Discounted Call
-                      </Button>
+                      >Book a Discounted Call</Button>
                     </div>
                   </CardContent>
                 </Card>
