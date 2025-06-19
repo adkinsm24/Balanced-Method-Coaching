@@ -31,9 +31,9 @@ const coachingCallSchema = z.object({
 type CoachingCallForm = z.infer<typeof coachingCallSchema>;
 
 const DURATION_OPTIONS = [
-  { value: 30, label: "30 minutes", price: 50 },
-  { value: 45, label: "45 minutes", price: 70 },
-  { value: 60, label: "60 minutes", price: 85 },
+  { value: 30, label: "30 minutes", price: 40 },
+  { value: 45, label: "45 minutes", price: 56 },
+  { value: 60, label: "60 minutes", price: 68 },
 ];
 
 export default function BookCoachingCall() {
