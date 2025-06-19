@@ -125,3 +125,58 @@ export async function sendCoachNotification(
     text: `New consultation booking from ${clientName} (${clientEmail}) for ${timeSlot}. Goals: ${goals}`
   });
 }
+
+export async function sendCourseAccessEmail(
+  clientEmail: string,
+  clientName: string,
+  loginEmail: string,
+  temporaryPassword: string
+): Promise<boolean> {
+  const subject = "Welcome to Your Self-Paced Nutrition Course - Login Details";
+  
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h2 style="color: #2563eb;">Welcome to Your Self-Paced Nutrition Course!</h2>
+      
+      <p>Dear ${clientName},</p>
+      
+      <p>Thank you for your purchase! Your payment has been successfully processed and you now have access to the complete Self-Paced Nutrition Course.</p>
+      
+      <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2563eb;">
+        <h3 style="color: #1e40af; margin-top: 0;">Your Login Information:</h3>
+        <p><strong>Email:</strong> ${loginEmail}</p>
+        <p><strong>Temporary Password:</strong> <code style="background-color: #e5e7eb; padding: 2px 6px; border-radius: 4px;">${temporaryPassword}</code></p>
+        <p><strong>Course URL:</strong> <a href="${process.env.NODE_ENV === 'production' ? 'https://your-domain.com' : 'http://localhost:5000'}/course" style="color: #2563eb;">Access Your Course</a></p>
+      </div>
+      
+      <div style="background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 0; color: #92400e;"><strong>Important:</strong> Please change your password after your first login for security.</p>
+      </div>
+      
+      <h3 style="color: #1e40af;">What's Included in Your Course:</h3>
+      <ul style="line-height: 1.6;">
+        <li>11 comprehensive modules covering all aspects of nutrition and weight management</li>
+        <li>Downloadable guides and worksheets for each section</li>
+        <li>Practical strategies for sustainable lifestyle changes</li>
+        <li>Access to Coach Mark's proven methods</li>
+        <li>Lifetime access to all course materials</li>
+      </ul>
+      
+      <p>You can log in anytime to access your course materials, track your progress, and download the included resources.</p>
+      
+      <p>If you have any questions or need assistance, please don't hesitate to reach out to us.</p>
+      
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+        <p>Best regards,<br>Coach Mark<br>Balanced Method Coaching</p>
+        <p>Email: mark@balancedmethodcoaching.com</p>
+      </div>
+    </div>
+  `;
+  
+  return await sendEmail({
+    to: clientEmail,
+    from: "mark@balancedmethodcoaching.com",
+    subject,
+    html,
+  });
+}

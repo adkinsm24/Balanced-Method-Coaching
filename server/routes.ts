@@ -6,7 +6,13 @@ import { consultationRequests, insertConsultationRequestSchema, coachingCalls, i
 import { desc, eq, and } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./auth";
-import { sendBookingConfirmation, sendCoachNotification } from "./emailService";
+import { sendBookingConfirmation, sendCoachNotification, sendCourseAccessEmail } from "./emailService";
+import crypto from 'crypto';
+
+// Helper function to generate temporary password
+function generateTemporaryPassword(): string {
+  return crypto.randomBytes(8).toString('hex');
+}
 
 // Helper function to format time slots for emails
 function formatTimeSlotForEmail(timeSlot: string): string {
@@ -511,7 +517,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const user = await storage.getUserByEmail(userEmail);
         if (user) {
           await storage.grantCourseAccess(user.id);
-          res.json({ success: true, message: "Course access granted" });
+          
+          // Generate temporary password and send welcome email
+          const temporaryPassword = generateTemporaryPassword();
+          const clientName = `${user.firstName} ${user.lastName}`;
+          
+          // Send course access email with login details
+          try {
+            await sendCourseAccessEmail(
+              userEmail,
+              clientName,
+              userEmail, // Login email same as purchase email
+              temporaryPassword
+            );
+            console.log(`Course access email sent to ${userEmail}`);
+          } catch (emailError) {
+            console.error("Failed to send course access email:", emailError);
+            // Don't fail the entire request if email fails
+          }
+          
+          res.json({ 
+            success: true, 
+            message: "Course access granted and welcome email sent" 
+          });
         } else {
           res.status(404).json({ error: "User not found" });
         }
@@ -521,6 +549,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("Error confirming course payment:", error);
       res.status(500).json({ error: "Failed to confirm payment" });
+    }
+  });
+
+  // Test email endpoint (for development)
+  app.post('/api/test-email', async (req, res) => {
+    try {
+      const { email } = req.body;
+      const success = await sendCourseAccessEmail(
+        email || "demo@test.com",
+        "Test User",
+        email || "demo@test.com",
+        "temp123456"
+      );
+      
+      if (success) {
+        res.json({ success: true, message: "Test email sent successfully" });
+      } else {
+        res.status(500).json({ error: "Failed to send test email" });
+      }
+    } catch (error) {
+      console.error("Test email error:", error);
+      res.status(500).json({ error: "Failed to send test email" });
     }
   });
 
