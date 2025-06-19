@@ -561,9 +561,7 @@ export default function Course() {
                 </Card>
               </div>
               
-              <p className="text-xs text-gray-500 mt-4">
-                * Discount automatically applied for course members during checkout
-              </p>
+              
             </CardContent>
           </Card>
         </div>
