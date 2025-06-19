@@ -270,27 +270,14 @@ export default function BookCoachingCallRegular() {
                     name="selectedTimeSlot"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Preferred Time Slot *</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a time slot" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {slotsLoading ? (
-                              <SelectItem value="loading-placeholder" disabled>Loading available slots...</SelectItem>
-                            ) : (
-                              Array.isArray(availableSlots) && availableSlots.length > 0 ? availableSlots.map((slot: any) => (
-                                <SelectItem key={slot.value} value={slot.value}>
-                                  {slot.label}
-                                </SelectItem>
-                              )) : (
-                                <SelectItem value="no-slots" disabled>No available slots</SelectItem>
-                              )
-                            )}
-                          </SelectContent>
-                        </Select>
+                        <FormLabel>Preferred Date & Time *</FormLabel>
+                        <FormControl>
+                          <CalendarScheduler
+                            availableSlots={Array.isArray(availableSlots) ? availableSlots : []}
+                            selectedSlot={field.value}
+                            onSlotSelect={field.onChange}
+                          />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
