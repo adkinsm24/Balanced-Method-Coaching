@@ -605,6 +605,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Admin endpoint to list all users
+  app.get('/api/admin/users', isAuthenticated, async (req, res) => {
+    try {
+      const allUsers = await db.select({
+        id: users.id,
+        email: users.email,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        hasCourseAccess: users.hasCourseAccess,
+        createdAt: users.createdAt
+      }).from(users).orderBy(desc(users.createdAt));
+      
+      res.json(allUsers);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      res.status(500).json({ error: "Failed to fetch users" });
+    }
+  });
+
   // Password reset endpoint for testing
   app.post('/api/reset-password', async (req, res) => {
     try {
