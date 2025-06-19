@@ -139,171 +139,200 @@ export default function BookCoaching() {
             <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white">
               <CardTitle className="text-2xl text-center">Book Your Discounted Coaching Session</CardTitle>
             </CardHeader>
-            <CardContent className="p-8">
+            <CardContent>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <h3 className="text-sm font-semibold text-blue-800 mb-2">Call Information</h3>
+                <p className="text-sm text-blue-700 mb-1">
+                  Calls are conducted via <strong>FaceTime</strong> (iPhone required) or <strong>WhatsApp video call</strong>.
+                </p>
+                <p className="text-xs text-blue-600">Allows me to call you from abroad with no extra charge.</p>
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Personal Information */}
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="firstName">First Name *</Label>
+                    <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name *</Label>
                     <Input
                       id="firstName"
                       value={formData.firstName}
                       onChange={(e) => handleChange("firstName", e.target.value)}
                       required
+                      className="mt-1"
+                      placeholder="Your first name"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name *</Label>
                     <Input
                       id="lastName"
                       value={formData.lastName}
                       onChange={(e) => handleChange("lastName", e.target.value)}
                       required
+                      className="mt-1"
+                      placeholder="Your last name"
                     />
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleChange("email", e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => handleChange("phone", e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                {/* Preferred Contact Method */}
                 <div>
-                  <Label htmlFor="contactMethod">Preferred Contact Method *</Label>
-                  <Select value={formData.contactMethod} onValueChange={(value) => handleChange("contactMethod", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select your preferred contact method" />
+                  <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    required
+                    className="mt-1"
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                    required
+                    className="mt-1"
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">How would you prefer to be contacted? *</Label>
+                  <Select onValueChange={(value) => handleChange("contactMethod", value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Choose your preferred contact method" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="email">Email</SelectItem>
-                      <SelectItem value="phone">Phone Call</SelectItem>
-                      <SelectItem value="text">Text Message</SelectItem>
+                      <SelectItem value="facetime">FaceTime (iPhone required)</SelectItem>
+                      <SelectItem value="whatsapp">WhatsApp</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Time Slot Selection */}
+                {/* Available Time Slots */}
                 <div>
-                  <Label htmlFor="timeSlot">Preferred Time Slot *</Label>
+                  <Label className="text-sm font-medium text-gray-700">Select Your Preferred Time Slot *</Label>
                   <Select 
-                    value={formData.selectedTimeSlot} 
                     onValueChange={(value) => handleChange("selectedTimeSlot", value)}
                     disabled={slotsLoading}
+                    value={formData.selectedTimeSlot}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder={slotsLoading ? "Loading available slots..." : "Select your preferred time slot"} />
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder={slotsLoading ? "Loading available slots..." : "Choose an available time slot"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableSlots?.map((slot) => (
-                        <SelectItem key={slot.value} value={slot.value}>
-                          {slot.label}
+                      {availableSlots && Array.isArray(availableSlots) && availableSlots.length > 0 ? (
+                        availableSlots.map((slot) => (
+                          <SelectItem key={slot.value} value={slot.value}>
+                            {slot.label}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="no-slots" disabled>
+                          {slotsLoading ? "Loading..." : "No available slots"}
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    All times shown in US Eastern Time {availableSlots && Array.isArray(availableSlots) ? `(${availableSlots.length} slots available)` : ''}
+                  </p>
                 </div>
 
-                {/* Goals and Assessment */}
+                {/* Goals and Background */}
                 <div>
-                  <Label htmlFor="goals">Your Nutrition Goals *</Label>
+                  <Label htmlFor="goals" className="text-sm font-medium text-gray-700">What are your main health and nutrition goals? *</Label>
                   <Textarea
                     id="goals"
                     value={formData.goals}
                     onChange={(e) => handleChange("goals", e.target.value)}
-                    placeholder="Describe your specific nutrition and health goals..."
-                    className="min-h-[100px]"
                     required
+                    className="mt-1"
+                    rows={3}
+                    placeholder="e.g., lose weight, gain muscle, improve energy, develop better eating habits..."
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="experience">Previous Experience with Nutrition Tracking</Label>
+                  <Label htmlFor="experience" className="text-sm font-medium text-gray-700">Previous experience with nutrition coaching or dieting?</Label>
                   <Textarea
                     id="experience"
                     value={formData.experience}
                     onChange={(e) => handleChange("experience", e.target.value)}
-                    placeholder="Tell me about your experience with tracking food, dieting, or nutrition programs..."
-                    className="min-h-[80px]"
+                    className="mt-1"
+                    rows={2}
+                    placeholder="Tell me about any previous attempts, what worked, what didn't..."
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="eatingOut">How Often Do You Eat Out?</Label>
+                  <Label htmlFor="eatingOut" className="text-sm font-medium text-gray-700">On average, how many times per week do you eat meals away from home — including restaurants, takeout, or social events like birthdays and get-togethers?</Label>
                   <Input
                     id="eatingOut"
                     value={formData.eatingOut}
                     onChange={(e) => handleChange("eatingOut", e.target.value)}
-                    placeholder="e.g., 2-3 times per week"
+                    className="mt-1"
+                    placeholder="e.g., 2-3 times, rarely, daily..."
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="typicalDay">Describe a Typical Day of Eating</Label>
+                  <Label htmlFor="typicalDay" className="text-sm font-medium text-gray-700">What does a typical day of eating look like?</Label>
                   <Textarea
                     id="typicalDay"
                     value={formData.typicalDay}
                     onChange={(e) => handleChange("typicalDay", e.target.value)}
-                    placeholder="Walk me through what you typically eat in a day..."
-                    className="min-h-[80px]"
+                    className="mt-1"
+                    rows={3}
+                    placeholder="Describe your usual breakfast, lunch, dinner, and any snacks..."
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="drinks">What Do You Typically Drink?</Label>
-                  <Input
+                  <Label htmlFor="drinks" className="text-sm font-medium text-gray-700">Do you drink soda, alcohol, lattes, or other caloric drinks?</Label>
+                  <Textarea
                     id="drinks"
                     value={formData.drinks}
                     onChange={(e) => handleChange("drinks", e.target.value)}
-                    placeholder="Water, coffee, soda, alcohol, etc."
+                    className="mt-1"
+                    rows={2}
+                    placeholder="Type and frequency of beverages you regularly consume..."
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="emotionalEating">Do You Struggle with Emotional Eating?</Label>
+                  <Label htmlFor="emotionalEating" className="text-sm font-medium text-gray-700">Do you eat for any other reason than being hungry?</Label>
                   <Textarea
                     id="emotionalEating"
                     value={formData.emotionalEating}
                     onChange={(e) => handleChange("emotionalEating", e.target.value)}
-                    placeholder="Tell me about your relationship with food and eating patterns..."
-                    className="min-h-[80px]"
+                    className="mt-1"
+                    rows={2}
+                    placeholder="e.g., stress, boredom, social situations, celebrations..."
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="medications">Current Medications or Health Conditions</Label>
+                  <Label htmlFor="medications" className="text-sm font-medium text-gray-700">Are you on any medications? </Label>
                   <Textarea
                     id="medications"
                     value={formData.medications}
                     onChange={(e) => handleChange("medications", e.target.value)}
-                    placeholder="Any medications, supplements, or health conditions I should know about..."
-                    className="min-h-[80px]"
+                    className="mt-1"
+                    rows={2}
+                    placeholder="List any medications and note if you're aware of weight-related effects..."
                   />
                 </div>
 
                 <Button 
                   type="submit" 
-                  size="lg" 
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-4 text-lg"
                   disabled={submitMutation.isPending}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-medium"
                 >
                   {submitMutation.isPending ? "Submitting..." : "Book My Discounted Coaching Session"}
                 </Button>
