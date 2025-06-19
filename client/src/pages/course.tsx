@@ -545,10 +545,9 @@ export default function Course() {
                     </div>
                     <div className="flex justify-center">
                       <Button 
-                        variant="outline" 
                         size="lg"
                         onClick={() => window.location.href = '/book-coaching-call'}
-                        className="border-green-600 text-green-600 hover:bg-green-50"
+                        className="bg-green-600 hover:bg-green-700 text-white"
                       >Book a Discounted Call</Button>
                     </div>
                   </CardContent>
