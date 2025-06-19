@@ -12,6 +12,8 @@ import About from "@/pages/about";
 import CoachingOffers from "@/pages/coaching-offers";
 import BookCall from "@/pages/book-call";
 import BookCoachingCall from "@/pages/book-coaching-call";
+import BookCoachingCallRegular from "@/pages/book-coaching-call-regular";
+import BookCoachingCallDiscounted from "@/pages/book-coaching-call-discounted";
 import BookCoaching from "@/pages/book-coaching";
 import Checkout from "@/pages/checkout";
 import CheckoutCoaching from "@/pages/checkout-coaching";
@@ -30,6 +32,8 @@ function Router() {
       <Route path="/coaching-offers" component={CoachingOffers} />
       <Route path="/book-call" component={BookCall} />
       <Route path="/book-coaching-call" component={BookCoachingCall} />
+      <Route path="/book-coaching-call-regular" component={BookCoachingCallRegular} />
+      <Route path="/book-coaching-call-discounted" component={BookCoachingCallDiscounted} />
       <Route path="/book-coaching" component={BookCoaching} />
       <Route path="/checkout" component={Checkout} />
       <Route path="/checkout-coaching" component={CheckoutCoaching} />

@@ -152,7 +152,7 @@ export default function CoachingOffers() {
               </ul>
               <Button 
                 className="w-full bg-primary hover:bg-primary/90 text-white"
-                onClick={() => window.location.href = '/book-coaching-call'}
+                onClick={() => window.location.href = '/book-coaching-call-regular'}
               >
                 Book a Call
               </Button>
