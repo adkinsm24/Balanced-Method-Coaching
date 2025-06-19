@@ -507,7 +507,7 @@ export default function Course() {
                       Comprehensive nutrition coaching with personalized meal plans and ongoing support
                     </p>
                     <div className="text-2xl font-bold text-green-600 mb-2">
-                      <span className="line-through text-gray-400 text-lg mr-2">$150</span>
+                      <span className="line-through text-gray-400 text-lg mr-2">$399</span>
                       $120/session
                     </div>
                   </CardContent>
