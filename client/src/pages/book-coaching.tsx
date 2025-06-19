@@ -335,7 +335,7 @@ export default function BookCoaching() {
                   disabled={submitMutation.isPending}
                   className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-medium"
                 >
-                  {submitMutation.isPending ? "Submitting..." : "Book My Discounted Coaching Session"}
+                  {submitMutation.isPending ? "Submitting..." : "Submit & Schedule Your Free Call"}
                 </Button>
               </form>
             </CardContent>
