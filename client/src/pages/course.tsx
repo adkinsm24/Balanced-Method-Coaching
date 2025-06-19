@@ -491,9 +491,8 @@ export default function Course() {
               <Badge className="mb-4 bg-green-600 text-white px-4 py-1 text-sm font-semibold">
                 🎉 EXCLUSIVE MEMBER DISCOUNT
               </Badge>
-              <h3 className="text-2xl font-bold mb-4 text-green-800">
-                20% OFF 1-on-1 Nutrition Coaching
-              </h3>
+              <h3 className="text-2xl font-bold mb-4 text-green-800">20% OFF 1-on-1 Nutrition Coaching + Coaching Calls
+</h3>
               <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
                 Take your nutrition journey to the next level with personalized coaching and support. 
                 As a course member, you get <strong>20% off</strong> all 1-on-1 coaching sessions and calls.
