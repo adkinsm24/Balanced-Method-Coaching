@@ -136,6 +136,11 @@ export default function BookCoaching() {
           <Card className="shadow-xl border-0">
             
             <CardContent>
+              <div className="text-center pb-6">
+                <h3 className="text-2xl text-secondary mb-2">Let's Get Started</h3>
+                <p className="text-gray-600">This quick form helps me prepare for our conversation and make the most of your time.</p>
+              </div>
+              
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h3 className="text-sm font-semibold text-blue-800 mb-2">Call Information</h3>
                 <p className="text-sm text-blue-700 mb-1">
