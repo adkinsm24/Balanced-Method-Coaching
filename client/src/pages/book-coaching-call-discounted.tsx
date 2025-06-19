@@ -264,7 +264,7 @@ export default function BookCoachingCallDiscounted() {
                           <SelectContent>
                             {DURATION_OPTIONS.map((option) => (
                               <SelectItem key={option.value} value={option.value.toString()}>
-                                {option.label} - ${option.price} (was ${option.value === 30 ? "50" : option.value === 45 ? "70" : "85"})
+                                {option.label} - ${option.price}
                               </SelectItem>
                             ))}
                           </SelectContent>
