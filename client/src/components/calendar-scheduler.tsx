@@ -17,6 +17,10 @@ interface CalendarSchedulerProps {
   selectedSlot?: string;
   onSlotSelect: (slot: string) => void;
   className?: string;
+  userDetails?: {
+    name: string;
+    email: string;
+  };
 }
 
 // Parse time slot value to get day and time information
@@ -102,34 +106,17 @@ export default function CalendarScheduler({
   availableSlots, 
   selectedSlot, 
   onSlotSelect,
-  className = "" 
+  className = "",
+  userDetails = { name: "", email: "" }
 }: CalendarSchedulerProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [groupedSlots, setGroupedSlots] = useState<{ [key: string]: TimeSlot[] }>({});
-  const [userDetails, setUserDetails] = useState({ name: '', email: '' });
 
   useEffect(() => {
     if (availableSlots) {
       setGroupedSlots(groupSlotsByDate(availableSlots));
     }
   }, [availableSlots]);
-
-  useEffect(() => {
-    // Try to get user details from form context or local storage
-    const formData = document.querySelector('form');
-    if (formData) {
-      const firstNameInput = formData.querySelector('input[name="firstName"]') as HTMLInputElement;
-      const lastNameInput = formData.querySelector('input[name="lastName"]') as HTMLInputElement;
-      const emailInput = formData.querySelector('input[name="email"]') as HTMLInputElement;
-      
-      if (firstNameInput && lastNameInput && emailInput) {
-        setUserDetails({
-          name: `${firstNameInput.value} ${lastNameInput.value}`.trim(),
-          email: emailInput.value
-        });
-      }
-    }
-  }, [selectedSlot]);
 
   // Get available dates
   const availableDates = Object.keys(groupedSlots).map(dateKey => new Date(dateKey));

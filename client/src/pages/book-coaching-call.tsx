@@ -264,6 +264,10 @@ export default function BookCoachingCall() {
                               availableSlots={Array.isArray(availableSlots) ? availableSlots : []}
                               selectedSlot={field.value}
                               onSlotSelect={field.onChange}
+                              userDetails={{
+                                name: `${form.watch('firstName')} ${form.watch('lastName')}`.trim(),
+                                email: form.watch('email')
+                              }}
                             />
                           </FormControl>
                           <FormMessage />
