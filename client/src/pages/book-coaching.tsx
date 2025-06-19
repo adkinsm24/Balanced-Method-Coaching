@@ -134,9 +134,7 @@ export default function BookCoaching() {
 
           {/* Form Section */}
           <Card className="shadow-xl border-0">
-            <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white">
-              <CardTitle className="text-2xl text-center">Book Your Discounted Coaching Session</CardTitle>
-            </CardHeader>
+            
             <CardContent>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h3 className="text-sm font-semibold text-blue-800 mb-2">Call Information</h3>
