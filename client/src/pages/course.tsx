@@ -502,9 +502,18 @@ export default function Course() {
                   <CardContent className="pt-4 pb-4">
                     <h4 className="font-semibold text-lg mb-2">1-on-1 Nutrition Coaching</h4>
                     <p className="text-gray-600 text-sm mb-3">Get completely personalized nutrition coaching based on your individual needs and goals.  I take the time to understand your current eating habits and guide you through meaningful changes that stick.</p>
-                    <div className="text-2xl font-bold text-green-600 mb-2">
+                    <div className="text-2xl font-bold text-green-600 mb-4">
                       <span className="line-through text-gray-400 text-lg mr-2">$399</span>
                       $319/4 weeks
+                    </div>
+                    <div className="flex justify-center">
+                      <Button 
+                        size="lg"
+                        onClick={() => window.location.href = '/coaching-offers'}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Get 20% OFF Coaching
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -515,7 +524,7 @@ export default function Course() {
                     <p className="text-gray-600 text-sm mb-3">
                       Focused sessions for specific questions and guidance
                     </p>
-                    <div className="space-y-2">
+                    <div className="space-y-2 mb-4">
                       <div className="flex justify-between items-center">
                         <span className="text-sm">30 min:</span>
                         <div className="text-lg font-bold text-green-600">
@@ -538,26 +547,18 @@ export default function Course() {
                         </div>
                       </div>
                     </div>
+                    <div className="flex justify-center">
+                      <Button 
+                        variant="outline" 
+                        size="lg"
+                        onClick={() => window.location.href = '/book-coaching-call'}
+                        className="border-green-600 text-green-600 hover:bg-green-50"
+                      >
+                        Book Discounted Call
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-                <Button 
-                  size="lg"
-                  onClick={() => window.location.href = '/coaching-offers'}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Get 20% OFF Coaching
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => window.location.href = '/book-coaching-call'}
-                  className="border-green-600 text-green-600 hover:bg-green-50"
-                >
-                  Book Discounted Call
-                </Button>
               </div>
               
               <p className="text-xs text-gray-500 mt-4">
