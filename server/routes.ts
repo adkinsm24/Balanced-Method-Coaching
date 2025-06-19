@@ -209,33 +209,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Stripe payment route for course purchase
-  app.post("/api/create-payment-intent", async (req, res) => {
-    if (!process.env.STRIPE_SECRET_KEY) {
-      return res.status(500).json({ error: "Stripe not configured" });
-    }
-
-    try {
-      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: "2025-05-28.basil",
-      });
-      
-      const { amount } = req.body;
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(amount * 100), // Convert to cents
-        currency: "usd",
-        metadata: {
-          product: "Self-Paced Nutrition Course"
-        }
-      });
-      
-      res.json({ clientSecret: paymentIntent.client_secret });
-    } catch (error: any) {
-      console.error("Stripe error:", error);
-      res.status(500).json({ error: "Payment setup failed" });
-    }
-  });
-
   // Authentication is handled in auth.ts
 
   // Route to grant course access after payment
@@ -492,18 +465,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     try {
       const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: "2025-05-28.basil",
+        apiVersion: "2024-06-20",
       });
       
-      const { amount, productName } = req.body;
+      const { userEmail } = req.body;
       
-      // Create Stripe payment intent for course purchase
+      // Create Stripe payment intent for $149 course
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: amount * 100, // Convert dollars to cents
+        amount: 14900, // $149.00 in cents
         currency: "usd",
         metadata: {
-          productName: productName || "Self-Paced Nutrition Course",
-          amount: amount.toString(),
+          productName: "Self-Paced Nutrition Course",
+          userEmail: userEmail || "unknown",
         },
       });
 
@@ -525,7 +498,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     try {
       const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: "2025-05-28.basil",
+        apiVersion: "2024-06-20",
       });
       
       const { paymentIntentId, userEmail } = req.body;

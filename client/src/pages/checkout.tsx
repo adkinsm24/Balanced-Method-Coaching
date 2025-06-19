@@ -74,8 +74,7 @@ export default function Checkout() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ 
-        amount: 149,
-        productName: "Self-Paced Nutrition Course"
+        userEmail: "demo@test.com"
       }),
     })
     .then((res) => res.json())
