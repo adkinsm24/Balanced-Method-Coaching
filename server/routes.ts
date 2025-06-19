@@ -484,6 +484,73 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Create payment intent for self-paced course
+  app.post('/api/create-payment-intent', async (req, res) => {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return res.status(500).json({ error: "Stripe not configured" });
+    }
+
+    try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: "2025-05-28.basil",
+      });
+      
+      const { amount, productName } = req.body;
+      
+      // Create Stripe payment intent for course purchase
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount * 100, // Convert dollars to cents
+        currency: "usd",
+        metadata: {
+          productName: productName || "Self-Paced Nutrition Course",
+          amount: amount.toString(),
+        },
+      });
+
+      res.json({ 
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id 
+      });
+    } catch (error: any) {
+      console.error("Error creating course payment intent:", error);
+      res.status(500).json({ error: "Failed to create payment intent" });
+    }
+  });
+
+  // Confirm course payment and grant access
+  app.post('/api/confirm-course-payment', async (req, res) => {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return res.status(500).json({ error: "Stripe not configured" });
+    }
+
+    try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: "2025-05-28.basil",
+      });
+      
+      const { paymentIntentId, userEmail } = req.body;
+      
+      // Verify payment with Stripe
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      
+      if (paymentIntent.status === 'succeeded') {
+        // Find user by email and grant course access
+        const user = await storage.getUserByEmail(userEmail);
+        if (user) {
+          await storage.grantCourseAccess(user.id);
+          res.json({ success: true, message: "Course access granted" });
+        } else {
+          res.status(404).json({ error: "User not found" });
+        }
+      } else {
+        res.status(400).json({ error: "Payment not completed" });
+      }
+    } catch (error: any) {
+      console.error("Error confirming course payment:", error);
+      res.status(500).json({ error: "Failed to confirm payment" });
+    }
+  });
+
   // Download route for course documents
   app.get('/api/download/:filename', isAuthenticated, (req, res) => {
     const filename = req.params.filename;
