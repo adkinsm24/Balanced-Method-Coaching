@@ -542,8 +542,16 @@ export default function Course() {
                 </Card>
               </div>
 
-              <div className="flex justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
                 <Button 
+                  size="lg"
+                  onClick={() => window.location.href = '/coaching-offers'}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  Get 20% OFF Coaching
+                </Button>
+                <Button 
+                  variant="outline" 
                   size="lg"
                   onClick={() => window.location.href = '/book-coaching-call'}
                   className="border-green-600 text-green-600 hover:bg-green-50"
