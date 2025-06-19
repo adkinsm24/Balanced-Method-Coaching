@@ -511,13 +511,32 @@ export default function Course() {
                 
                 <Card className="bg-white/80 backdrop-blur-sm">
                   <CardContent className="pt-4 pb-4">
-                    <h4 className="font-semibold text-lg mb-2">Quick Coaching Call</h4>
+                    <h4 className="font-semibold text-lg mb-2">Coaching Calls</h4>
                     <p className="text-gray-600 text-sm mb-3">
-                      30-60 minute focused sessions for specific questions and guidance
+                      Focused sessions for specific questions and guidance
                     </p>
-                    <div className="text-2xl font-bold text-green-600 mb-2">
-                      <span className="line-through text-gray-400 text-lg mr-2">$75</span>
-                      $60/call
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">30 min:</span>
+                        <div className="text-lg font-bold text-green-600">
+                          <span className="line-through text-gray-400 text-sm mr-2">$50</span>
+                          $40
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">45 min:</span>
+                        <div className="text-lg font-bold text-green-600">
+                          <span className="line-through text-gray-400 text-sm mr-2">$70</span>
+                          $56
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">60 min:</span>
+                        <div className="text-lg font-bold text-green-600">
+                          <span className="line-through text-gray-400 text-sm mr-2">$85</span>
+                          $68
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
