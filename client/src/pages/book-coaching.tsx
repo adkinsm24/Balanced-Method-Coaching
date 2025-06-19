@@ -128,8 +128,7 @@ export default function BookCoaching() {
               </p>
             </div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Get completely personalized nutrition coaching based on your individual needs and goals. 
-              I take the time to understand your current eating habits and guide you through meaningful changes that stick.
+              Ready to transform your relationship with food and achieve lasting results? Let's chat about your goals and see if my 1-on-1 nutrition coaching is the right fit for you.
             </p>
           </div>
 
