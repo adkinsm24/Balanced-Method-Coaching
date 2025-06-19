@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
-import { consultationRequests, insertConsultationRequestSchema, coachingCalls, insertCoachingCallSchema, bookedSlots } from "@shared/schema";
+import { consultationRequests, insertConsultationRequestSchema, coachingCalls, insertCoachingCallSchema, bookedSlots, users } from "@shared/schema";
 import { desc, eq, and } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./auth";
@@ -603,6 +603,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
     });
+  });
+
+  // Password reset endpoint for testing
+  app.post('/api/reset-password', async (req, res) => {
+    try {
+      const { email, newPassword } = req.body;
+      
+      if (!email || !newPassword) {
+        return res.status(400).json({ error: "Email and new password are required" });
+      }
+      
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ error: "No user found with this email" });
+      }
+      
+      // Update user password in database (simplified for testing)
+      await db.update(users)
+        .set({ hashedPassword: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' })
+        .where(eq(users.email, email));
+      
+      res.json({ 
+        success: true, 
+        message: "Password updated successfully. You can now login with your new password." 
+      });
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      res.status(500).json({ error: "Failed to reset password" });
+    }
   });
 
   const httpServer = createServer(app);

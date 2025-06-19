@@ -149,7 +149,7 @@ export async function sendCourseAccessEmail(
   loginEmail: string,
   temporaryPassword: string
 ): Promise<boolean> {
-  const subject = "Welcome to Your Self-Paced Nutrition Course - Login Details";
+  const subject = "Your Nutrition Course Access - Login Information Inside";
   
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
