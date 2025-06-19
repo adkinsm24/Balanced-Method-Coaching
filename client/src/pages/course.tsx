@@ -503,9 +503,7 @@ export default function Course() {
                 <Card className="bg-white/80 backdrop-blur-sm">
                   <CardContent className="pt-4 pb-4">
                     <h4 className="font-semibold text-lg mb-2">1-on-1 Nutrition Coaching</h4>
-                    <p className="text-gray-600 text-sm mb-3">
-                      Comprehensive nutrition coaching with personalized meal plans and ongoing support
-                    </p>
+                    <p className="text-gray-600 text-sm mb-3">Get completely personalized nutrition coaching based on your individual needs and goals. </p>
                     <div className="text-2xl font-bold text-green-600 mb-2">
                       <span className="line-through text-gray-400 text-lg mr-2">$399</span>
                       $120/session
