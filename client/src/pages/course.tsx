@@ -542,7 +542,7 @@ export default function Course() {
                 </Card>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
                 <Button 
                   size="lg"
                   onClick={() => window.location.href = '/coaching-offers'}
