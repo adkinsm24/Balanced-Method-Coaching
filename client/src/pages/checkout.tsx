@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import Footer from "@/components/footer";
 
@@ -11,7 +13,7 @@ import Footer from "@/components/footer";
 const stripePromise = import.meta.env.VITE_STRIPE_PUBLIC_KEY ? 
   loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY) : null;
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ userEmail }: { userEmail: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
@@ -51,7 +53,7 @@ const CheckoutForm = () => {
             },
             body: JSON.stringify({
               paymentIntentId: paymentIntent.id,
-              userEmail: 'demo@test.com'
+              userEmail: userEmail
             }),
           });
 
@@ -108,43 +110,53 @@ const CheckoutForm = () => {
 export default function Checkout() {
   const [clientSecret, setClientSecret] = useState("");
   const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
 
-  useEffect(() => {
-    // Create PaymentIntent for the course
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ 
-        userEmail: "demo@test.com"
-      }),
-    })
-    .then((res) => res.json())
-    .then((data) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      // Create PaymentIntent for the course
+      const response = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          userEmail: email
+        }),
+      });
+
+      const data = await response.json();
       if (data.clientSecret) {
         setClientSecret(data.clientSecret);
+        setEmailSubmitted(true);
+        setError("");
       } else {
         setError("Payment setup failed. Please try again.");
       }
-    })
-    .catch(() => {
+    } catch (error) {
       setError("Unable to initialize payment. Please check your connection.");
-    });
-  }, []);
+    }
+  };
 
-  if (error) {
+  if (error && !emailSubmitted) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pt-20">
         <div className="max-w-2xl mx-auto px-4 py-16">
           <Card className="shadow-xl border-0">
             <CardContent className="pt-6">
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-red-600 mb-4">Payment Setup Required</h2>
+                <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
                 <p className="text-gray-600 mb-4">{error}</p>
-                <p className="text-sm text-gray-500">
-                  Stripe payment processing needs to be configured to accept payments.
-                </p>
+                <Button onClick={() => setError("")} className="mt-4">
+                  Try Again
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -154,96 +166,122 @@ export default function Checkout() {
     );
   }
 
-  if (!clientSecret) {
+  // Show email collection form first
+  if (!emailSubmitted || !clientSecret) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pt-20">
         <div className="max-w-2xl mx-auto px-4 py-16">
-          <div className="text-center">
-            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto" aria-label="Loading"/>
-            <p className="mt-4 text-gray-600">Setting up secure checkout...</p>
-          </div>
+          <Card className="shadow-xl border-0">
+            <CardHeader className="text-center">
+              <CardTitle className="text-3xl font-bold text-gray-900">
+                Self-Paced Nutrition Course
+              </CardTitle>
+              <p className="text-xl text-gray-600 mt-2">$149 - One-time payment</p>
+            </CardHeader>
+            <CardContent>
+              {!emailSubmitted ? (
+                <form onSubmit={handleEmailSubmit} className="space-y-4">
+                  <div>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email address"
+                      required
+                      className="mt-1"
+                    />
+                    <p className="text-sm text-gray-500 mt-1">
+                      You'll receive login credentials and course access via email
+                    </p>
+                  </div>
+                  {error && (
+                    <p className="text-red-600 text-sm">{error}</p>
+                  )}
+                  <Button type="submit" className="w-full">
+                    Continue to Payment
+                  </Button>
+                </form>
+              ) : (
+                <div className="text-center">
+                  <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
+                  <p className="mt-4 text-gray-600">Setting up secure checkout...</p>
+                </div>
+              )}
+              
+              <Separator className="my-8" />
+              
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-gray-900">What's Included:</h3>
+                <ul className="space-y-2 text-gray-600">
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    11 comprehensive modules covering all aspects of nutrition
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    Downloadable guides and worksheets for each section
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    Practical strategies for sustainable lifestyle changes
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    Access to Coach Mark's proven methods
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    Lifetime access to all course materials
+                  </li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
         </div>
         <Footer />
       </main>
     );
   }
 
+  // Show Stripe checkout form
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pt-20">
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        <Card className="shadow-xl border-0 mb-8">
+      <div className="max-w-2xl mx-auto px-4 py-16">
+        <Card className="shadow-xl border-0">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl text-secondary">Complete Your Purchase</CardTitle>
-            <p className="text-gray-600">Self-Paced Nutrition Course</p>
+            <CardTitle className="text-3xl font-bold text-gray-900">
+              Complete Your Purchase
+            </CardTitle>
+            <p className="text-lg text-gray-600 mt-2">
+              Self-Paced Nutrition Course - $149
+            </p>
+            <p className="text-sm text-gray-500">
+              Email: {email}
+            </p>
           </CardHeader>
-          
-          <CardContent className="space-y-6">
-            {/* Course Summary */}
-            <div className="bg-blue-50 rounded-lg p-6">
-              <h3 className="font-semibold text-lg mb-3">What You're Getting:</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Complete nutrition framework used with private clients</li>
-                <li>• Learn at your own pace</li>
-                <li>• Proven system that works</li>
-                <li>• Lifetime access to all course materials</li>
-              </ul>
-              
-              <Separator className="my-4" />
-              
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-medium">Total:</span>
-                <span className="text-2xl font-bold text-primary">$149</span>
-              </div>
-            </div>
-
-            {/* Payment Form */}
-            {stripePromise ? (
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm />
+          <CardContent>
+            {stripePromise && clientSecret ? (
+              <Elements 
+                stripe={stripePromise} 
+                options={{ 
+                  clientSecret,
+                  appearance: {
+                    theme: 'stripe',
+                    variables: {
+                      colorPrimary: '#2563eb',
+                    }
+                  }
+                }}
+              >
+                <CheckoutForm userEmail={email} />
               </Elements>
             ) : (
-              <div className="text-center p-6 bg-yellow-50 rounded-lg">
-                <p className="text-yellow-800">Payment processing is being configured. Please check back soon.</p>
+              <div className="text-center">
+                <p className="text-red-600">Payment system not configured</p>
               </div>
             )}
-
-            <div className="text-center text-sm text-gray-500 space-y-2">
-              <p>🔒 Secure checkout powered by Stripe</p>
-              <p>Your payment information is encrypted and secure</p>
-            </div>
-
-            {/* Legal Information */}
-            <div className="border-t pt-6 space-y-4 text-xs text-gray-600">
-              <div>
-                <h4 className="font-semibold mb-2">Terms & Conditions</h4>
-                <p>
-                  By purchasing this course, you agree to our terms of service. This is a digital product with lifetime access. 
-                  All sales are final. No refunds will be provided after purchase.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2">Disclaimer</h4>
-                <p className="mb-2">
-                  This self-paced nutrition course is intended for educational and informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. I am not a licensed physician, dietitian, or mental health professional, and the information provided in this course should not be interpreted as medical advice.
-                </p>
-                <p className="mb-2">
-                  Always consult your doctor or a qualified healthcare provider before starting any new diet, exercise, or lifestyle program—especially if you have pre-existing medical conditions, are pregnant or breastfeeding, or are taking prescription medications.
-                </p>
-                <p>
-                  By enrolling in this course, you acknowledge that you are responsible for your own health decisions and outcomes. The strategies and recommendations shared in this course are based on my personal experience and coaching methodology and may not be appropriate for every individual. Results may vary and are dependent on your consistency, effort, and individual circumstances.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2">Privacy & Copyright</h4>
-                <p>
-                  © {new Date().getFullYear()} Coach Mark Nutrition. All rights reserved. 
-                  Course materials are proprietary and protected by copyright law. 
-                  Your personal information is protected according to our privacy policy.
-                </p>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
