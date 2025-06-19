@@ -26,25 +26,68 @@ const CheckoutForm = () => {
       return;
     }
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: window.location.origin + "/success",
-      },
-    });
+    try {
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + "/success",
+        },
+        redirect: "if_required",
+      });
 
-    if (error) {
+      if (error) {
+        toast({
+          title: "Payment Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+        // Payment successful, grant course access
+        try {
+          const response = await fetch('/api/confirm-course-payment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              paymentIntentId: paymentIntent.id,
+              userEmail: 'demo@test.com'
+            }),
+          });
+
+          if (response.ok) {
+            toast({
+              title: "Payment Successful",
+              description: "Welcome to the Self-Paced Nutrition Course! Course access granted.",
+            });
+            
+            // Redirect to course page after a short delay
+            setTimeout(() => {
+              window.location.href = '/course';
+            }, 2000);
+          } else {
+            toast({
+              title: "Payment Processed",
+              description: "Payment completed but there was an issue granting access. Please contact support.",
+              variant: "destructive",
+            });
+          }
+        } catch (accessError) {
+          toast({
+            title: "Payment Processed",
+            description: "Payment completed but there was an issue granting access. Please contact support.",
+            variant: "destructive",
+          });
+        }
+      }
+    } catch (error: any) {
       toast({
-        title: "Payment Failed",
-        description: error.message,
+        title: "Payment Error",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
-    } else {
-      toast({
-        title: "Payment Successful",
-        description: "Welcome to the Self-Paced Nutrition Course!",
-      });
     }
+    
     setIsProcessing(false);
   };
 
