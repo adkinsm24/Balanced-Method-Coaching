@@ -521,9 +521,7 @@ export default function Course() {
                 <Card className="bg-white/80 backdrop-blur-sm">
                   <CardContent className="pt-4 pb-4">
                     <h4 className="font-semibold text-lg mb-2">Coaching Calls</h4>
-                    <p className="text-gray-600 text-sm mb-3">
-                      Focused sessions for specific questions and guidance
-                    </p>
+                    <p className="text-gray-600 text-sm mb-3">Book a personalized call with Coach Mark to get answers to your specific questions about nutrition, food tracking, exercise, or any health-related concerns.</p>
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center justify-center gap-4">
                         <span className="text-sm">30 min:</span>
