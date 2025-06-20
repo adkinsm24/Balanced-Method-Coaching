@@ -7,6 +7,7 @@ import { promisify } from "util";
 import { storage } from "./storage";
 import { User as SelectUser, registerUserSchema, loginUserSchema } from "@shared/schema";
 import connectPg from "connect-pg-simple";
+import MemoryStore from "memorystore";
 import { pool } from "./db";
 
 declare global {
@@ -31,16 +32,19 @@ async function comparePasswords(supplied: string, stored: string): Promise<boole
 }
 
 export function setupAuth(app: Express) {
-  const PostgresSessionStore = connectPg(session);
+  const MemStore = MemoryStore(session);
+  
+  // Use memory store to avoid database connection issues
+  // This is more reliable for development and handles Neon connectivity issues
+  const store = new MemStore({
+    checkPeriod: 86400000 // prune expired entries every 24h
+  });
   
   const sessionSettings: session.SessionOptions = {
     secret: process.env.SESSION_SECRET || 'development-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
-    store: new PostgresSessionStore({ 
-      pool,
-      createTableIfMissing: true 
-    }),
+    store: store,
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
