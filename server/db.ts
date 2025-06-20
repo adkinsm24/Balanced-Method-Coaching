@@ -15,13 +15,36 @@ let pool: Pool;
 let db: ReturnType<typeof drizzle>;
 
 try {
-  pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  pool = new Pool({ 
+    connectionString: process.env.DATABASE_URL,
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
+  });
   db = drizzle({ client: pool, schema });
+  
+  // Test the connection
+  pool.on('connect', () => {
+    console.log('Database connected successfully');
+  });
+  
+  pool.on('error', (err) => {
+    console.error('Unexpected error on idle client', err);
+  });
+  
 } catch (error) {
   console.error('Database connection failed:', error);
-  // Create a fallback pool for now
-  pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  db = drizzle({ client: pool, schema });
+  throw error;
+}
+
+// Function to ensure database connection is alive
+export async function ensureConnection() {
+  try {
+    await pool.query('SELECT 1');
+  } catch (error) {
+    console.log('Database connection lost, attempting to reconnect...');
+    // The pool will automatically reconnect on next query
+  }
 }
 
 export { pool, db };
