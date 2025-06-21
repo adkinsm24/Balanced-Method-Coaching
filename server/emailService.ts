@@ -21,7 +21,11 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
       to: params.to,
       from: {
         email: params.from,
-        name: 'Mark Adkins - Balanced Method Coaching'
+        name: 'Balanced Method Coaching'
+      },
+      reply_to: {
+        email: params.from,
+        name: 'Mark Adkins'
       },
       subject: params.subject,
       // Add custom headers to improve deliverability
