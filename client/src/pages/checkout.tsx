@@ -13,11 +13,13 @@ import Footer from "@/components/footer";
 const stripePromise = import.meta.env.VITE_STRIPE_PUBLIC_KEY ? 
   loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY) : null;
 
-const CheckoutForm = ({ userEmail }: { userEmail: string }) => {
+const CheckoutForm = ({ userEmail, firstName, lastName }: { userEmail: string; firstName: string; lastName: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  const customerName = `${firstName} ${lastName}`.trim();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +35,12 @@ const CheckoutForm = ({ userEmail }: { userEmail: string }) => {
         elements,
         confirmParams: {
           return_url: window.location.origin + "/success",
+          payment_method_data: {
+            billing_details: {
+              name: customerName,
+              email: userEmail,
+            },
+          },
         },
         redirect: "if_required",
       });
@@ -53,7 +61,9 @@ const CheckoutForm = ({ userEmail }: { userEmail: string }) => {
             },
             body: JSON.stringify({
               paymentIntentId: paymentIntent.id,
-              userEmail: userEmail
+              email: userEmail,
+              firstName: firstName.trim(),
+              lastName: lastName.trim()
             }),
           });
 
@@ -111,12 +121,18 @@ export default function Checkout() {
   const [clientSecret, setClientSecret] = useState("");
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
       setError("Please enter a valid email address");
+      return;
+    }
+    if (!firstName.trim() || !lastName.trim()) {
+      setError("Please enter your first and last name");
       return;
     }
 
@@ -128,7 +144,9 @@ export default function Checkout() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
-          userEmail: email
+          userEmail: email,
+          firstName: firstName.trim(),
+          lastName: lastName.trim()
         }),
       });
 
@@ -181,6 +199,33 @@ export default function Checkout() {
             <CardContent>
               {!emailSubmitted ? (
                 <form onSubmit={handleEmailSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input
+                        id="firstName"
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder="John"
+                        required
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input
+                        id="lastName"
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        placeholder="Doe"
+                        required
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                  
                   <div>
                     <Label htmlFor="email">Email Address</Label>
                     <Input
@@ -303,7 +348,7 @@ export default function Checkout() {
               Self-Paced Nutrition Course - $149
             </p>
             <p className="text-sm text-gray-500">
-              Email: {email}
+              Email: {email} | Name: {firstName} {lastName}
             </p>
           </CardHeader>
           <CardContent>
@@ -320,7 +365,7 @@ export default function Checkout() {
                   }
                 }}
               >
-                <CheckoutForm userEmail={email} />
+                <CheckoutForm userEmail={email} firstName={firstName} lastName={lastName} />
               </Elements>
             ) : (
               <div className="text-center">

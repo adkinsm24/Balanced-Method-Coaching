@@ -537,7 +537,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         apiVersion: "2024-06-20",
       });
       
-      const { userEmail } = req.body;
+      const { userEmail, firstName, lastName } = req.body;
       
       // Create Stripe payment intent for $149 course
       const paymentIntent = await stripe.paymentIntents.create({
@@ -546,6 +546,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         metadata: {
           productName: "Self-Paced Nutrition Course",
           userEmail: userEmail || "unknown",
+          customerName: `${firstName || ''} ${lastName || ''}`.trim(),
         },
       });
 
@@ -570,7 +571,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         apiVersion: "2024-06-20",
       });
       
-      const { paymentIntentId, userEmail } = req.body;
+      const { paymentIntentId, email, firstName, lastName } = req.body;
+      const userEmail = email;
       
       // Verify payment with Stripe
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
@@ -593,8 +595,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           user = await storage.createUser({
             email: userEmail,
             hashedPassword,
-            firstName: "Course",
-            lastName: "Student",
+            firstName: firstName || "Course",
+            lastName: lastName || "Student",
             hasCourseAccess: true
           });
           
