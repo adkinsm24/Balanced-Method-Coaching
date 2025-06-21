@@ -59,6 +59,16 @@ export default function Navigation() {
             </Link>
           )}
 
+          {/* Admin access */}
+          {isAuthenticated && (
+            <Link href="/admin/time-slots">
+              <Button 
+                variant={location === "/admin/time-slots" ? "default" : "ghost"}
+                className={location === "/admin/time-slots" ? "bg-primary text-primary-foreground" : ""}
+              >Admin</Button>
+            </Link>
+          )}
+
           {/* Authentication buttons */}
           {isAuthenticated ? (
             <Button

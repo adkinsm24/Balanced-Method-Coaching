@@ -72,6 +72,17 @@ export const bookedSlots = pgTable("booked_slots", {
   bookedAt: timestamp("booked_at").defaultNow().notNull(),
 });
 
+export const availableTimeSlots = pgTable("available_time_slots", {
+  id: serial("id").primaryKey(),
+  value: varchar("value", { length: 50 }).notNull().unique(),
+  label: varchar("label", { length: 100 }).notNull(),
+  dayOfWeek: varchar("day_of_week", { length: 10 }).notNull(),
+  timeOfDay: varchar("time_of_day", { length: 10 }).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const upsertUserSchema = createInsertSchema(users).pick({
   id: true,
   email: true,
@@ -116,6 +127,12 @@ export const insertCoachingCallSchema = createInsertSchema(coachingCalls).omit({
   rolloverMinutes: true,
 });
 
+export const insertAvailableTimeSlotSchema = createInsertSchema(availableTimeSlots).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type UpsertUser = z.infer<typeof upsertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -127,3 +144,5 @@ export type BookedSlot = typeof bookedSlots.$inferSelect;
 export type InsertBookedSlot = z.infer<typeof insertBookedSlotSchema>;
 export type CoachingCall = typeof coachingCalls.$inferSelect;
 export type InsertCoachingCall = z.infer<typeof insertCoachingCallSchema>;
+export type AvailableTimeSlot = typeof availableTimeSlots.$inferSelect;
+export type InsertAvailableTimeSlot = z.infer<typeof insertAvailableTimeSlotSchema>;
