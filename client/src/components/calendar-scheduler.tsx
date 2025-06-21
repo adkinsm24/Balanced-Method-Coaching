@@ -97,26 +97,27 @@ function groupSlotsByDate(slots: TimeSlot[]): { [key: string]: TimeSlot[] } {
 function generateGoogleCalendarLink(slot: TimeSlot, userDetails: { name: string; email: string }): string {
   const { date, time } = parseTimeSlot(slot.value);
   
-  // Create start and end times (assuming 1 hour duration)
+  // Create start and end times (30 minutes for free consultation)
   const startTime = new Date(date);
   const [timeOnly] = time.split(' ');
   const [hours, minutes = '0'] = timeOnly.split(':');
   startTime.setHours(parseInt(hours), parseInt(minutes));
   
   const endTime = new Date(startTime);
-  endTime.setHours(startTime.getHours() + 1);
+  endTime.setMinutes(startTime.getMinutes() + 30);
   
   const startISO = startTime.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   const endISO = endTime.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   
-  const title = encodeURIComponent('Nutrition Coaching Call');
+  const title = encodeURIComponent('Free Nutrition Consultation');
   const details = encodeURIComponent(`
-Nutrition Coaching Call with Balanced Method Coaching
+Free Nutrition Consultation with Mark Adkins - Balanced Method Coaching
 
-Duration: 1 hour
+Duration: 30 minutes
 Participant: ${userDetails.name} (${userDetails.email})
+Platform: FaceTime or WhatsApp (international calling supported)
 
-This is your scheduled nutrition coaching session. Please be prepared to discuss your health goals and current nutrition habits.
+This is your complimentary nutrition consultation. Please be prepared to discuss your health goals and current nutrition habits.
   `.trim());
   
   const location = encodeURIComponent('Video Call (details will be provided)');
