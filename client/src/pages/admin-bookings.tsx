@@ -41,16 +41,7 @@ interface CoachingCall {
   createdAt: string;
 }
 
-interface BookedSlot {
-  id: number;
-  timeSlot: string;
-  duration: number;
-  isSecondarySlot: boolean;
-  primarySlotId?: number;
-  consultationRequestId?: number;
-  coachingCallId?: number;
-  bookedAt: string;
-}
+
 
 export default function AdminBookingsPage() {
   const { user } = useAuth();
@@ -74,10 +65,7 @@ export default function AdminBookingsPage() {
     enabled: !!user,
   });
 
-  const { data: bookedSlots, isLoading: loadingSlots } = useQuery({
-    queryKey: ["/api/admin/booked-slots"],
-    enabled: !!user,
-  });
+
 
   const deleteRequestMutation = useMutation({
     mutationFn: async (id: number) => {
@@ -164,15 +152,14 @@ export default function AdminBookingsPage() {
               Booking Management
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              View and manage all consultation requests, coaching calls, and booked time slots.
+              View and manage all consultation requests and coaching calls.
             </p>
           </div>
 
           <Tabs defaultValue="consultation-requests" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="consultation-requests">Free Intro Calls</TabsTrigger>
               <TabsTrigger value="coaching-calls">Paid Coaching Calls</TabsTrigger>
-              <TabsTrigger value="booked-slots">All Booked Slots</TabsTrigger>
             </TabsList>
 
             <TabsContent value="consultation-requests" className="space-y-4">
@@ -330,59 +317,7 @@ export default function AdminBookingsPage() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="booked-slots" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    All Booked Time Slots ({bookedSlots?.length || 0})
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {loadingSlots ? (
-                    <div className="text-center py-8">
-                      <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-                      <p className="mt-4 text-gray-600">Loading booked slots...</p>
-                    </div>
-                  ) : bookedSlots && bookedSlots.length > 0 ? (
-                    <div className="space-y-4">
-                      {bookedSlots.map((slot: BookedSlot) => (
-                        <Card key={slot.id} className="p-4">
-                          <div className="flex justify-between items-center">
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                <h3 className="font-semibold">
-                                  {formatTimeSlot(slot.timeSlot)}
-                                </h3>
-                                <Badge variant="outline">{slot.duration} min</Badge>
-                                {slot.isSecondarySlot && (
-                                  <Badge variant="secondary">Secondary Slot</Badge>
-                                )}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                {slot.consultationRequestId && (
-                                  <span>Free Intro Call (ID: {slot.consultationRequestId})</span>
-                                )}
-                                {slot.coachingCallId && (
-                                  <span>Paid Coaching Call (ID: {slot.coachingCallId})</span>
-                                )}
-                              </div>
-                              <p className="text-xs text-gray-500">
-                                Booked: {new Date(slot.bookedAt).toLocaleString()}
-                              </p>
-                            </div>
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      No booked slots found
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+
           </Tabs>
         </div>
       </div>
