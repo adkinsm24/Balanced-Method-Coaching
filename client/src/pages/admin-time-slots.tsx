@@ -405,32 +405,63 @@ export default function AdminTimeSlots() {
   };
 
   const onSubmitDateOverride = (data: DateOverrideForm) => {
+    // Validate that the selected date is within available date ranges
+    const isDateValid = availableDatesForOverrides.some(d => d.value === data.date);
+    
+    if (!isDateValid) {
+      toast({
+        title: "Invalid Date",
+        description: "Selected date is not within your defined date ranges.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     createDateOverrideMutation.mutate(data);
   };
 
   // Generate dates that are within the specific date ranges
   const getAvailableDatesForOverrides = () => {
-    if (!specificDateSlots?.length) return [];
+    // Look for date ranges in both specificDateSlots and dateOverrides (they might be stored in either)
+    const dateRanges = [];
+    
+    // Check specificDateSlots for date ranges
+    if (specificDateSlots?.length) {
+      specificDateSlots.forEach((slot: any) => {
+        if (slot.type === 'date_range' && slot.startDate && slot.endDate) {
+          dateRanges.push({ startDate: slot.startDate, endDate: slot.endDate });
+        }
+      });
+    }
+    
+    // Also check dateOverrides for date ranges (they're stored there based on the DB data)
+    if (dateOverrides?.length) {
+      dateOverrides.forEach((override: any) => {
+        if (override.startDate && override.endDate) {
+          dateRanges.push({ startDate: override.startDate, endDate: override.endDate });
+        }
+      });
+    }
+    
+    if (dateRanges.length === 0) return [];
     
     const allDates = [];
     
     // Get all dates from date ranges
-    specificDateSlots.forEach((slot: any) => {
-      if (slot.type === 'date_range' && slot.startDate && slot.endDate) {
-        const start = new Date(slot.startDate);
-        const end = new Date(slot.endDate);
+    dateRanges.forEach(({ startDate, endDate }) => {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      for (let currentDate = new Date(start); currentDate <= end; currentDate.setDate(currentDate.getDate() + 1)) {
+        const dateStr = format(currentDate, 'yyyy-MM-dd');
+        const dateLabel = format(currentDate, 'EEEE, MMM d');
         
-        for (let currentDate = new Date(start); currentDate <= end; currentDate.setDate(currentDate.getDate() + 1)) {
-          const dateStr = format(currentDate, 'yyyy-MM-dd');
-          const dateLabel = format(currentDate, 'EEEE, MMM d');
-          
-          // Only add if not already in the list
-          if (!allDates.find(d => d.value === dateStr)) {
-            allDates.push({
-              value: dateStr,
-              label: dateLabel,
-            });
-          }
+        // Only add if not already in the list
+        if (!allDates.find(d => d.value === dateStr)) {
+          allDates.push({
+            value: dateStr,
+            label: dateLabel,
+          });
         }
       }
     });
@@ -440,6 +471,11 @@ export default function AdminTimeSlots() {
   };
 
   const availableDatesForOverrides = getAvailableDatesForOverrides();
+  
+  // Debug logging
+  console.log("Date Overrides Data:", dateOverrides);
+  console.log("Specific Date Slots Data:", specificDateSlots);
+  console.log("Available Dates for Overrides:", availableDatesForOverrides);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
