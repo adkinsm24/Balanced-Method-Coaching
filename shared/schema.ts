@@ -24,6 +24,7 @@ export const users = pgTable("users", {
   hasCourseAccess: boolean("has_course_access").default(false),
   isAdmin: boolean("is_admin").default(false),
   stripeCustomerId: varchar("stripe_customer_id"),
+  isFirstLogin: boolean("is_first_login").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

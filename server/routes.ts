@@ -637,6 +637,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
 
+  // Set new password for first-time users
+  app.post('/api/set-new-password', isAuthenticated, async (req: any, res) => {
+    try {
+      const { newPassword } = req.body;
+      const userId = req.user.id;
+      
+      if (!newPassword) {
+        return res.status(400).json({ message: "New password is required" });
+      }
+      
+      if (newPassword.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters long" });
+      }
+      
+      // Hash new password with bcrypt
+      const bcrypt = await import('bcrypt');
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      
+      // Update password and mark as no longer first login
+      await db.update(users)
+        .set({ 
+          hashedPassword, 
+          isFirstLogin: false,
+          updatedAt: new Date() 
+        })
+        .where(eq(users.id, userId));
+      
+      res.json({ success: true, message: "Password set successfully" });
+    } catch (error) {
+      console.error("Error setting new password:", error);
+      res.status(500).json({ message: "Failed to set password" });
+    }
+  });
+
   // Test email endpoint (for development)
   app.post('/api/test-email', async (req, res) => {
     try {

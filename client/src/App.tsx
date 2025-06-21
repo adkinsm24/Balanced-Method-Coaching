@@ -24,6 +24,7 @@ import Admin from "@/pages/admin";
 import AdminTimeSlots from "@/pages/admin-time-slots";
 import AdminBookings from "@/pages/admin-bookings";
 import AuthPage from "@/pages/auth-page";
+import FirstLogin from "@/pages/first-login";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -45,6 +46,7 @@ function Router() {
       <ProtectedRoute path="/admin" component={Admin} />
       <ProtectedRoute path="/admin/time-slots" component={AdminTimeSlots} />
       <ProtectedRoute path="/admin/bookings" component={AdminBookings} />
+      <ProtectedRoute path="/first-login" component={FirstLogin} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
