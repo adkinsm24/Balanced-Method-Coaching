@@ -25,7 +25,6 @@ export default function CoachingSuccess() {
       }
 
       try {
-        console.log('Confirming payment:', { paymentIntent });
         const response = await fetch(`/api/coaching-calls/confirm-payment`, {
           method: 'POST',
           headers: {
@@ -43,7 +42,6 @@ export default function CoachingSuccess() {
         
         setConfirmed(true);
       } catch (error: any) {
-        console.error('Payment confirmation error:', error);
         setError(error.message || "Failed to confirm payment");
       } finally {
         setIsConfirming(false);

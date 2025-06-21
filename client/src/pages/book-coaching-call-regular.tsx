@@ -103,7 +103,6 @@ export default function BookCoachingCallRegular() {
   });
 
   const onSubmit = (data: CoachingCallForm) => {
-    console.log('Form submitted with data:', data);
     bookingMutation.mutate(data);
   };
 
@@ -289,10 +288,7 @@ export default function BookCoachingCallRegular() {
                           <CalendarScheduler
                             availableSlots={Array.isArray(availableSlots) ? availableSlots : []}
                             selectedSlot={field.value}
-                            onSlotSelect={(slot) => {
-                              console.log('Calendar slot selected, updating form field:', slot);
-                              field.onChange(slot);
-                            }}
+                            onSlotSelect={field.onChange}
                             userDetails={{
                               name: `${form.watch('firstName')} ${form.watch('lastName')}`.trim(),
                               email: form.watch('email')

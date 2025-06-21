@@ -254,6 +254,7 @@ export async function sendCoachingCallNotification(
   goals: string,
   contactMethod: string
 ): Promise<boolean> {
+
   const subject = `New Coaching Call Booking - ${clientName} ($${(amount / 100).toFixed(2)})`;
   
   const html = `
