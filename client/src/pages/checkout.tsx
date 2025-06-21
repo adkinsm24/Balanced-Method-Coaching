@@ -237,6 +237,51 @@ export default function Checkout() {
                   </li>
                 </ul>
               </div>
+
+              <Separator className="my-6" />
+              
+              {/* Legal Disclaimers */}
+              <div className="space-y-4 text-xs text-gray-600">
+                <div>
+                  <h4 className="font-semibold mb-2 text-sm">Terms & Conditions</h4>
+                  <p className="mb-2">
+                    By purchasing this course, you agree to our terms of service. This is a digital product with immediate access upon payment completion. 
+                    All payments are processed securely through Stripe.
+                  </p>
+                  <p className="mb-2">
+                    <strong>Refund Policy:</strong> Due to the digital nature of this course and immediate access provided, all sales are final. 
+                    No refunds will be provided after purchase completion.
+                  </p>
+                  <p>
+                    <strong>Course Access:</strong> You will receive lifetime access to all course materials. 
+                    Login credentials will be sent to your email address within 24 hours of purchase.
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold mb-2 text-sm">Health Disclaimer</h4>
+                  <p className="mb-2">
+                    This course is intended for educational and informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. 
+                    Coach Mark is not a licensed physician, dietitian, or mental health professional, and the information provided in this course should not be interpreted as medical advice.
+                  </p>
+                  <p className="mb-2">
+                    Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition or dietary changes. 
+                    Never disregard professional medical advice or delay in seeking it because of something you have learned in this course.
+                  </p>
+                  <p>
+                    Individual results may vary. The strategies and information presented in this course are based on Coach Mark's experience and may not be suitable for everyone. 
+                    Please consult with a healthcare professional before making significant changes to your diet or lifestyle.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold mb-2 text-sm">Privacy & Data</h4>
+                  <p>
+                    Your personal information and payment details are protected and will never be shared with third parties. 
+                    We use industry-standard security measures to protect your data and privacy.
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -282,6 +327,31 @@ export default function Checkout() {
                 <p className="text-red-600">Payment system not configured</p>
               </div>
             )}
+
+            <Separator className="my-6" />
+            
+            {/* Legal Disclaimers for Payment Page */}
+            <div className="space-y-4 text-xs text-gray-600">
+              <div>
+                <h4 className="font-semibold mb-2 text-sm">Purchase Agreement</h4>
+                <p className="mb-2">
+                  By completing this purchase, you acknowledge that you have read and agree to all terms and conditions. 
+                  This is a final sale of digital content with immediate access provided upon payment confirmation.
+                </p>
+                <p>
+                  <strong>Important:</strong> All course content is proprietary and protected by copyright. 
+                  Sharing, distributing, or reselling course materials is strictly prohibited.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2 text-sm">Health & Liability Disclaimer</h4>
+                <p>
+                  This course provides general nutrition education and is not personalized medical advice. 
+                  Consult your healthcare provider before making dietary changes. Coach Mark and this course are not liable for any health outcomes or decisions made based on course content.
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
