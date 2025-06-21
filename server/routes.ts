@@ -744,21 +744,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Received date range data:", req.body);
       const { startDate, endDate, label, isActive } = req.body;
       
-      // Create a single date override entry for the range
-      const dateOverrideData = {
+      // Create a date range override entry
+      const dateRangeData = {
         startDate,
         endDate,
         type: "available_only" as const,
         reason: label || `Date range: ${startDate} to ${endDate}`,
+        isActive: true,
       };
       
-      const validatedData = insertDateOverrideSchema.parse(dateOverrideData);
-      const [newOverride] = await db
+      console.log("Creating date range with data:", dateRangeData);
+      
+      const [newDateRange] = await db
         .insert(dateOverrides)
-        .values(validatedData)
+        .values(dateRangeData)
         .returning();
       
-      res.json(newOverride);
+      res.json({
+        message: `Created date range from ${startDate} to ${endDate}`,
+        dateRange: newDateRange
+      });
     } catch (error) {
       console.error("Error creating specific date slots:", error);
       res.status(400).json({ error: error.message || "Invalid data" });

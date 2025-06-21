@@ -97,9 +97,12 @@ export const specificDateSlots = pgTable("specific_date_slots", {
 
 export const dateOverrides = pgTable("date_overrides", {
   id: serial("id").primaryKey(),
-  date: varchar("date", { length: 20 }).notNull().unique(), // YYYY-MM-DD format
+  date: varchar("date", { length: 20 }), // YYYY-MM-DD format for single dates
+  startDate: varchar("start_date", { length: 20 }), // YYYY-MM-DD format for date ranges
+  endDate: varchar("end_date", { length: 20 }), // YYYY-MM-DD format for date ranges
   type: varchar("type", { length: 20 }).notNull(), // "blocked" or "available_only"
   reason: varchar("reason", { length: 255 }), // optional reason for the override
+  isActive: boolean("is_active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -172,6 +175,14 @@ export const dateRangeSlotSchema = z.object({
 export const insertDateOverrideSchema = createInsertSchema(dateOverrides).omit({
   id: true,
   createdAt: true,
+});
+
+export const dateRangeSchema = z.object({
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().min(1, "End date is required"),
+  type: z.enum(["blocked", "available_only"]).default("available_only"),
+  reason: z.string().optional(),
+  isActive: z.boolean().default(true),
 });
 
 export type UpsertUser = z.infer<typeof upsertUserSchema>;
