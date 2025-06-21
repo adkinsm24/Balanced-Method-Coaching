@@ -162,11 +162,11 @@ export default function CalendarScheduler({
             Select Your Preferred Date & Time
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Calendar */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Choose a Date</h3>
+        <CardContent className="space-y-8">
+          {/* Calendar Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Choose a Date</h3>
+            <div className="flex justify-center">
               <DayPicker
                 mode="single"
                 selected={selectedDate}
@@ -182,69 +182,73 @@ export default function CalendarScheduler({
                     fontWeight: 'bold',
                   },
                 }}
-                className="border rounded-lg p-4"
+                className="border rounded-lg p-4 w-full max-w-sm mx-auto"
                 showOutsideDays={false}
                 fixedWeeks
               />
-              <div className="text-sm text-muted-foreground">
-                <Badge variant="secondary" className="mr-2">Blue dates</Badge>
-                have available time slots
-              </div>
             </div>
+            <div className="text-sm text-muted-foreground text-center">
+              <Badge variant="secondary" className="mr-2">Blue dates</Badge>
+              have available time slots
+            </div>
+          </div>
 
-            {/* Time Slots */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Available Times</h3>
-              {selectedDate ? (
-                slotsForSelectedDate.length > 0 ? (
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {format(selectedDate, 'EEEE, MMMM d, yyyy')}
-                    </p>
+          {/* Time Slots Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Available Times</h3>
+            {selectedDate ? (
+              slotsForSelectedDate.length > 0 ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground text-center mb-4 p-2 bg-gray-50 rounded-md">
+                    {format(selectedDate, 'EEEE, MMMM d, yyyy')}
+                  </p>
+                  <div className="grid gap-3 max-w-md mx-auto">
                     {slotsForSelectedDate.map(slot => {
                       const { time } = parseTimeSlot(slot.value);
                       const isSelected = selectedSlot === slot.value;
                       
                       return (
-                        <div key={slot.value} className="flex items-center gap-2">
+                        <div key={slot.value} className="space-y-2">
                           <Button
                             variant={isSelected ? "default" : "outline"}
-                            className="flex-1 justify-start"
+                            className="w-full justify-start text-left h-auto py-3 px-4"
                             onClick={() => handleSlotSelect(slot.value)}
                           >
-                            <Clock className="h-4 w-4 mr-2" />
-                            {time}
+                            <Clock className="h-4 w-4 mr-3 flex-shrink-0" />
+                            <span className="flex-1">{time}</span>
                           </Button>
                           {isSelected && userDetails.name && userDetails.email && (
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => handleAddToCalendar(slot)}
-                              className="flex items-center gap-1 text-blue-600 hover:text-blue-700"
+                              className="w-full flex items-center justify-center gap-2 text-blue-600 hover:text-blue-700 border border-blue-200 hover:border-blue-300"
                             >
                               <Plus className="h-4 w-4" />
-                              Add to Calendar
+                              Add to Google Calendar
                             </Button>
                           )}
                         </div>
                       );
                     })}
                   </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Calendar className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>No available times for this date</p>
-                  </div>
-                )
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Calendar className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p>Select a date to see available times</p>
                 </div>
-              )}
-            </div>
+              ) : (
+                <div className="text-center py-12 text-muted-foreground">
+                  <Calendar className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                  <p className="text-lg">No available times for this date</p>
+                  <p className="text-sm mt-2">Please select another date</p>
+                </div>
+              )
+            ) : (
+              <div className="text-center py-12 text-muted-foreground">
+                <Calendar className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                <p className="text-lg">Select a date to see available times</p>
+                <p className="text-sm mt-2">Choose from the highlighted dates above</p>
+              </div>
+            )}
           </div>
-
+          {/* Selected Slot Confirmation */}
           {selectedSlot && (
             <div className="mt-6 p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
               <div className="flex items-center gap-2 text-green-800 dark:text-green-200">
