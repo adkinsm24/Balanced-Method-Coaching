@@ -25,33 +25,55 @@ interface CalendarSchedulerProps {
 
 // Parse time slot value to get day and time information
 function parseTimeSlot(slotValue: string): { day: string; time: string; date: Date } {
-  const dayMap: { [key: string]: number } = {
-    "mon": 1, "tue": 2, "wed": 3, "thu": 4, "fri": 5, "sat": 6, "sun": 0
-  };
+  // Check if this is the new format (YYYY-MM-DD-timeSlot) or old format (day-timeSlot)
+  const parts = slotValue.split('-');
   
-  const [dayStr, timeStr] = slotValue.split('-');
-  const dayOfWeek = dayMap[dayStr];
-  
-  // Convert time string to display format
-  let displayTime = timeStr.replace('am', ' AM').replace('pm', ' PM');
-  displayTime = displayTime.replace(/(\d+)(?=AM|PM)/, '$1:00');
-  displayTime = displayTime.replace(/(\d+)30/, '$1:30');
-  
-  // Calculate the next occurrence of this day
-  const today = new Date();
-  const currentDay = today.getDay();
-  let daysUntilTarget = dayOfWeek - currentDay;
-  if (daysUntilTarget <= 0) {
-    daysUntilTarget += 7; // Next week
+  if (parts.length === 4 && parts[0].length === 4) {
+    // New format: "2025-06-27-1030am"
+    const [year, month, day, timeStr] = parts;
+    const dateStr = `${year}-${month}-${day}`;
+    const targetDate = new Date(dateStr);
+    
+    // Convert time string to display format
+    let displayTime = timeStr.replace('am', ' AM').replace('pm', ' PM');
+    displayTime = displayTime.replace(/(\d+)(?=AM|PM)/, '$1:00');
+    displayTime = displayTime.replace(/(\d+)30/, '$1:30');
+    
+    return {
+      day: targetDate.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase(),
+      time: displayTime,
+      date: targetDate
+    };
+  } else {
+    // Old format: "fri-1030am" - fallback for backwards compatibility
+    const dayMap: { [key: string]: number } = {
+      "mon": 1, "tue": 2, "wed": 3, "thu": 4, "fri": 5, "sat": 6, "sun": 0
+    };
+    
+    const [dayStr, timeStr] = parts;
+    const dayOfWeek = dayMap[dayStr];
+    
+    // Convert time string to display format
+    let displayTime = timeStr.replace('am', ' AM').replace('pm', ' PM');
+    displayTime = displayTime.replace(/(\d+)(?=AM|PM)/, '$1:00');
+    displayTime = displayTime.replace(/(\d+)30/, '$1:30');
+    
+    // Calculate the next occurrence of this day
+    const today = new Date();
+    const currentDay = today.getDay();
+    let daysUntilTarget = dayOfWeek - currentDay;
+    if (daysUntilTarget <= 0) {
+      daysUntilTarget += 7; // Next week
+    }
+    
+    const targetDate = addDays(startOfDay(today), daysUntilTarget);
+    
+    return {
+      day: dayStr,
+      time: displayTime,
+      date: targetDate
+    };
   }
-  
-  const targetDate = addDays(startOfDay(today), daysUntilTarget);
-  
-  return {
-    day: dayStr,
-    time: displayTime,
-    date: targetDate
-  };
 }
 
 // Group slots by date

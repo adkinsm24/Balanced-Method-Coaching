@@ -165,6 +165,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           eq(dateOverrides.isActive, true)
         ));
       
+      // If no date ranges exist, return empty array
+      if (dateRanges.length === 0) {
+        return res.json([]);
+      }
+      
+      // If no recurring slots exist, return empty array
+      if (recurringTimeSlots.length === 0) {
+        return res.json([]);
+      }
+      
       // Generate available slots based on date ranges and recurring slots
       const allSlots = [];
       const today = new Date();
@@ -179,7 +189,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Skip past dates
           if (currentDate < today) continue;
           
-          const dayOfWeek = currentDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+          // Map weekday to database format
+          const dayMap = { 'sun': 'sun', 'mon': 'mon', 'tue': 'tue', 'wed': 'wed', 'thu': 'thu', 'fri': 'fri', 'sat': 'sat' };
+          const dayOfWeek = dayMap[currentDate.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase()];
           const dateString = currentDate.toISOString().split('T')[0];
           
           // Check if this date has any overrides
@@ -187,10 +199,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           if (dateOverride) {
             if (dateOverride.type === 'blocked') {
-              // Skip all slots for this date
               continue;
             } else if (dateOverride.type === 'blocked_specific' && dateOverride.timeSlots) {
-              // Block specific time slots
               const blockedTimes = JSON.parse(dateOverride.timeSlots);
               recurringTimeSlots.forEach(slot => {
                 if (slot.dayOfWeek === dayOfWeek && !blockedTimes.includes(slot.timeOfDay)) {
@@ -215,6 +225,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           // Add all recurring slots for this day
           recurringTimeSlots.forEach(slot => {
+
+            
             if (slot.dayOfWeek === dayOfWeek) {
               const slotValue = `${dateString}-${slot.timeOfDay}`;
               const slotLabel = `${currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} ${slot.label.split(' ').slice(1).join(' ')}`;
@@ -228,6 +240,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   timeOfDay: slot.timeOfDay,
                   isActive: slot.isActive
                 });
+
               }
             }
           });
