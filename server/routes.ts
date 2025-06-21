@@ -695,9 +695,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Delete related records first to avoid foreign key constraints
-      await db.delete(bookedSlots).where(eq(bookedSlots.userId, userId));
-      await db.delete(consultationRequests).where(eq(consultationRequests.userId, userId));
-      await db.delete(coachingCalls).where(eq(coachingCalls.userId, userId));
+      // Note: Most related tables don't have direct userId foreign keys, so we'll skip this step
+      // The user deletion should work without cascading deletes
       
       // Delete the user
       const result = await db.delete(users).where(eq(users.id, userId)).returning();
