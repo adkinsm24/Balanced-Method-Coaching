@@ -27,6 +27,7 @@ interface ConsultationRequest {
   drinks?: string;
   emotionalEating?: string;
   medications?: string;
+  source?: string;
   status: string;
   createdAt: string;
 }
@@ -209,6 +210,9 @@ export default function AdminBookingsPage() {
                               <div className="flex items-center gap-2">
                                 <h3 className="font-semibold text-lg">
                                   {request.firstName} {request.lastName}
+                                  {request.source === "course" && (
+                                    <span className="text-green-500 ml-1" title="Booked from course">*</span>
+                                  )}
                                 </h3>
                                 {getStatusBadge(request.status)}
                               </div>

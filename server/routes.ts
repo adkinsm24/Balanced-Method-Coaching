@@ -77,6 +77,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Add missing required fields with defaults
       let requestData = { ...req.body };
       if (!requestData.contactMethod) requestData.contactMethod = "email";
+      if (!requestData.source) requestData.source = "website";
       
       const validatedData = insertConsultationRequestSchema.parse(requestData);
       console.log('Validated data:', validatedData);

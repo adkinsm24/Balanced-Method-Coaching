@@ -44,6 +44,7 @@ export const consultationRequests = pgTable("consultation_requests", {
   drinks: text("drinks"),
   emotionalEating: text("emotional_eating"),
   medications: text("medications"),
+  source: varchar("source", { length: 20 }).default("website"), // website, course
   status: varchar("status", { length: 20 }).default("pending").notNull(), // pending, confirmed, cancelled
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
