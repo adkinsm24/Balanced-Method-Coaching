@@ -434,7 +434,14 @@ export default function AdminTimeSlots() {
                   </CardHeader>
                   <CardContent>
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <form onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                        console.log("Form validation errors:", errors);
+                        toast({
+                          title: "Form Error",
+                          description: "Please check all fields are filled correctly.",
+                          variant: "destructive",
+                        });
+                      })} className="space-y-4">
                         <FormField
                           control={form.control}
                           name="dayOfWeek"
@@ -490,6 +497,11 @@ export default function AdminTimeSlots() {
                             type="submit" 
                             className="flex-1"
                             disabled={createMutation.isPending || updateMutation.isPending}
+                            onClick={() => {
+                              console.log("Button clicked");
+                              console.log("Form values:", form.getValues());
+                              console.log("Form errors:", form.formState.errors);
+                            }}
                           >
                             {editingSlot ? "Update Time Slot" : "Add Time Slot"}
                           </Button>
