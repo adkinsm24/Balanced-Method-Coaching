@@ -38,9 +38,10 @@ export default function AdminPage() {
 
   const deleteUserMutation = useMutation({
     mutationFn: async (userId: number) => {
-      await apiRequest(`/api/admin/users/${userId}`, {
+      const response = await apiRequest(`/api/admin/users/${userId}`, {
         method: "DELETE",
       });
+      return response;
     },
     onSuccess: () => {
       toast({
@@ -49,10 +50,11 @@ export default function AdminPage() {
       });
       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
+      console.error("Delete user error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to delete user",
         variant: "destructive",
       });
     },

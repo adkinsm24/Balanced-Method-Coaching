@@ -682,19 +682,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete('/api/admin/users/:id', isAuthenticated, async (req: any, res) => {
     try {
       const userId = parseInt(req.params.id);
+      console.log("Delete user request:", { userId, currentUser: req.user });
+      
+      // Only allow admin access
+      if (req.user.email !== 'adkinsm24@hotmail.com') {
+        return res.status(403).json({ error: "Access denied" });
+      }
       
       // Prevent deleting yourself
       if (req.user.id === userId) {
         return res.status(400).json({ error: "Cannot delete your own account" });
       }
       
-      // Delete the user
-      await db.delete(users).where(eq(users.id, userId));
+      // Delete related records first to avoid foreign key constraints
+      await db.delete(bookedSlots).where(eq(bookedSlots.userId, userId));
+      await db.delete(consultationRequests).where(eq(consultationRequests.userId, userId));
+      await db.delete(coachingCalls).where(eq(coachingCalls.userId, userId));
       
+      // Delete the user
+      const result = await db.delete(users).where(eq(users.id, userId)).returning();
+      
+      if (result.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      console.log("User deleted successfully:", result[0]);
       res.json({ success: true, message: "User deleted successfully" });
     } catch (error) {
       console.error("Error deleting user:", error);
-      res.status(500).json({ error: "Failed to delete user" });
+      res.status(500).json({ error: "Failed to delete user: " + error.message });
     }
   });
 
