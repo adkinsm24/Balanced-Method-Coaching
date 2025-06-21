@@ -54,14 +54,13 @@ export default function FirstLogin() {
       });
 
       if (response.ok) {
-        // Invalidate user cache to refresh auth state
-        await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
-        
         toast({
           title: "Success",
           description: "Password set successfully!",
         });
-        setLocation("/course");
+        
+        // Force a page reload to ensure all components get fresh user data
+        window.location.href = "/course";
       } else {
         const error = await response.json();
         toast({
