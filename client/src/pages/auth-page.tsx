@@ -1,17 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginUserSchema, type LoginUser } from "@shared/schema";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AuthPage() {
   const { user, loginMutation } = useAuth();
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [isResetting, setIsResetting] = useState(false);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -32,6 +39,53 @@ export default function AuthPage() {
 
   const onLogin = (data: LoginUser) => {
     loginMutation.mutate(data);
+  };
+
+  const handlePasswordReset = async () => {
+    if (!resetEmail.includes('@')) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsResetting(true);
+    try {
+      const response = await fetch("/api/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: resetEmail }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Password Reset Sent",
+          description: "A new temporary password has been sent to your email address.",
+        });
+        setShowForgotPassword(false);
+        setResetEmail("");
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Failed to send password reset",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send password reset. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsResetting(false);
+    }
   };
 
   return (
@@ -84,16 +138,53 @@ export default function AuthPage() {
             </Form>
             
             <div className="mt-4 text-center">
-              <button 
-                type="button"
-                className="text-sm text-blue-600 hover:text-blue-800 underline"
-                onClick={() => {
-                  // TODO: Implement forgot password functionality
-                  alert("Please contact mark@balancedmethodcoaching.com for password reset assistance.");
-                }}
-              >
-                Forgot your password?
-              </button>
+              <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
+                <DialogTrigger asChild>
+                  <button 
+                    type="button"
+                    className="text-sm text-blue-600 hover:text-blue-800 underline"
+                  >
+                    Forgot your password?
+                  </button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Reset Your Password</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <p className="text-sm text-gray-600">
+                      Enter your email address and we'll send you a new temporary password.
+                    </p>
+                    <div>
+                      <Label htmlFor="resetEmail">Email Address</Label>
+                      <Input
+                        id="resetEmail"
+                        type="email"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={handlePasswordReset}
+                        disabled={isResetting || !resetEmail.includes('@')}
+                        className="flex-1"
+                      >
+                        {isResetting ? "Sending..." : "Send New Password"}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowForgotPassword(false)}
+                        className="flex-1"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </CardContent>
         </Card>

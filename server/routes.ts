@@ -673,6 +673,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Password reset endpoint
+  app.post('/api/reset-password', async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+      
+      // Check if user exists
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        // Don't reveal if user exists or not for security
+        return res.json({ success: true, message: "If an account exists with this email, a password reset has been sent." });
+      }
+      
+      // Generate new temporary password
+      const newTempPassword = generateTemporaryPassword();
+      const bcrypt = await import('bcrypt');
+      const hashedPassword = await bcrypt.hash(newTempPassword, 10);
+      
+      // Update user password and set first login flag
+      await db.update(users)
+        .set({ 
+          hashedPassword, 
+          isFirstLogin: true,  // Force password change on next login
+          updatedAt: new Date() 
+        })
+        .where(eq(users.id, user.id));
+      
+      // Send password reset email
+      try {
+        await sendEmail({
+          to: email,
+          from: 'mark@balancedmethodcoaching.com',
+          subject: 'Password Reset - Balanced Method Coaching',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Password Reset Request</h2>
+              <p>Hello ${user.firstName || 'there'},</p>
+              <p>We've reset your password as requested. Here are your new login credentials:</p>
+              
+              <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>New Temporary Password:</strong> ${newTempPassword}</p>
+              </div>
+              
+              <p>For security reasons, you'll be required to set a new password when you log in.</p>
+              
+              <p><a href="${process.env.REPLIT_DOMAINS ? `https://${process.env.REPLIT_DOMAINS.split(',')[0]}/auth` : 'http://localhost:5000/auth'}" 
+                     style="background-color: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                     Login Now
+                 </a></p>
+              
+              <p>If you didn't request this password reset, please contact us immediately at mark@balancedmethodcoaching.com</p>
+              
+              <p>Best regards,<br>Coach Mark<br>Balanced Method Coaching</p>
+            </div>
+          `,
+          text: `Password Reset - Your new temporary password is: ${newTempPassword}. Please log in and set a new password for security.`
+        });
+        
+        console.log(`Password reset email sent to ${email}`);
+      } catch (emailError) {
+        console.error("Failed to send password reset email:", emailError);
+      }
+      
+      res.json({ success: true, message: "Password reset sent successfully" });
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      res.status(500).json({ message: "Failed to reset password" });
+    }
+  });
+
   // Test email endpoint (for development)
   app.post('/api/test-email', async (req, res) => {
     try {
