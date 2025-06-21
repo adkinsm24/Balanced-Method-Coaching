@@ -55,11 +55,9 @@ export default function FirstLogin() {
       if (response.ok) {
         toast({
           title: "Success",
-          description: "Password set successfully! Redirecting to course...",
+          description: "Password set successfully!",
         });
-        setTimeout(() => {
-          setLocation("/course");
-        }, 1500);
+        setLocation("/course");
       } else {
         const error = await response.json();
         toast({
