@@ -68,6 +68,9 @@ export const coachingCalls = pgTable("coaching_calls", {
 export const bookedSlots = pgTable("booked_slots", {
   id: serial("id").primaryKey(),
   timeSlot: varchar("time_slot", { length: 50 }).notNull().unique(),
+  duration: integer("duration").default(30).notNull(), // Duration in minutes
+  isSecondarySlot: boolean("is_secondary_slot").default(false).notNull(), // True for the second slot of 45/60min bookings
+  primarySlotId: integer("primary_slot_id").references(() => bookedSlots.id), // Reference to primary slot for secondary slots
   consultationRequestId: integer("consultation_request_id").references(() => consultationRequests.id),
   coachingCallId: integer("coaching_call_id").references(() => coachingCalls.id),
   bookedAt: timestamp("booked_at").defaultNow().notNull(),

@@ -27,7 +27,9 @@ export interface IStorage {
   createConsultationRequest(request: InsertConsultationRequest): Promise<ConsultationRequest>;
   getBookedSlots(): Promise<BookedSlot[]>;
   bookTimeSlot(slot: InsertBookedSlot): Promise<BookedSlot>;
+  bookTimeSlotWithDuration(timeSlot: string, duration: number, consultationRequestId?: number, coachingCallId?: number): Promise<BookedSlot[]>;
   isTimeSlotAvailable(timeSlot: string): Promise<boolean>;
+  areConsecutiveSlotsAvailable(timeSlot: string): Promise<boolean>;
   deleteBookedSlot(slotId: number): Promise<void>;
   deleteBookedSlotByRequestId(requestId: number): Promise<void>;
   
@@ -148,6 +150,9 @@ export class MemoryStorage implements IStorage {
     const bookedSlot: BookedSlot = {
       id: this.nextId++,
       timeSlot: slot.timeSlot,
+      duration: slot.duration || 30,
+      isSecondarySlot: slot.isSecondarySlot || false,
+      primarySlotId: slot.primarySlotId || null,
       consultationRequestId: slot.consultationRequestId || null,
       coachingCallId: slot.coachingCallId || null,
       bookedAt: new Date(),
@@ -156,8 +161,74 @@ export class MemoryStorage implements IStorage {
     return bookedSlot;
   }
 
+  async bookTimeSlotWithDuration(timeSlot: string, duration: number, consultationRequestId?: number, coachingCallId?: number): Promise<BookedSlot[]> {
+    const bookedSlots: BookedSlot[] = [];
+    
+    // Book primary slot
+    const primarySlot: BookedSlot = {
+      id: this.nextId++,
+      timeSlot: timeSlot,
+      duration: duration,
+      isSecondarySlot: false,
+      primarySlotId: null,
+      consultationRequestId: consultationRequestId || null,
+      coachingCallId: coachingCallId || null,
+      bookedAt: new Date(),
+    };
+    this.slots.set(primarySlot.id, primarySlot);
+    bookedSlots.push(primarySlot);
+
+    // For 45 and 60 minute calls, book the next slot as well
+    if (duration > 30) {
+      const nextSlot = this.getNextTimeSlot(timeSlot);
+      if (nextSlot) {
+        const secondarySlot: BookedSlot = {
+          id: this.nextId++,
+          timeSlot: nextSlot,
+          duration: duration,
+          isSecondarySlot: true,
+          primarySlotId: primarySlot.id,
+          consultationRequestId: consultationRequestId || null,
+          coachingCallId: coachingCallId || null,
+          bookedAt: new Date(),
+        };
+        this.slots.set(secondarySlot.id, secondarySlot);
+        bookedSlots.push(secondarySlot);
+      }
+    }
+
+    return bookedSlots;
+  }
+
+  private getNextTimeSlot(currentSlot: string): string | null {
+    // Extract date and time from slot format: "2025-06-23-6am"
+    const parts = currentSlot.split('-');
+    if (parts.length < 4) return null;
+    
+    const date = parts.slice(0, 3).join('-');
+    const time = parts[3];
+    
+    const timeOrder = ['6am', '630am', '7am', '730am', '8am', '830am', '9am', '930am', '10am', '1030am', '11am', '1130am', '12pm', '1230pm', '1pm', '130pm', '2pm', '230pm', '3pm', '330pm', '4pm', '430pm', '5pm', '530pm', '6pm', '630pm', '7pm', '730pm', '8pm', '830pm', '9pm', '930pm', '10pm', '1030pm', '11pm', '1130pm'];
+    
+    const currentIndex = timeOrder.indexOf(time);
+    if (currentIndex === -1 || currentIndex === timeOrder.length - 1) return null;
+    
+    const nextTime = timeOrder[currentIndex + 1];
+    return `${date}-${nextTime}`;
+  }
+
   async isTimeSlotAvailable(timeSlot: string): Promise<boolean> {
     return !Array.from(this.slots.values()).some(slot => slot.timeSlot === timeSlot);
+  }
+
+  async areConsecutiveSlotsAvailable(timeSlot: string): Promise<boolean> {
+    const nextSlot = this.getNextTimeSlot(timeSlot);
+    if (!nextSlot) return false;
+    
+    const currentAvailable = await this.isTimeSlotAvailable(timeSlot);
+    const nextAvailable = await this.isTimeSlotAvailable(nextSlot);
+    
+    return currentAvailable && nextAvailable;
   }
 
   async deleteBookedSlot(slotId: number): Promise<void> {
@@ -293,12 +364,78 @@ export class DatabaseStorage implements IStorage {
     return bookedSlot;
   }
 
+  async bookTimeSlotWithDuration(timeSlot: string, duration: number, consultationRequestId?: number, coachingCallId?: number): Promise<BookedSlot[]> {
+    const bookedSlots: BookedSlot[] = [];
+    
+    // Book primary slot
+    const [primarySlot] = await db
+      .insert(bookedSlots)
+      .values({
+        timeSlot: timeSlot,
+        duration: duration,
+        isSecondarySlot: false,
+        primarySlotId: null,
+        consultationRequestId: consultationRequestId || null,
+        coachingCallId: coachingCallId || null,
+      })
+      .returning();
+    bookedSlots.push(primarySlot);
+
+    // For 45 and 60 minute calls, book the next slot as well
+    if (duration > 30) {
+      const nextSlot = this.getNextTimeSlot(timeSlot);
+      if (nextSlot) {
+        const [secondarySlot] = await db
+          .insert(bookedSlots)
+          .values({
+            timeSlot: nextSlot,
+            duration: duration,
+            isSecondarySlot: true,
+            primarySlotId: primarySlot.id,
+            consultationRequestId: consultationRequestId || null,
+            coachingCallId: coachingCallId || null,
+          })
+          .returning();
+        bookedSlots.push(secondarySlot);
+      }
+    }
+
+    return bookedSlots;
+  }
+
+  private getNextTimeSlot(currentSlot: string): string | null {
+    // Extract date and time from slot format: "2025-06-23-6am"
+    const parts = currentSlot.split('-');
+    if (parts.length < 4) return null;
+    
+    const date = parts.slice(0, 3).join('-');
+    const time = parts[3];
+    
+    const timeOrder = ['6am', '630am', '7am', '730am', '8am', '830am', '9am', '930am', '10am', '1030am', '11am', '1130am', '12pm', '1230pm', '1pm', '130pm', '2pm', '230pm', '3pm', '330pm', '4pm', '430pm', '5pm', '530pm', '6pm', '630pm', '7pm', '730pm', '8pm', '830pm', '9pm', '930pm', '10pm', '1030pm', '11pm', '1130pm'];
+    
+    const currentIndex = timeOrder.indexOf(time);
+    if (currentIndex === -1 || currentIndex === timeOrder.length - 1) return null;
+    
+    const nextTime = timeOrder[currentIndex + 1];
+    return `${date}-${nextTime}`;
+  }
+
   async isTimeSlotAvailable(timeSlot: string): Promise<boolean> {
     const [existingSlot] = await db
       .select()
       .from(bookedSlots)
       .where(eq(bookedSlots.timeSlot, timeSlot));
     return !existingSlot;
+  }
+
+  async areConsecutiveSlotsAvailable(timeSlot: string): Promise<boolean> {
+    const nextSlot = this.getNextTimeSlot(timeSlot);
+    if (!nextSlot) return false;
+    
+    const currentAvailable = await this.isTimeSlotAvailable(timeSlot);
+    const nextAvailable = await this.isTimeSlotAvailable(nextSlot);
+    
+    return currentAvailable && nextAvailable;
   }
 
   async deleteBookedSlot(slotId: number): Promise<void> {

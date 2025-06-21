@@ -86,10 +86,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Create consultation request with confirmed status and book the time slot atomically
       const requestData = { ...validatedData, status: "confirmed" };
       const newRequest = await storage.createConsultationRequest(requestData);
-      await storage.bookTimeSlot({
-        timeSlot: validatedData.selectedTimeSlot,
-        consultationRequestId: newRequest.id,
-      });
+      
+      // Free intro calls only use 30 minutes (single slot)
+      await storage.bookTimeSlotWithDuration(
+        validatedData.selectedTimeSlot,
+        30, // Free intro calls are always 30 minutes
+        newRequest.id, // consultationRequestId
+        undefined // coachingCallId
+      );
 
       // Format time slot for email
       const timeSlotFormatted = formatTimeSlotForEmail(validatedData.selectedTimeSlot);
@@ -403,14 +407,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       const validatedData = insertCoachingCallSchema.parse(req.body);
       
-      // Check if time slot is available
-      const isAvailable = await storage.isTimeSlotAvailable(validatedData.selectedTimeSlot);
-      if (!isAvailable) {
-        return res.status(400).json({ error: "Selected time slot is no longer available" });
+      // Check if time slot(s) are available based on duration
+      let slotsAvailable = false;
+      if (validatedData.duration > 30) {
+        // For 45+ minute calls, check consecutive slots
+        slotsAvailable = await storage.areConsecutiveSlotsAvailable(validatedData.selectedTimeSlot);
+        if (!slotsAvailable) {
+          return res.status(400).json({ error: "Selected time slot and the following slot are not available for this duration" });
+        }
+      } else {
+        // For 30 minute calls, check single slot
+        slotsAvailable = await storage.isTimeSlotAvailable(validatedData.selectedTimeSlot);
+        if (!slotsAvailable) {
+          return res.status(400).json({ error: "Selected time slot is no longer available" });
+        }
       }
 
       // Create coaching call record
       const coachingCall = await storage.createCoachingCall(validatedData);
+
+      // Book the time slot(s) based on duration
+      await storage.bookTimeSlotWithDuration(
+        validatedData.selectedTimeSlot,
+        validatedData.duration,
+        undefined, // consultationRequestId
+        coachingCall.id // coachingCallId
+      );
 
       // Create Stripe payment intent
       const paymentIntent = await stripe.paymentIntents.create({
@@ -467,11 +489,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const coachingCall = await storage.getCoachingCall(callId);
         if (coachingCall) {
-          // Book the time slot
-          await storage.bookTimeSlot({
-            timeSlot: coachingCall.selectedTimeSlot,
-            coachingCallId: callId,
-          });
+          // Book the time slot(s) based on duration
+          await storage.bookTimeSlotWithDuration(
+            coachingCall.selectedTimeSlot,
+            coachingCall.duration,
+            undefined, // consultationRequestId
+            callId // coachingCallId
+          );
           
           // Send confirmation emails
           const coachEmail = "mark@balancedmethodcoaching.com";
