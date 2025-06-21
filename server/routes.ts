@@ -619,6 +619,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/test-email', async (req, res) => {
     try {
       const { email } = req.body;
+      
+      // Log the sender email being used
+      const senderEmail = process.env.SENDGRID_VERIFIED_SENDER_EMAIL || "support@balancedmethodcoaching.com";
+      console.log(`Attempting to send email from: ${senderEmail} to: ${email}`);
+      
       const success = await sendCourseAccessEmail(
         email || "demo@test.com",
         "Test User",
@@ -627,7 +632,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
       
       if (success) {
-        res.json({ success: true, message: "Test email sent successfully" });
+        res.json({ 
+          success: true, 
+          message: "Test email sent successfully",
+          senderEmail: senderEmail,
+          recipientEmail: email
+        });
       } else {
         res.status(500).json({ error: "Failed to send test email" });
       }
