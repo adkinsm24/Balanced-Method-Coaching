@@ -21,8 +21,6 @@ import { format, addDays } from "date-fns";
 const timeSlotSchema = z.object({
   dayOfWeek: z.string().min(1, "Day is required"),
   timeOfDay: z.string().min(1, "Time is required"),
-  value: z.string().min(1, "Value is required"),
-  label: z.string().min(1, "Label is required"),
 });
 
 const specificDateSlotSchema = z.object({
@@ -113,8 +111,6 @@ export default function AdminTimeSlots() {
     defaultValues: {
       dayOfWeek: "",
       timeOfDay: "",
-      value: "",
-      label: "",
     },
   });
 
@@ -359,9 +355,11 @@ export default function AdminTimeSlots() {
     console.log("Form submitted with data:", data);
     
     const finalData = {
-      ...data,
+      dayOfWeek: data.dayOfWeek,
+      timeOfDay: data.timeOfDay,
       value: generateValue(data.dayOfWeek, data.timeOfDay),
       label: generateLabel(data.dayOfWeek, data.timeOfDay),
+      isActive: true,
     };
     
     console.log("Final data to be sent:", finalData);
@@ -601,8 +599,6 @@ export default function AdminTimeSlots() {
                                           setEditingSlot(slot);
                                           form.setValue("dayOfWeek", slot.dayOfWeek);
                                           form.setValue("timeOfDay", slot.timeOfDay);
-                                          form.setValue("value", slot.value);
-                                          form.setValue("label", slot.label);
                                         }}
                                       >
                                         <Edit2 className="h-3 w-3" />
