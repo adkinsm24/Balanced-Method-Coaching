@@ -741,47 +741,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/specific-date-slots", isAdmin, async (req, res) => {
     try {
-      console.log("Received specific date slot data:", req.body);
-      const { startDate, endDate, timeOfDay, value, label, isActive } = req.body;
+      console.log("Received date range data:", req.body);
+      const { startDate, endDate, label, isActive } = req.body;
       
-      // Generate dates between start and end date
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      const createdSlots = [];
+      // Create a single date override entry for the range
+      const dateOverrideData = {
+        startDate,
+        endDate,
+        type: "available_only" as const,
+        reason: label || `Date range: ${startDate} to ${endDate}`,
+      };
       
-      // Loop through each date in the range
-      for (let currentDate = new Date(start); currentDate <= end; currentDate.setDate(currentDate.getDate() + 1)) {
-        const dateStr = currentDate.toISOString().split('T')[0];
-        
-        const time = TIMES_OF_DAY.find(t => t.value === timeOfDay)?.label || timeOfDay;
-        const dateObj = new Date(dateStr);
-        const formattedDate = format(dateObj, 'EEEE, MMMM d, yyyy');
-        
-        const slotData = {
-          date: dateStr,
-          dayOfWeek: format(dateObj, 'eee').toLowerCase(), // auto-generate day of week from date
-          timeOfDay,
-          value: `${dateStr}-${value}`,
-          label: `${formattedDate} ${time} EST`,
-          isActive: isActive ?? true
-        };
-        
-        try {
-          const validatedData = insertSpecificDateSlotSchema.parse(slotData);
-          const [newSlot] = await db
-            .insert(specificDateSlots)
-            .values(validatedData)
-            .returning();
-          createdSlots.push(newSlot);
-        } catch (slotError) {
-          console.log(`Skipping duplicate slot for ${dateStr}:`, slotError.message);
-        }
-      }
+      const validatedData = insertDateOverrideSchema.parse(dateOverrideData);
+      const [newOverride] = await db
+        .insert(dateOverrides)
+        .values(validatedData)
+        .returning();
       
-      res.json({ 
-        message: `Created ${createdSlots.length} time slots for date range`,
-        slots: createdSlots 
-      });
+      res.json(newOverride);
     } catch (error) {
       console.error("Error creating specific date slots:", error);
       res.status(400).json({ error: error.message || "Invalid data" });
