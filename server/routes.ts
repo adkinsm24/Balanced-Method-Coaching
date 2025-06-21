@@ -635,7 +635,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { email } = req.body;
       
       // Log the sender email being used
-      const senderEmail = "noreply@balancedmethodcoaching.com";
+      const senderEmail = "mark@balancedmethodcoaching.com";
       console.log(`Attempting to send email from: ${senderEmail} to: ${email}`);
       
       const success = await sendCourseAccessEmail(
@@ -649,7 +649,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({ 
           success: true, 
           message: "Test email sent successfully",
-          senderEmail: senderEmail,
+          senderEmail: "mark@balancedmethodcoaching.com",
           recipientEmail: email
         });
       } else {
