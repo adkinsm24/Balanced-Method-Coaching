@@ -22,6 +22,7 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   upsertUser(user: UpsertUser): Promise<User>;
   grantCourseAccess(userId: number): Promise<void>;
+  hashPassword(password: string): Promise<string>;
   
   // Booking operations
   createConsultationRequest(request: InsertConsultationRequest): Promise<ConsultationRequest>;
@@ -287,6 +288,11 @@ export class MemoryStorage implements IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
+  async hashPassword(password: string): Promise<string> {
+    const bcrypt = await import('bcrypt');
+    const saltRounds = 10;
+    return bcrypt.hash(password, saltRounds);
+  }
   async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user || undefined;

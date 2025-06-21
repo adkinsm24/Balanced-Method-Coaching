@@ -576,36 +576,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
       
       if (paymentIntent.status === 'succeeded') {
-        // Find user by email and grant course access
-        const user = await storage.getUserByEmail(userEmail);
-        if (user) {
-          await storage.grantCourseAccess(user.id);
-          
-          // Generate temporary password and send welcome email
+        console.log("Processing course payment for email:", userEmail);
+        
+        // Check if user exists, create if not
+        let user = await storage.getUserByEmail(userEmail);
+        
+        if (!user) {
+          // Create new user account
           const temporaryPassword = generateTemporaryPassword();
-          const clientName = `${user.firstName} ${user.lastName}`;
+          const hashedPassword = await storage.hashPassword(temporaryPassword);
           
-          // Send course access email with login details
+          console.log("Creating new user for course purchase:", userEmail);
+          
+          user = await storage.createUser({
+            email: userEmail,
+            hashedPassword,
+            firstName: "Course",
+            lastName: "Student",
+            hasCourseAccess: true
+          });
+          
+          // Send course access email with login credentials
           try {
             await sendCourseAccessEmail(
               userEmail,
-              clientName,
-              userEmail, // Login email same as purchase email
+              `${user.firstName} ${user.lastName}`,
+              userEmail,
               temporaryPassword
             );
             console.log(`Course access email sent to ${userEmail}`);
           } catch (emailError) {
             console.error("Failed to send course access email:", emailError);
-            // Don't fail the entire request if email fails
           }
           
-          res.json({ 
-            success: true, 
-            message: "Course access granted and welcome email sent" 
-          });
+          console.log("User created and email sent to:", userEmail);
         } else {
-          res.status(404).json({ error: "User not found" });
+          // Grant course access to existing user
+          await storage.grantCourseAccess(user.id);
+          console.log("Course access granted to existing user:", userEmail);
         }
+        
+        res.json({ 
+          success: true, 
+          message: "Course access granted and welcome email sent" 
+        });
       } else {
         res.status(400).json({ error: "Payment not completed" });
       }
