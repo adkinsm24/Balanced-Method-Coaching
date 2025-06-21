@@ -25,7 +25,16 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 async function comparePasswords(supplied: string, stored: string): Promise<boolean> {
+  // Check if it's a bcrypt hash (from course purchases)
+  if (stored.startsWith('$2b$')) {
+    const bcrypt = await import('bcrypt');
+    return bcrypt.compare(supplied, stored);
+  }
+  
+  // Legacy scrypt hash format
   const [hashed, salt] = stored.split(".");
+  if (!salt) return false;
+  
   const hashedBuf = Buffer.from(hashed, "hex");
   const suppliedBuf = (await scryptAsync(supplied, salt, 64)) as Buffer;
   return timingSafeEqual(hashedBuf, suppliedBuf);
