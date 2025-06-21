@@ -678,6 +678,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Admin endpoint to delete a user
+  app.delete('/api/admin/users/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      
+      // Prevent deleting yourself
+      if (req.user.id === userId) {
+        return res.status(400).json({ error: "Cannot delete your own account" });
+      }
+      
+      // Delete the user
+      await db.delete(users).where(eq(users.id, userId));
+      
+      res.json({ success: true, message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ error: "Failed to delete user" });
+    }
+  });
+
   // Admin endpoint to list all users
   app.get('/api/admin/users', isAuthenticated, async (req, res) => {
     try {
