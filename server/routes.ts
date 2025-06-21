@@ -203,15 +203,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             if (blockingOverride) {
               if (blockingOverride.type === 'blocked') {
-                // If it's a complete block, skip this slot entirely
-                if (!blockingOverride.timeSlots || blockingOverride.timeSlots.length === 0) {
-                  return; // Skip this entire date
-                }
-                
-                // If specific time slots are blocked, only show if this slot is not blocked
-                if (blockingOverride.timeSlots.includes(recurringSlot.timeOfDay)) {
-                  return; // Skip this blocked time slot
-                }
+                // If it's a complete block, skip this entire date
+                return; // Skip this blocked time slot
               } else if (blockingOverride.type === 'blocked_specific' && blockingOverride.timeSlots) {
                 // For blocked_specific, skip if this time slot is in the blocked list
                 const blockedTimes = Array.isArray(blockingOverride.timeSlots) 
