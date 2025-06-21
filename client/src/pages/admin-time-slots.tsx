@@ -306,19 +306,22 @@ export default function AdminTimeSlots() {
 
   const deleteDateRangeMutation = useMutation({
     mutationFn: async (id: number) => {
+      console.log("Attempting to delete date range with ID:", id);
       await apiRequest("DELETE", `/api/admin/date-overrides/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/specific-date-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/date-overrides"] });
       toast({
         title: "Success",
         description: "Date range deleted successfully",
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("Delete error:", error);
       toast({
         title: "Error",
-        description: "Failed to delete date range",
+        description: error.message || "Failed to delete date range",
         variant: "destructive",
       });
     },
@@ -771,12 +774,14 @@ export default function AdminTimeSlots() {
                                   size="sm"
                                   variant="destructive"
                                   onClick={() => {
+                                    console.log("Deleting slot:", slot);
                                     if (slot.type === 'date_range') {
                                       deleteDateRangeMutation.mutate(slot.id);
                                     } else {
                                       deleteSpecificSlotMutation.mutate(slot.id);
                                     }
                                   }}
+                                  disabled={deleteDateRangeMutation.isPending || deleteSpecificSlotMutation.isPending}
                                 >
                                   <Trash2 className="h-3 w-3" />
                                 </Button>
