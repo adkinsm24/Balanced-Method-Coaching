@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +7,6 @@ import { useAuth } from "@/hooks/use-auth";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { BookOpen, Clock, CheckCircle, Play, Download, Star } from "lucide-react";
-import { useLocation } from "wouter";
 
 // Video data structure for each course part
 // To add Vimeo videos: Replace empty videoUrl with your Vimeo video URLs
@@ -45,14 +43,6 @@ const videoDescriptions = [
 
 export default function Course() {
   const { user } = useAuth();
-  const [, setLocation] = useLocation();
-
-  // Redirect first-time users to password setup
-  useEffect(() => {
-    if (user && user.isFirstLogin) {
-      setLocation("/first-login");
-    }
-  }, [user, setLocation]);
 
   // If user doesn't have course access, show purchase prompt
   if (user && !user.hasCourseAccess) {

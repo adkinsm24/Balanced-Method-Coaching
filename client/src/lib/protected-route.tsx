@@ -26,6 +26,10 @@ export function ProtectedRoute({
           return <Redirect to="/auth" />;
         }
         
+        if (user.isFirstLogin && path !== "/first-login") {
+          return <Redirect to="/first-login" />;
+        }
+        
         return <Component />;
       }}
     </Route>
