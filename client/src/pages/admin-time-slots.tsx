@@ -48,8 +48,6 @@ const DAYS_OF_WEEK = [
   { value: "wed", label: "Wednesday" },
   { value: "thu", label: "Thursday" },
   { value: "fri", label: "Friday" },
-  { value: "sat", label: "Saturday" },
-  { value: "sun", label: "Sunday" },
 ];
 
 const TIMES_OF_DAY = [
@@ -67,21 +65,6 @@ const TIMES_OF_DAY = [
   { value: "1130am", label: "11:30 AM" },
   { value: "12pm", label: "12:00 PM" },
   { value: "1230pm", label: "12:30 PM" },
-  { value: "1pm", label: "1:00 PM" },
-  { value: "130pm", label: "1:30 PM" },
-  { value: "2pm", label: "2:00 PM" },
-  { value: "230pm", label: "2:30 PM" },
-  { value: "3pm", label: "3:00 PM" },
-  { value: "330pm", label: "3:30 PM" },
-  { value: "4pm", label: "4:00 PM" },
-  { value: "430pm", label: "4:30 PM" },
-  { value: "5pm", label: "5:00 PM" },
-  { value: "530pm", label: "5:30 PM" },
-  { value: "6pm", label: "6:00 PM" },
-  { value: "630pm", label: "6:30 PM" },
-  { value: "7pm", label: "7:00 PM" },
-  { value: "730pm", label: "7:30 PM" },
-  { value: "8pm", label: "8:00 PM" },
 ];
 
 export default function AdminTimeSlots() {
@@ -511,21 +494,24 @@ export default function AdminTimeSlots() {
                       </div>
                     ) : (
                       <div className="space-y-4">
-                        {Object.entries(
-                          timeSlots.reduce((acc: any, slot: any) => {
-                            if (!acc[slot.dayOfWeek]) {
-                              acc[slot.dayOfWeek] = [];
-                            }
-                            acc[slot.dayOfWeek].push(slot);
-                            return acc;
-                          }, {})
-                        ).map(([day, slots]: [string, any]) => (
-                          <div key={day} className="space-y-2">
-                            <h3 className="font-semibold text-lg capitalize text-blue-800">
-                              {DAYS_OF_WEEK.find(d => d.value === day)?.label}
-                            </h3>
-                            <div className="grid gap-2">
-                              {slots.map((slot: any) => (
+                        {DAYS_OF_WEEK.map(({ value: dayValue, label: dayLabel }) => {
+                          const daySlots = timeSlots.filter((slot: any) => slot.dayOfWeek === dayValue);
+                          if (daySlots.length === 0) return null;
+                          
+                          // Sort slots by time order
+                          const sortedSlots = daySlots.sort((a: any, b: any) => {
+                            const aIndex = TIMES_OF_DAY.findIndex(t => t.value === a.timeOfDay);
+                            const bIndex = TIMES_OF_DAY.findIndex(t => t.value === b.timeOfDay);
+                            return aIndex - bIndex;
+                          });
+                          
+                          return (
+                            <div key={dayValue} className="space-y-2">
+                              <h3 className="font-semibold text-lg capitalize text-blue-800">
+                                {dayLabel}
+                              </h3>
+                              <div className="grid gap-2">
+                                {sortedSlots.map((slot: any) => (
                                 <div
                                   key={slot.id}
                                   className={`p-3 border rounded-lg ${
@@ -577,10 +563,11 @@ export default function AdminTimeSlots() {
                                     </div>
                                   </div>
                                 </div>
-                              ))}
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
                   </CardContent>
