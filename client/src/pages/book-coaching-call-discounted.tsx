@@ -65,7 +65,7 @@ export default function BookCoachingCallDiscounted() {
 
   const bookingMutation = useMutation({
     mutationFn: async (data: CoachingCallForm) => {
-      const response = await fetch("/api/coaching-calls", {
+      const response = await fetch("/api/coaching-calls/create-payment-intent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,20 +73,24 @@ export default function BookCoachingCallDiscounted() {
         body: JSON.stringify({
           ...data,
           source: "course", // Track source as course member
-          amount: selectedOption?.price,
+          amount: selectedOption ? selectedOption.price * 100 : 0, // Convert to cents
         }),
       });
       
       if (!response.ok) {
-        throw new Error("Failed to book coaching call");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to book coaching call");
       }
       
       return response.json();
     },
     onSuccess: (data) => {
-      if (data.paymentUrl) {
-        window.location.href = data.paymentUrl;
-      }
+      toast({
+        title: "Redirecting to Payment",
+        description: "Please complete your payment to confirm your coaching call.",
+      });
+      // Redirect to checkout with the payment intent and session details
+      setLocation(`/checkout-coaching?clientSecret=${data.clientSecret}&callId=${data.callId}&duration=${selectedDuration}&price=${selectedOption?.price}`);
     },
     onError: (error: any) => {
       toast({
