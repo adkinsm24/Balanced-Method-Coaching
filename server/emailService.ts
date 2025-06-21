@@ -95,7 +95,7 @@ export async function sendBookingConfirmation(
 
   return await sendEmail({
     to: clientEmail,
-    from: fromEmail,
+    from: "noreply@balancedmethodcoaching.com",
     subject,
     html,
     text: `Hi ${clientName}, your consultation call with Mark from Balanced Method Coaching is confirmed for ${timeSlot}. Looking forward to speaking with you!`
@@ -136,7 +136,7 @@ export async function sendCoachNotification(
 
   return await sendEmail({
     to: coachEmail,
-    from: coachEmail, // From same email
+    from: "noreply@balancedmethodcoaching.com",
     subject,
     html,
     text: `New consultation booking from ${clientName} (${clientEmail}) for ${timeSlot}. Goals: ${goals}`
@@ -223,7 +223,7 @@ Email: mark@balancedmethodcoaching.com
 
   return await sendEmail({
     to: clientEmail,
-    from: process.env.SENDGRID_VERIFIED_SENDER_EMAIL || "support@balancedmethodcoaching.com",
+    from: "noreply@balancedmethodcoaching.com",
     subject,
     html,
     text: textVersion,

@@ -621,7 +621,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { email } = req.body;
       
       // Log the sender email being used
-      const senderEmail = process.env.SENDGRID_VERIFIED_SENDER_EMAIL || "support@balancedmethodcoaching.com";
+      const senderEmail = "noreply@balancedmethodcoaching.com";
       console.log(`Attempting to send email from: ${senderEmail} to: ${email}`);
       
       const success = await sendCourseAccessEmail(
