@@ -26,11 +26,25 @@ export default function CoachingSuccess() {
       }
 
       try {
-        await apiRequest("POST", `/api/coaching-calls/${callId}/confirm-payment`, {
-          paymentIntentId: paymentIntent,
+        console.log('Confirming payment:', { callId, paymentIntent });
+        const response = await fetch(`/api/coaching-calls/${callId}/confirm-payment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            paymentIntentId: paymentIntent,
+          }),
         });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to confirm payment');
+        }
+        
         setConfirmed(true);
       } catch (error: any) {
+        console.error('Payment confirmation error:', error);
         setError(error.message || "Failed to confirm payment");
       } finally {
         setIsConfirming(false);

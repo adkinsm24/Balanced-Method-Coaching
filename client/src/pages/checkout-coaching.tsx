@@ -31,11 +31,12 @@ const CheckoutForm = ({ callId, sessionDetails }: { callId: string, sessionDetai
 
     setIsProcessing(true);
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: `${window.location.origin}/coaching-success?callId=${callId}`,
       },
+      redirect: "if_required",
     });
 
     if (error) {
@@ -45,6 +46,9 @@ const CheckoutForm = ({ callId, sessionDetails }: { callId: string, sessionDetai
         variant: "destructive",
       });
       setIsProcessing(false);
+    } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+      // Payment succeeded, redirect to success page with payment intent ID
+      window.location.href = `${window.location.origin}/coaching-success?callId=${callId}&payment_intent=${paymentIntent.id}`;
     }
   };
 

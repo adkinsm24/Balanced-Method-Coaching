@@ -493,28 +493,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
+      console.log('Payment confirmation request:', { callId: req.params.id, body: req.body });
+      
       const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
         apiVersion: "2025-05-28.basil",
       });
       const callId = parseInt(req.params.id);
       const { paymentIntentId } = req.body;
+      
+      console.log('Verifying payment intent:', paymentIntentId);
 
       // Verify payment with Stripe
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
       
       if (paymentIntent.status === 'succeeded') {
-        // Update coaching call status and book the time slot
+        // Update coaching call status
         await storage.updateCoachingCallStatus(callId, "paid", paymentIntentId);
         
         const coachingCall = await storage.getCoachingCall(callId);
         if (coachingCall) {
-          // Book the time slot(s) based on duration
-          await storage.bookTimeSlotWithDuration(
-            coachingCall.selectedTimeSlot,
-            coachingCall.duration,
-            undefined, // consultationRequestId
-            callId // coachingCallId
-          );
+          // Check if time slots are already booked for this coaching call
+          const existingSlots = await storage.getBookedSlots();
+          const alreadyBooked = existingSlots.some(slot => slot.coachingCallId === callId);
+          
+          if (!alreadyBooked) {
+            // Book the time slot(s) based on duration
+            await storage.bookTimeSlotWithDuration(
+              coachingCall.selectedTimeSlot,
+              coachingCall.duration,
+              undefined, // consultationRequestId
+              callId // coachingCallId
+            );
+          }
           
           // Send confirmation emails
           const coachEmail = "mark@balancedmethodcoaching.com";
@@ -537,11 +547,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         res.json({ success: true, message: "Payment confirmed and coaching call booked" });
       } else {
-        res.status(400).json({ error: "Payment not successful" });
+        console.log('Payment not successful:', paymentIntent.status);
+        res.status(400).json({ error: `Payment not successful. Status: ${paymentIntent.status}` });
       }
     } catch (error) {
       console.error("Error confirming coaching call payment:", error);
-      res.status(500).json({ error: "Failed to confirm payment" });
+      if (error.type === 'StripeInvalidRequestError') {
+        res.status(400).json({ error: `Invalid payment intent: ${error.message}` });
+      } else {
+        res.status(500).json({ error: "Failed to confirm payment" });
+      }
     }
   });
 
