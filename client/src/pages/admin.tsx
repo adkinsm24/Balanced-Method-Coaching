@@ -126,7 +126,6 @@ export default function AdminPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>ID</TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead>Course Access</TableHead>
@@ -137,7 +136,6 @@ export default function AdminPage() {
                 <TableBody>
                   {users.map((user: User) => (
                     <TableRow key={user.id}>
-                      <TableCell>{user.id}</TableCell>
                       <TableCell>
                         {user.firstName} {user.lastName}
                       </TableCell>
