@@ -75,9 +75,16 @@ export default function AdminBookingsPage() {
 
   const deleteRequestMutation = useMutation({
     mutationFn: async (id: number) => {
-      await apiRequest(`/api/admin/consultation-requests/${id}`, {
+      const response = await fetch(`/api/admin/consultation-requests/${id}`, {
         method: "DELETE",
       });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete consultation request");
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       toast({
@@ -86,11 +93,13 @@ export default function AdminBookingsPage() {
       });
       queryClient.invalidateQueries({ queryKey: ["/api/consultation-requests"] });
       queryClient.invalidateQueries({ queryKey: ["/api/admin/booked-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
     },
     onError: (error: Error) => {
+      console.error("Delete error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to delete consultation request",
         variant: "destructive",
       });
     },
@@ -98,9 +107,16 @@ export default function AdminBookingsPage() {
 
   const deleteCallMutation = useMutation({
     mutationFn: async (id: number) => {
-      await apiRequest(`/api/admin/coaching-calls/${id}`, {
+      const response = await fetch(`/api/admin/coaching-calls/${id}`, {
         method: "DELETE",
       });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete coaching call");
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       toast({
@@ -109,11 +125,13 @@ export default function AdminBookingsPage() {
       });
       queryClient.invalidateQueries({ queryKey: ["/api/coaching-calls"] });
       queryClient.invalidateQueries({ queryKey: ["/api/admin/booked-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
     },
     onError: (error: Error) => {
+      console.error("Delete error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to delete coaching call",
         variant: "destructive",
       });
     },
