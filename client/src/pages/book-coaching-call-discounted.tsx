@@ -294,6 +294,8 @@ export default function BookCoachingCallDiscounted() {
                               name: `${form.watch('firstName')} ${form.watch('lastName')}`.trim(),
                               email: form.watch('email')
                             }}
+                            duration={selectedDuration}
+                            isCoachingCall={true}
                           />
                         </FormControl>
                         <FormMessage />
