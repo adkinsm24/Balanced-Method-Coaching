@@ -90,7 +90,7 @@ export default function BookCoachingCallRegular() {
         description: "Please complete your payment to confirm your coaching call.",
       });
       // Redirect to checkout with the payment intent and session details
-      setLocation(`/checkout-coaching?clientSecret=${data.clientSecret}&callId=${data.callId}&duration=${selectedDuration}&price=${selectedOption?.price}`);
+      setLocation(`/checkout-coaching?clientSecret=${data.clientSecret}&paymentIntentId=${data.paymentIntentId}&duration=${selectedDuration}&price=${selectedOption?.price}`);
     },
     onError: (error: any) => {
       toast({

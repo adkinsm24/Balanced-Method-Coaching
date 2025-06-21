@@ -15,7 +15,7 @@ if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
 }
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-const CheckoutForm = ({ callId, sessionDetails }: { callId: string, sessionDetails: any }) => {
+const CheckoutForm = ({ paymentIntentId, sessionDetails }: { paymentIntentId: string, sessionDetails: any }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
@@ -34,7 +34,7 @@ const CheckoutForm = ({ callId, sessionDetails }: { callId: string, sessionDetai
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/coaching-success?callId=${callId}`,
+        return_url: `${window.location.origin}/coaching-success?payment_intent=${paymentIntentId}`,
       },
       redirect: "if_required",
     });
@@ -48,7 +48,7 @@ const CheckoutForm = ({ callId, sessionDetails }: { callId: string, sessionDetai
       setIsProcessing(false);
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       // Payment succeeded, redirect to success page with payment intent ID
-      window.location.href = `${window.location.origin}/coaching-success?callId=${callId}&payment_intent=${paymentIntent.id}`;
+      window.location.href = `${window.location.origin}/coaching-success?payment_intent=${paymentIntent.id}`;
     }
   };
 
@@ -78,22 +78,22 @@ const CheckoutForm = ({ callId, sessionDetails }: { callId: string, sessionDetai
 
 export default function CheckoutCoaching() {
   const [clientSecret, setClientSecret] = useState("");
-  const [callId, setCallId] = useState("");
+  const [paymentIntentId, setPaymentIntentId] = useState("");
   const [sessionDetails, setSessionDetails] = useState<any>(null);
   const [, setLocation] = useLocation();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const secret = urlParams.get('clientSecret');
-    const id = urlParams.get('callId');
+    const intentId = urlParams.get('paymentIntentId');
     
-    if (!secret || !id) {
+    if (!secret || !intentId) {
       setLocation('/book-coaching-call');
       return;
     }
     
     setClientSecret(secret);
-    setCallId(id);
+    setPaymentIntentId(intentId);
     
     // Extract session details from URL or set defaults
     const duration = urlParams.get('duration') || '30';
@@ -104,7 +104,7 @@ export default function CheckoutCoaching() {
     });
   }, [setLocation]);
 
-  if (!clientSecret || !callId) {
+  if (!clientSecret || !paymentIntentId) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pt-20">
         <div className="max-w-2xl mx-auto px-4 py-16">
@@ -149,7 +149,7 @@ export default function CheckoutCoaching() {
 
             {/* Payment Form */}
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm callId={callId} sessionDetails={sessionDetails} />
+              <CheckoutForm paymentIntentId={paymentIntentId} sessionDetails={sessionDetails} />
             </Elements>
 
             <div className="text-center text-sm text-gray-500 space-y-2">

@@ -442,34 +442,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      // Create coaching call record
-      const coachingCall = await storage.createCoachingCall(validatedData);
-
-      // Book the time slot(s) based on duration
-      await storage.bookTimeSlotWithDuration(
-        validatedData.selectedTimeSlot,
-        validatedData.duration,
-        undefined, // consultationRequestId
-        coachingCall.id // coachingCallId
-      );
-
-      // Create Stripe payment intent
+      // Create Stripe payment intent first (without booking anything yet)
       const paymentIntent = await stripe.paymentIntents.create({
         amount: validatedData.amount,
         currency: "usd",
         metadata: {
-          coachingCallId: coachingCall.id.toString(),
+          firstName: validatedData.firstName,
+          lastName: validatedData.lastName,
+          email: validatedData.email,
+          phone: validatedData.phone,
+          contactMethod: validatedData.contactMethod,
+          goals: validatedData.goals,
+          selectedTimeSlot: validatedData.selectedTimeSlot,
           duration: validatedData.duration.toString(),
-          timeSlot: validatedData.selectedTimeSlot,
+          source: validatedData.source || "website",
         },
       });
 
-      // Update coaching call with payment intent ID
-      await storage.updateCoachingCallStatus(coachingCall.id, "pending", paymentIntent.id);
-
       res.json({ 
         clientSecret: paymentIntent.client_secret,
-        callId: coachingCall.id 
+        paymentIntentId: paymentIntent.id 
       });
     } catch (error: any) {
       console.error("Error creating coaching call payment:", error);
@@ -487,18 +479,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/coaching-calls/:id/confirm-payment', async (req, res) => {
+  app.post('/api/coaching-calls/confirm-payment', async (req, res) => {
     if (!process.env.STRIPE_SECRET_KEY) {
       return res.status(500).json({ error: "Stripe not configured" });
     }
 
     try {
-      console.log('Payment confirmation request:', { callId: req.params.id, body: req.body });
+      console.log('Payment confirmation request:', { body: req.body });
       
       const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
         apiVersion: "2025-05-28.basil",
       });
-      const callId = parseInt(req.params.id);
       const { paymentIntentId } = req.body;
       
       console.log('Verifying payment intent:', paymentIntentId);
@@ -507,43 +498,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
       
       if (paymentIntent.status === 'succeeded') {
-        // Update coaching call status
-        await storage.updateCoachingCallStatus(callId, "paid", paymentIntentId);
+        // Extract coaching call data from payment intent metadata
+        const metadata = paymentIntent.metadata;
         
-        const coachingCall = await storage.getCoachingCall(callId);
-        if (coachingCall) {
-          // Check if time slots are already booked for this coaching call
-          const existingSlots = await storage.getBookedSlots();
-          const alreadyBooked = existingSlots.some(slot => slot.coachingCallId === callId);
-          
-          if (!alreadyBooked) {
-            // Book the time slot(s) based on duration
-            await storage.bookTimeSlotWithDuration(
-              coachingCall.selectedTimeSlot,
-              coachingCall.duration,
-              undefined, // consultationRequestId
-              callId // coachingCallId
-            );
-          }
-          
-          // Send confirmation emails
-          const coachEmail = "mark@balancedmethodcoaching.com";
-          await sendBookingConfirmation(
-            coachingCall.email,
-            `${coachingCall.firstName} ${coachingCall.lastName}`,
-            formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
-            coachEmail
-          );
-          
-          await sendCoachNotification(
-            coachEmail,
-            `${coachingCall.firstName} ${coachingCall.lastName}`,
-            coachingCall.email,
-            coachingCall.phone,
-            formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
-            `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100}) - Goals: ${coachingCall.goals}`
-          );
-        }
+        // Create the coaching call record now that payment is confirmed
+        const coachingCallData = {
+          firstName: metadata.firstName,
+          lastName: metadata.lastName,
+          email: metadata.email,
+          phone: metadata.phone,
+          contactMethod: metadata.contactMethod,
+          goals: metadata.goals,
+          selectedTimeSlot: metadata.selectedTimeSlot,
+          duration: parseInt(metadata.duration),
+          amount: paymentIntent.amount,
+          source: metadata.source || "website",
+        };
+        
+        const coachingCall = await storage.createCoachingCall(coachingCallData);
+        await storage.updateCoachingCallStatus(coachingCall.id, "paid", paymentIntentId);
+        
+        // Book the time slot(s) based on duration
+        await storage.bookTimeSlotWithDuration(
+          coachingCall.selectedTimeSlot,
+          coachingCall.duration,
+          undefined, // consultationRequestId
+          coachingCall.id // coachingCallId
+        );
+        
+        // Send confirmation emails
+        const coachEmail = "mark@balancedmethodcoaching.com";
+        await sendBookingConfirmation(
+          coachingCall.email,
+          `${coachingCall.firstName} ${coachingCall.lastName}`,
+          formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
+          coachEmail
+        );
+        
+        await sendCoachNotification(
+          coachEmail,
+          `${coachingCall.firstName} ${coachingCall.lastName}`,
+          coachingCall.email,
+          coachingCall.phone,
+          formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
+          `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100}) - Goals: ${coachingCall.goals}`
+        );
         
         res.json({ success: true, message: "Payment confirmed and coaching call booked" });
       } else {

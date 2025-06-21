@@ -16,18 +16,17 @@ export default function CoachingSuccess() {
   useEffect(() => {
     const confirmPayment = async () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const callId = urlParams.get('callId');
       const paymentIntent = urlParams.get('payment_intent');
       
-      if (!callId || !paymentIntent) {
-        setError("Missing booking information");
+      if (!paymentIntent) {
+        setError("Missing payment information");
         setIsConfirming(false);
         return;
       }
 
       try {
-        console.log('Confirming payment:', { callId, paymentIntent });
-        const response = await fetch(`/api/coaching-calls/${callId}/confirm-payment`, {
+        console.log('Confirming payment:', { paymentIntent });
+        const response = await fetch(`/api/coaching-calls/confirm-payment`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
