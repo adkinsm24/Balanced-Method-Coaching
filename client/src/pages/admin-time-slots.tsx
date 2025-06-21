@@ -7,22 +7,40 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Plus, Clock, Calendar, Edit } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Trash2, Plus, Clock, Edit2, ToggleLeft, ToggleRight, Calendar, CalendarX, CalendarPlus } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import { format, addDays } from "date-fns";
 
 const timeSlotSchema = z.object({
+  dayOfWeek: z.string().min(1, "Day is required"),
+  timeOfDay: z.string().min(1, "Time is required"),
   value: z.string().min(1, "Value is required"),
   label: z.string().min(1, "Label is required"),
-  dayOfWeek: z.string().min(1, "Day of week is required"),
-  timeOfDay: z.string().min(1, "Time of day is required"),
+});
+
+const specificDateSlotSchema = z.object({
+  date: z.string().min(1, "Date is required"),
+  timeOfDay: z.string().min(1, "Time is required"),
+  value: z.string().min(1, "Value is required"),
+  label: z.string().min(1, "Label is required"),
+});
+
+const dateOverrideSchema = z.object({
+  date: z.string().min(1, "Date is required"),
+  type: z.enum(["blocked", "available_only"]),
+  reason: z.string().optional(),
 });
 
 type TimeSlotForm = z.infer<typeof timeSlotSchema>;
+type SpecificDateSlotForm = z.infer<typeof specificDateSlotSchema>;
+type DateOverrideForm = z.infer<typeof dateOverrideSchema>;
 
 const DAYS_OF_WEEK = [
   { value: "mon", label: "Monday" },
@@ -74,15 +92,42 @@ export default function AdminTimeSlots() {
   const form = useForm<TimeSlotForm>({
     resolver: zodResolver(timeSlotSchema),
     defaultValues: {
-      value: "",
-      label: "",
       dayOfWeek: "",
       timeOfDay: "",
+      value: "",
+      label: "",
+    },
+  });
+
+  const specificDateForm = useForm<SpecificDateSlotForm>({
+    resolver: zodResolver(specificDateSlotSchema),
+    defaultValues: {
+      date: "",
+      timeOfDay: "",
+      value: "",
+      label: "",
+    },
+  });
+
+  const dateOverrideForm = useForm<DateOverrideForm>({
+    resolver: zodResolver(dateOverrideSchema),
+    defaultValues: {
+      date: "",
+      type: "blocked",
+      reason: "",
     },
   });
 
   const { data: timeSlots, isLoading } = useQuery({
     queryKey: ["/api/admin/time-slots"],
+  });
+
+  const { data: specificDateSlots, isLoading: slotsLoading } = useQuery({
+    queryKey: ["/api/admin/specific-date-slots"],
+  });
+
+  const { data: dateOverrides, isLoading: overridesLoading } = useQuery({
+    queryKey: ["/api/admin/date-overrides"],
   });
 
   const createMutation = useMutation({
@@ -109,7 +154,7 @@ export default function AdminTimeSlots() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: TimeSlotForm }) => {
+    mutationFn: async ({ id, ...data }: { id: number } & TimeSlotForm) => {
       const response = await apiRequest("PUT", `/api/admin/time-slots/${id}`, data);
       return await response.json();
     },
@@ -127,6 +172,33 @@ export default function AdminTimeSlots() {
       toast({
         title: "Error",
         description: error.message || "Failed to update time slot.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const toggleMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const slot = timeSlots?.find((s: any) => s.id === id);
+      if (!slot) return;
+      
+      const response = await apiRequest("PUT", `/api/admin/time-slots/${id}/toggle`, {
+        isActive: !slot.isActive
+      });
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Time Slot Updated",
+        description: "Time slot status has been changed.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/time-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to toggle time slot.",
         variant: "destructive",
       });
     },
@@ -153,40 +225,93 @@ export default function AdminTimeSlots() {
     },
   });
 
-  const toggleActiveMutation = useMutation({
-    mutationFn: async ({ id, isActive }: { id: number; isActive: boolean }) => {
-      const response = await apiRequest("PUT", `/api/admin/time-slots/${id}/toggle`, { isActive });
+  const createSpecificSlotMutation = useMutation({
+    mutationFn: async (data: SpecificDateSlotForm) => {
+      const response = await apiRequest("POST", "/api/admin/specific-date-slots", data);
       return await response.json();
     },
     onSuccess: () => {
       toast({
-        title: "Time Slot Updated",
-        description: "Time slot status has been updated.",
+        title: "Specific Date Slot Added",
+        description: "New date-specific time slot has been created.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/time-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/specific-date-slots"] });
       queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+      specificDateForm.reset();
     },
     onError: (error: Error) => {
       toast({
         title: "Error",
-        description: error.message || "Failed to update time slot status.",
+        description: error.message || "Failed to create specific date slot.",
         variant: "destructive",
       });
     },
   });
 
-  const handleEdit = (slot: any) => {
-    setEditingSlot(slot);
-    form.setValue("value", slot.value);
-    form.setValue("label", slot.label);
-    form.setValue("dayOfWeek", slot.dayOfWeek);
-    form.setValue("timeOfDay", slot.timeOfDay);
-  };
+  const createDateOverrideMutation = useMutation({
+    mutationFn: async (data: DateOverrideForm) => {
+      const response = await apiRequest("POST", "/api/admin/date-overrides", data);
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Date Override Added",
+        description: "Date availability override has been created.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/date-overrides"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+      dateOverrideForm.reset();
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create date override.",
+        variant: "destructive",
+      });
+    },
+  });
 
-  const handleCancelEdit = () => {
-    setEditingSlot(null);
-    form.reset();
-  };
+  const deleteSpecificSlotMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/admin/specific-date-slots/${id}`);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Specific Date Slot Deleted",
+        description: "Date-specific time slot has been removed.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/specific-date-slots"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete specific date slot.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteDateOverrideMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/admin/date-overrides/${id}`);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Date Override Deleted",
+        description: "Date override has been removed.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/date-overrides"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete date override.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const generateValue = (dayOfWeek: string, timeOfDay: string) => {
     return `${dayOfWeek}-${timeOfDay}`;
@@ -198,6 +323,17 @@ export default function AdminTimeSlots() {
     return `${day} ${time} EST`;
   };
 
+  const generateSpecificValue = (date: string, timeOfDay: string) => {
+    return `${date}-${timeOfDay}`;
+  };
+
+  const generateSpecificLabel = (date: string, timeOfDay: string) => {
+    const time = TIMES_OF_DAY.find(t => t.value === timeOfDay)?.label;
+    const dateObj = new Date(date);
+    const formattedDate = format(dateObj, 'EEEE, MMMM d, yyyy');
+    return `${formattedDate} ${time} EST`;
+  };
+
   const onSubmit = (data: TimeSlotForm) => {
     const finalData = {
       ...data,
@@ -206,19 +342,33 @@ export default function AdminTimeSlots() {
     };
 
     if (editingSlot) {
-      updateMutation.mutate({ id: editingSlot.id, data: finalData });
+      updateMutation.mutate({ id: editingSlot.id, ...finalData });
     } else {
       createMutation.mutate(finalData);
     }
   };
 
-  const groupedSlots = timeSlots?.reduce((acc: any, slot: any) => {
-    if (!acc[slot.dayOfWeek]) {
-      acc[slot.dayOfWeek] = [];
-    }
-    acc[slot.dayOfWeek].push(slot);
-    return acc;
-  }, {});
+  const onSubmitSpecificSlot = (data: SpecificDateSlotForm) => {
+    const finalData = {
+      ...data,
+      value: generateSpecificValue(data.date, data.timeOfDay),
+      label: generateSpecificLabel(data.date, data.timeOfDay),
+    };
+    createSpecificSlotMutation.mutate(finalData);
+  };
+
+  const onSubmitDateOverride = (data: DateOverrideForm) => {
+    createDateOverrideMutation.mutate(data);
+  };
+
+  // Generate next 30 days for quick date selection
+  const upcomingDates = Array.from({ length: 30 }, (_, i) => {
+    const date = addDays(new Date(), i + 1);
+    return {
+      value: format(date, 'yyyy-MM-dd'),
+      label: format(date, 'EEEE, MMM d'),
+    };
+  });
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
@@ -227,196 +377,516 @@ export default function AdminTimeSlots() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Manage Available Time Slots
+              Calendar Management
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Add, edit, or remove available booking time slots for coaching calls.
+              Manage your booking calendar with recurring time slots, specific date appointments, and availability overrides.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Add/Edit Form */}
-            <div className="lg:col-span-1">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Plus className="w-5 h-5" />
-                    {editingSlot ? "Edit Time Slot" : "Add New Time Slot"}
-                  </CardTitle>
-                  <CardDescription>
-                    {editingSlot ? "Update the selected time slot" : "Create a new available time slot"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="dayOfWeek"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Day of Week</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select day" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {DAYS_OF_WEEK.map((day) => (
-                                  <SelectItem key={day.value} value={day.value}>
-                                    {day.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+          <Tabs defaultValue="recurring-slots" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="recurring-slots">Recurring Slots</TabsTrigger>
+              <TabsTrigger value="specific-dates">Specific Dates</TabsTrigger>
+              <TabsTrigger value="date-overrides">Date Overrides</TabsTrigger>
+            </TabsList>
 
-                      <FormField
-                        control={form.control}
-                        name="timeOfDay"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Time</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select time" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {TIMES_OF_DAY.map((time) => (
-                                  <SelectItem key={time.value} value={time.value}>
-                                    {time.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+            <TabsContent value="recurring-slots" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Add/Edit Time Slot */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Clock className="w-5 h-5" />
+                      {editingSlot ? "Edit Time Slot" : "Add Time Slot"}
+                    </CardTitle>
+                    <CardDescription>
+                      {editingSlot 
+                        ? "Update the selected time slot" 
+                        : "Create a new recurring time slot for weekly availability"
+                      }
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="dayOfWeek"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Day of Week</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select day" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {DAYS_OF_WEEK.map((day) => (
+                                    <SelectItem key={day.value} value={day.value}>
+                                      {day.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                      <div className="flex gap-2">
-                        <Button 
-                          type="submit" 
-                          className="flex-1"
-                          disabled={createMutation.isPending || updateMutation.isPending}
-                        >
-                          {editingSlot ? "Update" : "Add"} Time Slot
-                        </Button>
-                        {editingSlot && (
+                        <FormField
+                          control={form.control}
+                          name="timeOfDay"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Time</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select time" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {TIMES_OF_DAY.map((time) => (
+                                    <SelectItem key={time.value} value={time.value}>
+                                      {time.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <div className="flex gap-2">
                           <Button 
-                            type="button" 
-                            variant="outline"
-                            onClick={handleCancelEdit}
+                            type="submit" 
+                            className="flex-1"
+                            disabled={createMutation.isPending || updateMutation.isPending}
                           >
-                            Cancel
+                            {editingSlot ? "Update Time Slot" : "Add Time Slot"}
                           </Button>
-                        )}
+                          {editingSlot && (
+                            <Button 
+                              type="button" 
+                              variant="outline"
+                              onClick={() => {
+                                setEditingSlot(null);
+                                form.reset();
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          )}
+                        </div>
+                      </form>
+                    </Form>
+                  </CardContent>
+                </Card>
+
+                {/* Current Time Slots */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Clock className="w-5 h-5" />
+                      Current Time Slots
+                    </CardTitle>
+                    <CardDescription>
+                      Manage your recurring weekly time slots
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {isLoading ? (
+                      <div className="text-center py-8">
+                        <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>Loading time slots...</p>
                       </div>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Existing Time Slots */}
-            <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    Current Time Slots
-                  </CardTitle>
-                  <CardDescription>
-                    Manage your available booking times by day
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {isLoading ? (
-                    <div className="text-center py-8">
-                      <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>Loading time slots...</p>
-                    </div>
-                  ) : !timeSlots?.length ? (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>No time slots configured yet</p>
-                      <p className="text-sm mt-2">Add your first time slot using the form</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-6">
-                      {DAYS_OF_WEEK.map((day) => {
-                        const daySlots = groupedSlots?.[day.value] || [];
-                        if (daySlots.length === 0) return null;
-
-                        return (
-                          <div key={day.value} className="space-y-3">
-                            <h3 className="font-semibold text-lg text-gray-900">{day.label}</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              {daySlots.map((slot: any) => (
+                    ) : !timeSlots?.length ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No time slots configured</p>
+                        <p className="text-sm mt-2">Add your first time slot to get started</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {Object.entries(
+                          timeSlots.reduce((acc: any, slot: any) => {
+                            if (!acc[slot.dayOfWeek]) {
+                              acc[slot.dayOfWeek] = [];
+                            }
+                            acc[slot.dayOfWeek].push(slot);
+                            return acc;
+                          }, {})
+                        ).map(([day, slots]: [string, any]) => (
+                          <div key={day} className="space-y-2">
+                            <h3 className="font-semibold text-lg capitalize text-blue-800">
+                              {DAYS_OF_WEEK.find(d => d.value === day)?.label}
+                            </h3>
+                            <div className="grid gap-2">
+                              {slots.map((slot: any) => (
                                 <div
                                   key={slot.id}
                                   className={`p-3 border rounded-lg ${
-                                    slot.isActive ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'
+                                    slot.isActive ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'
                                   }`}
                                 >
                                   <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                      <Clock className="h-4 w-4" />
-                                      <span className={slot.isActive ? 'text-green-800' : 'text-gray-500'}>
+                                    <div>
+                                      <p className={`font-medium ${slot.isActive ? 'text-blue-800' : 'text-gray-500'}`}>
                                         {TIMES_OF_DAY.find(t => t.value === slot.timeOfDay)?.label}
-                                      </span>
+                                      </p>
+                                      <p className="text-sm text-gray-500">{slot.value}</p>
                                     </div>
-                                    <div className="flex items-center gap-1">
+                                    <div className="flex items-center gap-2">
                                       <Badge variant={slot.isActive ? "default" : "secondary"}>
                                         {slot.isActive ? "Active" : "Inactive"}
                                       </Badge>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => toggleMutation.mutate(slot.id)}
+                                      >
+                                        {slot.isActive ? (
+                                          <ToggleRight className="h-3 w-3" />
+                                        ) : (
+                                          <ToggleLeft className="h-3 w-3" />
+                                        )}
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => {
+                                          setEditingSlot(slot);
+                                          form.setValue("dayOfWeek", slot.dayOfWeek);
+                                          form.setValue("timeOfDay", slot.timeOfDay);
+                                          form.setValue("value", slot.value);
+                                          form.setValue("label", slot.label);
+                                        }}
+                                      >
+                                        <Edit2 className="h-3 w-3" />
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="destructive"
+                                        onClick={() => deleteMutation.mutate(slot.id)}
+                                      >
+                                        <Trash2 className="h-3 w-3" />
+                                      </Button>
                                     </div>
-                                  </div>
-                                  <div className="flex items-center gap-2 mt-2">
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => handleEdit(slot)}
-                                    >
-                                      <Edit className="h-3 w-3 mr-1" />
-                                      Edit
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      variant={slot.isActive ? "secondary" : "default"}
-                                      onClick={() => toggleActiveMutation.mutate({ 
-                                        id: slot.id, 
-                                        isActive: !slot.isActive 
-                                      })}
-                                    >
-                                      {slot.isActive ? "Deactivate" : "Activate"}
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      variant="destructive"
-                                      onClick={() => deleteMutation.mutate(slot.id)}
-                                    >
-                                      <Trash2 className="h-3 w-3" />
-                                    </Button>
                                   </div>
                                 </div>
                               ))}
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="specific-dates" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Add Specific Date Slot */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <CalendarPlus className="w-5 h-5" />
+                      Add Specific Date Slot
+                    </CardTitle>
+                    <CardDescription>
+                      Create a one-time available slot for a specific date
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Form {...specificDateForm}>
+                      <form onSubmit={specificDateForm.handleSubmit(onSubmitSpecificSlot)} className="space-y-4">
+                        <FormField
+                          control={specificDateForm.control}
+                          name="date"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Date</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select date" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {upcomingDates.map((date) => (
+                                    <SelectItem key={date.value} value={date.value}>
+                                      {date.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={specificDateForm.control}
+                          name="timeOfDay"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Time</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select time" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {TIMES_OF_DAY.map((time) => (
+                                    <SelectItem key={time.value} value={time.value}>
+                                      {time.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <Button 
+                          type="submit" 
+                          className="w-full"
+                          disabled={createSpecificSlotMutation.isPending}
+                        >
+                          Add Specific Date Slot
+                        </Button>
+                      </form>
+                    </Form>
+                  </CardContent>
+                </Card>
+
+                {/* Existing Specific Date Slots */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      Specific Date Slots
+                    </CardTitle>
+                    <CardDescription>
+                      One-time available slots for specific dates
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {slotsLoading ? (
+                      <div className="text-center py-8">
+                        <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>Loading specific date slots...</p>
+                      </div>
+                    ) : !specificDateSlots?.length ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No specific date slots configured</p>
+                        <p className="text-sm mt-2">Add one-time slots for specific dates</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {specificDateSlots.map((slot: any) => (
+                          <div
+                            key={slot.id}
+                            className={`p-3 border rounded-lg ${
+                              slot.isActive ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className={`font-medium ${slot.isActive ? 'text-blue-800' : 'text-gray-500'}`}>
+                                  {slot.label}
+                                </p>
+                                <p className="text-sm text-gray-500">{slot.date}</p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge variant={slot.isActive ? "default" : "secondary"}>
+                                  {slot.isActive ? "Active" : "Inactive"}
+                                </Badge>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => deleteSpecificSlotMutation.mutate(slot.id)}
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="date-overrides" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Add Date Override */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <CalendarX className="w-5 h-5" />
+                      Add Date Override
+                    </CardTitle>
+                    <CardDescription>
+                      Block dates or make only specific slots available
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Form {...dateOverrideForm}>
+                      <form onSubmit={dateOverrideForm.handleSubmit(onSubmitDateOverride)} className="space-y-4">
+                        <FormField
+                          control={dateOverrideForm.control}
+                          name="date"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Date</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select date" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {upcomingDates.map((date) => (
+                                    <SelectItem key={date.value} value={date.value}>
+                                      {date.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={dateOverrideForm.control}
+                          name="type"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Override Type</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select override type" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="blocked">Block All Slots</SelectItem>
+                                  <SelectItem value="available_only">Only Specific Slots Available</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={dateOverrideForm.control}
+                          name="reason"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Reason (Optional)</FormLabel>
+                              <FormControl>
+                                <Textarea 
+                                  placeholder="e.g., Holiday, Personal time off, Special event..."
+                                  {...field} 
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <Button 
+                          type="submit" 
+                          className="w-full"
+                          disabled={createDateOverrideMutation.isPending}
+                        >
+                          Add Date Override
+                        </Button>
+                      </form>
+                    </Form>
+                  </CardContent>
+                </Card>
+
+                {/* Existing Date Overrides */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <CalendarX className="w-5 h-5" />
+                      Date Overrides
+                    </CardTitle>
+                    <CardDescription>
+                      Dates with special availability rules
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {overridesLoading ? (
+                      <div className="text-center py-8">
+                        <CalendarX className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>Loading date overrides...</p>
+                      </div>
+                    ) : !dateOverrides?.length ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <CalendarX className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No date overrides configured</p>
+                        <p className="text-sm mt-2">Block dates or set special availability</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {dateOverrides.map((override: any) => (
+                          <div
+                            key={override.id}
+                            className={`p-3 border rounded-lg ${
+                              override.type === 'blocked' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className={`font-medium ${
+                                  override.type === 'blocked' ? 'text-red-800' : 'text-yellow-800'
+                                }`}>
+                                  {format(new Date(override.date), 'EEEE, MMMM d, yyyy')}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  {override.type === 'blocked' ? 'All slots blocked' : 'Only specific slots available'}
+                                </p>
+                                {override.reason && (
+                                  <p className="text-sm text-gray-500 mt-1">{override.reason}</p>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge variant={override.type === 'blocked' ? "destructive" : "secondary"}>
+                                  {override.type === 'blocked' ? 'Blocked' : 'Limited'}
+                                </Badge>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => deleteDateOverrideMutation.mutate(override.id)}
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
       <Footer />
