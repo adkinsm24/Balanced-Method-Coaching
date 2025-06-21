@@ -384,12 +384,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Coaching call not found" });
       }
       
-      // Delete any associated booked slot
-      const bookedSlots = await storage.getBookedSlots();
-      const associatedSlot = bookedSlots.find(slot => slot.coachingCallId === callId);
-      if (associatedSlot) {
-        await storage.deleteBookedSlot(associatedSlot.id);
-      }
+      // Delete associated booked slots (delete dependent slots first to avoid foreign key constraint)
+      await db.delete(bookedSlots).where(
+        and(
+          eq(bookedSlots.coachingCallId, callId),
+          isNotNull(bookedSlots.primarySlotId)
+        )
+      );
+      // Then delete primary slots
+      await db.delete(bookedSlots).where(eq(bookedSlots.coachingCallId, callId));
       
       // Delete the coaching call
       await db

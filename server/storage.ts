@@ -445,9 +445,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteBookedSlot(slotId: number): Promise<void> {
-    await db
-      .delete(bookedSlots)
-      .where(eq(bookedSlots.id, slotId));
+    // First delete any dependent slots that reference this slot as primary
+    await db.delete(bookedSlots).where(eq(bookedSlots.primarySlotId, slotId));
+    // Then delete the primary slot
+    await db.delete(bookedSlots).where(eq(bookedSlots.id, slotId));
   }
 
   async deleteBookedSlotByRequestId(requestId: number): Promise<void> {
