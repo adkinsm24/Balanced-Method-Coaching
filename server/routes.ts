@@ -641,17 +641,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/time-slots", isAdmin, async (req, res) => {
     try {
+      console.log("Received time slot data:", req.body);
       const validatedData = insertAvailableTimeSlotSchema.parse(req.body);
+      console.log("Validated data:", validatedData);
       
       const [newTimeSlot] = await db
         .insert(availableTimeSlots)
         .values(validatedData)
         .returning();
       
+      console.log("Created time slot:", newTimeSlot);
       res.json(newTimeSlot);
     } catch (error) {
       console.error("Error creating time slot:", error);
-      res.status(400).json({ error: "Invalid data or time slot already exists" });
+      console.error("Error details:", error.message);
+      console.error("Error stack:", error.stack);
+      res.status(400).json({ error: error.message || "Invalid data or time slot already exists" });
     }
   });
 
