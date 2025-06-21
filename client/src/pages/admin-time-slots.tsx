@@ -471,11 +471,6 @@ export default function AdminTimeSlots() {
   };
 
   const availableDatesForOverrides = getAvailableDatesForOverrides();
-  
-  // Debug logging
-  console.log("Date Overrides Data:", dateOverrides);
-  console.log("Specific Date Slots Data:", specificDateSlots);
-  console.log("Available Dates for Overrides:", availableDatesForOverrides);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
