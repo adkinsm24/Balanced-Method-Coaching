@@ -410,10 +410,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
+      console.log('Coaching call request body:', req.body);
+      
       const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
         apiVersion: "2025-05-28.basil",
       });
-      const validatedData = insertCoachingCallSchema.parse(req.body);
+      
+      // Add missing required fields with defaults
+      let requestData = { ...req.body };
+      if (!requestData.contactMethod) requestData.contactMethod = "email";
+      
+      const validatedData = insertCoachingCallSchema.parse(requestData);
+      console.log('Validated coaching call data:', validatedData);
       
       // Check if time slot(s) are available based on duration
       let slotsAvailable = false;
