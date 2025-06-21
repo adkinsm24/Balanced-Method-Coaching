@@ -151,6 +151,7 @@ export default function AdminTimeSlots() {
 
   const createMutation = useMutation({
     mutationFn: async (data: TimeSlotForm) => {
+      console.log("Submitting time slot data:", data);
       const response = await apiRequest("POST", "/api/admin/time-slots", data);
       return await response.json();
     },
@@ -164,6 +165,7 @@ export default function AdminTimeSlots() {
       form.reset();
     },
     onError: (error: Error) => {
+      console.error("Time slot creation error:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to create time slot.",
@@ -354,11 +356,15 @@ export default function AdminTimeSlots() {
   };
 
   const onSubmit = (data: TimeSlotForm) => {
+    console.log("Form submitted with data:", data);
+    
     const finalData = {
       ...data,
       value: generateValue(data.dayOfWeek, data.timeOfDay),
       label: generateLabel(data.dayOfWeek, data.timeOfDay),
     };
+    
+    console.log("Final data to be sent:", finalData);
 
     if (editingSlot) {
       updateMutation.mutate({ id: editingSlot.id, ...finalData });
