@@ -408,14 +408,38 @@ export default function AdminTimeSlots() {
     createDateOverrideMutation.mutate(data);
   };
 
-  // Generate next 60 days for quick date selection
-  const upcomingDates = Array.from({ length: 60 }, (_, i) => {
-    const date = addDays(new Date(), i + 1);
-    return {
-      value: format(date, 'yyyy-MM-dd'),
-      label: format(date, 'EEEE, MMM d'),
-    };
-  });
+  // Generate dates that are within the specific date ranges
+  const getAvailableDatesForOverrides = () => {
+    if (!specificDateSlots?.length) return [];
+    
+    const allDates = [];
+    
+    // Get all dates from date ranges
+    specificDateSlots.forEach((slot: any) => {
+      if (slot.type === 'date_range' && slot.startDate && slot.endDate) {
+        const start = new Date(slot.startDate);
+        const end = new Date(slot.endDate);
+        
+        for (let currentDate = new Date(start); currentDate <= end; currentDate.setDate(currentDate.getDate() + 1)) {
+          const dateStr = format(currentDate, 'yyyy-MM-dd');
+          const dateLabel = format(currentDate, 'EEEE, MMM d');
+          
+          // Only add if not already in the list
+          if (!allDates.find(d => d.value === dateStr)) {
+            allDates.push({
+              value: dateStr,
+              label: dateLabel,
+            });
+          }
+        }
+      }
+    });
+    
+    // Sort dates chronologically
+    return allDates.sort((a, b) => new Date(a.value).getTime() - new Date(b.value).getTime());
+  };
+
+  const availableDatesForOverrides = getAvailableDatesForOverrides();
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
@@ -827,11 +851,17 @@ export default function AdminTimeSlots() {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {upcomingDates.map((date) => (
-                                    <SelectItem key={date.value} value={date.value}>
-                                      {date.label}
+                                  {availableDatesForOverrides.length > 0 ? (
+                                    availableDatesForOverrides.map((date) => (
+                                      <SelectItem key={date.value} value={date.value}>
+                                        {date.label}
+                                      </SelectItem>
+                                    ))
+                                  ) : (
+                                    <SelectItem value="" disabled>
+                                      No date ranges available. Add date ranges first.
                                     </SelectItem>
-                                  ))}
+                                  )}
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -915,9 +945,9 @@ export default function AdminTimeSlots() {
                         <Button 
                           type="submit" 
                           className="w-full"
-                          disabled={createDateOverrideMutation.isPending}
+                          disabled={createDateOverrideMutation.isPending || availableDatesForOverrides.length === 0}
                         >
-                          Add Date Override
+                          {availableDatesForOverrides.length === 0 ? "No Date Ranges Available" : "Add Date Override"}
                         </Button>
                       </form>
                     </Form>
@@ -945,7 +975,11 @@ export default function AdminTimeSlots() {
                       <div className="text-center py-8 text-muted-foreground">
                         <CalendarX className="h-12 w-12 mx-auto mb-4 opacity-50" />
                         <p>No date overrides configured</p>
-                        <p className="text-sm mt-2">Block dates or set special availability</p>
+                        <p className="text-sm mt-2">
+                          {availableDatesForOverrides.length === 0 
+                            ? "Add date ranges first to enable date overrides" 
+                            : "Block dates or set special availability within your date ranges"}
+                        </p>
                       </div>
                     ) : (
                       <div className="space-y-3">
