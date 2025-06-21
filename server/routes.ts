@@ -140,23 +140,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const bookedSlots = await storage.getBookedSlots();
       const bookedTimeSlots = bookedSlots.map(slot => slot.timeSlot);
       
-      // Get active recurring time slots from database
-      const recurringTimeSlots = await db
+      // Get active specific date slots
+      const specificSlots = await db
         .select()
-        .from(availableTimeSlots)
-        .where(eq(availableTimeSlots.isActive, true));
+        .from(specificDateSlots)
+        .where(eq(specificDateSlots.isActive, true));
       
-      // Get date ranges (stored in date_overrides table)
-      const dateRanges = await db
-        .select()
-        .from(dateOverrides)
-        .where(and(
-          isNotNull(dateOverrides.startDate),
-          isNotNull(dateOverrides.endDate),
-          eq(dateOverrides.isActive, true)
-        ));
-      
-      // Get date overrides (actual blocking rules)
+      // Get date overrides (blocking rules)
       const overrides = await db
         .select()
         .from(dateOverrides)
@@ -165,86 +155,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
           eq(dateOverrides.isActive, true)
         ));
       
-      // If no date ranges exist, return empty array
-      if (dateRanges.length === 0) {
-        return res.json([]);
-      }
-      
-      // If no recurring slots exist, return empty array
-      if (recurringTimeSlots.length === 0) {
-        return res.json([]);
-      }
-      
-      // Generate available slots based on date ranges and recurring slots
       const allSlots = [];
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      // For each date range, generate slots for each day
-      dateRanges.forEach(range => {
-        const startDate = new Date(range.startDate);
-        const endDate = new Date(range.endDate);
+      // Process each specific date slot
+      specificSlots.forEach(slot => {
+        const slotDate = new Date(slot.date);
         
-        for (let currentDate = new Date(startDate); currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
-          // Skip past dates
-          if (currentDate < today) continue;
-          
-          // Map weekday to database format
-          const dayMap = { 'sun': 'sun', 'mon': 'mon', 'tue': 'tue', 'wed': 'wed', 'thu': 'thu', 'fri': 'fri', 'sat': 'sat' };
-          const dayOfWeek = dayMap[currentDate.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase()];
-          const dateString = currentDate.toISOString().split('T')[0];
-          
-          // Check if this date has any overrides
-          const dateOverride = overrides.find(override => override.date === dateString);
-          
-          if (dateOverride) {
-            if (dateOverride.type === 'blocked') {
-              continue;
-            } else if (dateOverride.type === 'blocked_specific' && dateOverride.timeSlots) {
-              const blockedTimes = JSON.parse(dateOverride.timeSlots);
-              recurringTimeSlots.forEach(slot => {
-                if (slot.dayOfWeek === dayOfWeek && !blockedTimes.includes(slot.timeOfDay)) {
-                  const slotValue = `${dateString}-${slot.timeOfDay}`;
-                  const slotLabel = `${currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} ${slot.label.split(' ').slice(1).join(' ')}`;
-                  
-                  if (!bookedTimeSlots.includes(slotValue)) {
-                    allSlots.push({
-                      id: slot.id,
-                      value: slotValue,
-                      label: slotLabel,
-                      dayOfWeek: slot.dayOfWeek,
-                      timeOfDay: slot.timeOfDay,
-                      isActive: slot.isActive
-                    });
-                  }
-                }
-              });
-              continue;
-            }
+        // Skip past dates
+        if (slotDate < today) return;
+        
+        const dateString = slotDate.toISOString().split('T')[0];
+        
+        // Check if this slot is already booked
+        if (bookedTimeSlots.includes(slot.value)) return;
+        
+        // Check if this date has any overrides
+        const dateOverride = overrides.find(override => override.date === dateString);
+        
+        if (dateOverride && dateOverride.type === 'blocked') {
+          // If it's a complete block (no time slots specified), skip this slot entirely
+          if (!dateOverride.timeSlots || dateOverride.timeSlots.length === 0) {
+            return; // Skip this entire date
           }
           
-          // Add all recurring slots for this day
-          recurringTimeSlots.forEach(slot => {
-
-            
-            if (slot.dayOfWeek === dayOfWeek) {
-              const slotValue = `${dateString}-${slot.timeOfDay}`;
-              const slotLabel = `${currentDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} ${slot.label.split(' ').slice(1).join(' ')}`;
-              
-              if (!bookedTimeSlots.includes(slotValue)) {
-                allSlots.push({
-                  id: slot.id,
-                  value: slotValue,
-                  label: slotLabel,
-                  dayOfWeek: slot.dayOfWeek,
-                  timeOfDay: slot.timeOfDay,
-                  isActive: slot.isActive
-                });
-
-              }
-            }
-          });
+          // If specific time slots are blocked, only show if this slot is not blocked
+          if (dateOverride.timeSlots.includes(slot.timeOfDay)) {
+            return; // Skip this blocked time slot
+          }
         }
+        
+        // Create the available slot
+        allSlots.push({
+          id: allSlots.length + 1,
+          value: slot.value,
+          label: slot.label,
+          timeOfDay: slot.timeOfDay
+        });
       });
       
       // Sort slots by date and time
@@ -265,7 +213,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(allSlots);
     } catch (error) {
       console.error("Error fetching available time slots:", error);
-      res.status(500).json({ error: "Failed to fetch available slots" });
+      res.status(500).json({ error: "Failed to fetch time slots" });
     }
   });
 
