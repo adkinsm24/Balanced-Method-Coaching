@@ -100,7 +100,8 @@ export const dateOverrides = pgTable("date_overrides", {
   date: varchar("date", { length: 20 }), // YYYY-MM-DD format for single dates
   startDate: varchar("start_date", { length: 20 }), // YYYY-MM-DD format for date ranges
   endDate: varchar("end_date", { length: 20 }), // YYYY-MM-DD format for date ranges
-  type: varchar("type", { length: 20 }).notNull(), // "blocked" or "available_only"
+  type: varchar("type", { length: 30 }).notNull(), // "blocked", "blocked_specific", or "available_only"
+  timeSlots: text("time_slots"), // JSON array of specific time slots to block
   reason: varchar("reason", { length: 255 }), // optional reason for the override
   isActive: boolean("is_active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow(),

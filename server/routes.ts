@@ -828,17 +828,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/date-overrides", isAdmin, async (req, res) => {
     try {
-      const validatedData = insertDateOverrideSchema.parse(req.body);
+      console.log("Received date override data:", req.body);
+      const { date, type, timeSlots, reason } = req.body;
+      
+      const overrideData = {
+        date,
+        type,
+        timeSlots: timeSlots ? JSON.stringify(timeSlots) : null,
+        reason: reason || (
+          type === "blocked" ? `All time slots blocked for ${date}` :
+          type === "blocked_specific" ? `Specific time slots blocked for ${date}` :
+          `Date override for ${date}`
+        ),
+        isActive: true,
+      };
       
       const [newOverride] = await db
         .insert(dateOverrides)
-        .values(validatedData)
+        .values(overrideData)
         .returning();
       
       res.json(newOverride);
     } catch (error) {
       console.error("Error creating date override:", error);
-      res.status(400).json({ error: "Invalid data or date override already exists" });
+      res.status(400).json({ error: error.message || "Invalid data" });
     }
   });
 

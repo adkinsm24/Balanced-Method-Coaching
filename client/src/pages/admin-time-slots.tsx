@@ -30,7 +30,8 @@ const specificDateSlotSchema = z.object({
 
 const dateOverrideSchema = z.object({
   date: z.string().min(1, "Date is required"),
-  type: z.enum(["blocked", "available_only"]),
+  type: z.enum(["blocked", "blocked_specific", "available_only"]),
+  timeSlots: z.array(z.string()).optional(), // For blocking specific time slots
   reason: z.string().optional(),
 });
 
@@ -125,6 +126,7 @@ export default function AdminTimeSlots() {
     defaultValues: {
       date: "",
       type: "blocked",
+      timeSlots: [],
       reason: "",
     },
   });
@@ -850,14 +852,48 @@ export default function AdminTimeSlots() {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="blocked">Block All Slots</SelectItem>
-                                  <SelectItem value="available_only">Only Specific Slots Available</SelectItem>
+                                  <SelectItem value="blocked">Block All Time Slots</SelectItem>
+                                  <SelectItem value="blocked_specific">Block Specific Time Slots</SelectItem>
+                                  <SelectItem value="available_only">Available Only</SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
+
+                        {dateOverrideForm.watch("type") === "blocked_specific" && (
+                          <FormField
+                            control={dateOverrideForm.control}
+                            name="timeSlots"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Time Slots to Block</FormLabel>
+                                <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 border rounded">
+                                  {TIMES_OF_DAY.map((time) => (
+                                    <label key={time.value} className="flex items-center space-x-2 cursor-pointer">
+                                      <input
+                                        type="checkbox"
+                                        checked={field.value?.includes(time.value) || false}
+                                        onChange={(e) => {
+                                          const currentValues = field.value || [];
+                                          if (e.target.checked) {
+                                            field.onChange([...currentValues, time.value]);
+                                          } else {
+                                            field.onChange(currentValues.filter(v => v !== time.value));
+                                          }
+                                        }}
+                                        className="rounded"
+                                      />
+                                      <span className="text-sm">{time.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        )}
 
                         <FormField
                           control={dateOverrideForm.control}
@@ -917,26 +953,53 @@ export default function AdminTimeSlots() {
                           <div
                             key={override.id}
                             className={`p-3 border rounded-lg ${
-                              override.type === 'blocked' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'
+                              override.type === 'blocked' || override.type === 'blocked_specific' 
+                                ? 'bg-red-50 border-red-200' 
+                                : 'bg-blue-50 border-blue-200'
                             }`}
                           >
                             <div className="flex items-center justify-between">
                               <div>
                                 <p className={`font-medium ${
-                                  override.type === 'blocked' ? 'text-red-800' : 'text-yellow-800'
+                                  override.type === 'blocked' || override.type === 'blocked_specific' 
+                                    ? 'text-red-800' 
+                                    : 'text-blue-800'
                                 }`}>
                                   {format(new Date(override.date), 'EEEE, MMMM d, yyyy')}
                                 </p>
                                 <p className="text-sm text-gray-600">
-                                  {override.type === 'blocked' ? 'All slots blocked' : 'Only specific slots available'}
+                                  {override.type === 'blocked' ? 'All slots blocked' : 
+                                   override.type === 'blocked_specific' ? 'Specific slots blocked' : 
+                                   'Only specific slots available'}
                                 </p>
+                                {override.type === 'blocked_specific' && override.timeSlots && (
+                                  <div className="mt-2">
+                                    <p className="text-xs text-gray-600 mb-1">Blocked times:</p>
+                                    <div className="flex flex-wrap gap-1">
+                                      {JSON.parse(override.timeSlots).map((timeSlot: string) => {
+                                        const time = TIMES_OF_DAY.find(t => t.value === timeSlot);
+                                        return (
+                                          <Badge key={timeSlot} variant="secondary" className="text-xs">
+                                            {time?.label || timeSlot}
+                                          </Badge>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                )}
                                 {override.reason && (
                                   <p className="text-sm text-gray-500 mt-1">{override.reason}</p>
                                 )}
                               </div>
                               <div className="flex items-center gap-2">
-                                <Badge variant={override.type === 'blocked' ? "destructive" : "secondary"}>
-                                  {override.type === 'blocked' ? 'Blocked' : 'Limited'}
+                                <Badge variant={
+                                  override.type === 'blocked' || override.type === 'blocked_specific' 
+                                    ? "destructive" 
+                                    : "default"
+                                }>
+                                  {override.type === 'blocked' ? 'All Blocked' : 
+                                   override.type === 'blocked_specific' ? 'Specific Blocked' : 
+                                   'Available Only'}
                                 </Badge>
                                 <Button
                                   size="sm"
