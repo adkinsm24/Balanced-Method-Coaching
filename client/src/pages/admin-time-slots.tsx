@@ -1014,7 +1014,7 @@ export default function AdminTimeSlots() {
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        {dateOverrides.map((override: any) => (
+                        {dateOverrides.filter((override: any) => override.date && (override.type === 'blocked' || override.type === 'blocked_specific')).map((override: any) => (
                           <div
                             key={override.id}
                             className={`p-3 border rounded-lg ${
