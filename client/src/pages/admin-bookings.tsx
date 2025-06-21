@@ -21,6 +21,12 @@ interface ConsultationRequest {
   contactMethod: string;
   selectedTimeSlot: string;
   goals: string;
+  experience?: string;
+  eatingOut?: string;
+  typicalDay?: string;
+  drinks?: string;
+  emotionalEating?: string;
+  medications?: string;
   status: string;
   createdAt: string;
 }
@@ -206,11 +212,40 @@ export default function AdminBookingsPage() {
                                   Contact via {request.contactMethod}
                                 </div>
                               </div>
-                              <div className="mt-2">
+                              
+                              <div className="mt-3">
                                 <p className="text-sm font-medium">Goals:</p>
                                 <p className="text-sm text-gray-700">{request.goals}</p>
                               </div>
-                              <p className="text-xs text-gray-500">
+                              
+                              {/* Show all additional details */}
+                              {(request.experience || request.eatingOut || request.typicalDay || request.drinks || request.emotionalEating || request.medications) && (
+                                <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                                  <p className="text-sm font-medium text-gray-700 mb-2">Additional Information:</p>
+                                  <div className="space-y-1 text-sm">
+                                    {request.experience && (
+                                      <div><span className="font-medium">Experience:</span> {request.experience}</div>
+                                    )}
+                                    {request.eatingOut && (
+                                      <div><span className="font-medium">Eating out (days/week):</span> {request.eatingOut}</div>
+                                    )}
+                                    {request.typicalDay && (
+                                      <div><span className="font-medium">Typical day:</span> {request.typicalDay}</div>
+                                    )}
+                                    {request.drinks && (
+                                      <div><span className="font-medium">Drinks:</span> {request.drinks}</div>
+                                    )}
+                                    {request.emotionalEating && (
+                                      <div><span className="font-medium">Emotional eating:</span> {request.emotionalEating}</div>
+                                    )}
+                                    {request.medications && (
+                                      <div><span className="font-medium">Medications:</span> {request.medications}</div>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              <p className="text-xs text-gray-500 mt-3">
                                 Booked: {new Date(request.createdAt).toLocaleString()}
                               </p>
                             </div>
