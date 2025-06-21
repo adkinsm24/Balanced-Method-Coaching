@@ -140,13 +140,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const bookedSlots = await storage.getBookedSlots();
       const bookedTimeSlots = bookedSlots.map(slot => slot.timeSlot);
       
-      // Get active specific date slots
-      const specificSlots = await db
+      // 1. Get specific date ranges from admin configuration
+      const dateRanges = await db
         .select()
         .from(specificDateSlots)
         .where(eq(specificDateSlots.isActive, true));
       
-      // Get date overrides (blocking rules)
+      // 2. Get active recurring time slots
+      const recurringSlots = await db
+        .select()
+        .from(availableTimeSlots)
+        .where(eq(availableTimeSlots.isActive, true));
+      
+      // 3. Get date overrides (blocking rules)
       const overrides = await db
         .select()
         .from(dateOverrides)
@@ -159,39 +165,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      // Process each specific date slot
-      specificSlots.forEach(slot => {
-        const slotDate = new Date(slot.date);
+      // Group date ranges by start and end dates
+      const dateRangeMap = new Map();
+      dateRanges.forEach(range => {
+        const key = `${range.date}-${range.timeOfDay}`;
+        if (!dateRangeMap.has(key)) {
+          dateRangeMap.set(key, []);
+        }
+        dateRangeMap.get(key).push(range);
+      });
+      
+      // For each date range, generate slots based on recurring schedule
+      dateRanges.forEach(dateRange => {
+        const rangeDate = new Date(dateRange.date);
         
         // Skip past dates
-        if (slotDate < today) return;
+        if (rangeDate < today) return;
         
-        const dateString = slotDate.toISOString().split('T')[0];
+        const dayOfWeek = rangeDate.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase();
+        const dateString = rangeDate.toISOString().split('T')[0];
         
-        // Check if this slot is already booked
-        if (bookedTimeSlots.includes(slot.value)) return;
+        // Find matching recurring slots for this day and time
+        const matchingRecurringSlots = recurringSlots.filter(slot => 
+          slot.dayOfWeek === dayOfWeek && slot.timeOfDay === dateRange.timeOfDay
+        );
         
-        // Check if this date has any overrides
-        const dateOverride = overrides.find(override => override.date === dateString);
-        
-        if (dateOverride && dateOverride.type === 'blocked') {
-          // If it's a complete block (no time slots specified), skip this slot entirely
-          if (!dateOverride.timeSlots || dateOverride.timeSlots.length === 0) {
-            return; // Skip this entire date
+        matchingRecurringSlots.forEach(recurringSlot => {
+          const slotValue = `${dateString}-${recurringSlot.timeOfDay}`;
+          
+          // Check if this slot is already booked
+          if (bookedTimeSlots.includes(slotValue)) return;
+          
+          // Check if this date has any overrides
+          const dateOverride = overrides.find(override => override.date === dateString);
+          
+          if (dateOverride && dateOverride.type === 'blocked') {
+            // If it's a complete block (no time slots specified), skip this slot entirely
+            if (!dateOverride.timeSlots || dateOverride.timeSlots.length === 0) {
+              return; // Skip this entire date
+            }
+            
+            // If specific time slots are blocked, only show if this slot is not blocked
+            if (dateOverride.timeSlots.includes(recurringSlot.timeOfDay)) {
+              return; // Skip this blocked time slot
+            }
           }
           
-          // If specific time slots are blocked, only show if this slot is not blocked
-          if (dateOverride.timeSlots.includes(slot.timeOfDay)) {
-            return; // Skip this blocked time slot
-          }
-        }
-        
-        // Create the available slot
-        allSlots.push({
-          id: allSlots.length + 1,
-          value: slot.value,
-          label: slot.label,
-          timeOfDay: slot.timeOfDay
+          // Create the available slot
+          allSlots.push({
+            id: allSlots.length + 1,
+            value: slotValue,
+            label: `${rangeDate.toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })} ${recurringSlot.label.split(' ').slice(-2).join(' ')}`,
+            timeOfDay: recurringSlot.timeOfDay
+          });
         });
       });
       
