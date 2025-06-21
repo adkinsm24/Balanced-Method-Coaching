@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
 import { consultationRequests, insertConsultationRequestSchema, coachingCalls, insertCoachingCallSchema, bookedSlots, users, availableTimeSlots, insertAvailableTimeSlotSchema, specificDateSlots, insertSpecificDateSlotSchema, dateOverrides, insertDateOverrideSchema } from "@shared/schema";
-import { desc, eq, and } from "drizzle-orm";
+import { desc, eq, and, sql } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./auth";
 import { sendBookingConfirmation, sendCoachNotification, sendCourseAccessEmail } from "./emailService";
@@ -727,12 +727,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Specific date slots management routes
   app.get("/api/admin/specific-date-slots", isAdmin, async (req, res) => {
     try {
-      const slots = await db
+      // Get both individual date slots and date ranges
+      const individualSlots = await db
         .select()
         .from(specificDateSlots)
         .orderBy(specificDateSlots.date, specificDateSlots.timeOfDay);
       
-      res.json(slots);
+      const dateRanges = await db
+        .select()
+        .from(dateOverrides)
+        .where(sql`start_date IS NOT NULL AND end_date IS NOT NULL`);
+      
+      // Combine and format the results
+      const combinedResults = [
+        ...individualSlots,
+        ...dateRanges.map(range => ({
+          id: range.id,
+          label: range.reason || `Date Range: ${range.startDate} to ${range.endDate}`,
+          date: `${range.startDate} to ${range.endDate}`,
+          isActive: range.isActive,
+          type: 'date_range',
+          startDate: range.startDate,
+          endDate: range.endDate
+        }))
+      ];
+      
+      res.json(combinedResults);
     } catch (error) {
       console.error("Error fetching specific date slots:", error);
       res.status(500).json({ error: "Failed to fetch specific date slots" });
@@ -760,6 +780,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .values(dateRangeData)
         .returning();
       
+      // Invalidate the specific date slots cache so UI updates
       res.json({
         message: `Created date range from ${startDate} to ${endDate}`,
         dateRange: newDateRange

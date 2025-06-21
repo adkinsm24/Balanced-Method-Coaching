@@ -244,12 +244,11 @@ export default function AdminTimeSlots() {
       return await response.json();
     },
     onSuccess: () => {
-      toast({
-        title: "Specific Date Slot Added",
-        description: "New date-specific time slot has been created.",
-      });
       queryClient.invalidateQueries({ queryKey: ["/api/admin/specific-date-slots"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/available-time-slots"] });
+      toast({
+        title: "Success",
+        description: "Date range created successfully",
+      });
       specificDateForm.reset();
     },
     onError: (error: Error) => {
@@ -300,6 +299,26 @@ export default function AdminTimeSlots() {
       toast({
         title: "Error",
         description: error.message || "Failed to delete specific date slot.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteDateRangeMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/admin/date-overrides/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/specific-date-slots"] });
+      toast({
+        title: "Success",
+        description: "Date range deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete date range",
         variant: "destructive",
       });
     },
@@ -730,16 +749,34 @@ export default function AdminTimeSlots() {
                                 <p className={`font-medium ${slot.isActive ? 'text-blue-800' : 'text-gray-500'}`}>
                                   {slot.label}
                                 </p>
-                                <p className="text-sm text-gray-500">{slot.date}</p>
+                                <p className="text-sm text-gray-500">
+                                  {slot.type === 'date_range' ? (
+                                    <span className="flex items-center gap-1">
+                                      <CalendarPlus className="h-3 w-3" />
+                                      {slot.date}
+                                    </span>
+                                  ) : (
+                                    slot.date
+                                  )}
+                                </p>
                               </div>
                               <div className="flex items-center gap-2">
                                 <Badge variant={slot.isActive ? "default" : "secondary"}>
                                   {slot.isActive ? "Active" : "Inactive"}
                                 </Badge>
+                                {slot.type === 'date_range' && (
+                                  <Badge variant="outline">Range</Badge>
+                                )}
                                 <Button
                                   size="sm"
                                   variant="destructive"
-                                  onClick={() => deleteSpecificSlotMutation.mutate(slot.id)}
+                                  onClick={() => {
+                                    if (slot.type === 'date_range') {
+                                      deleteDateRangeMutation.mutate(slot.id);
+                                    } else {
+                                      deleteSpecificSlotMutation.mutate(slot.id);
+                                    }
+                                  }}
                                 >
                                   <Trash2 className="h-3 w-3" />
                                 </Button>
