@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Footer from "@/components/footer";
 import Navigation from "@/components/navigation";
+import CalendarScheduler from "@/components/calendar-scheduler";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -215,35 +216,16 @@ export default function BookCoaching() {
                   </Select>
                 </div>
 
-                {/* Available Time Slots */}
-                <div>
-                  <Label className="text-sm font-medium text-gray-700">Select Your Preferred Time Slot *</Label>
-                  <Select 
-                    onValueChange={(value) => handleChange("selectedTimeSlot", value)}
-                    disabled={slotsLoading}
-                    value={formData.selectedTimeSlot}
-                  >
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder={slotsLoading ? "Loading available slots..." : "Choose an available time slot"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableSlots && Array.isArray(availableSlots) && availableSlots.length > 0 ? (
-                        availableSlots.map((slot) => (
-                          <SelectItem key={slot.value} value={slot.value}>
-                            {slot.label}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="no-slots" disabled>
-                          {slotsLoading ? "Loading..." : "No available slots"}
-                        </SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-gray-500 mt-1">
-                    All times shown in US Eastern Time {availableSlots && Array.isArray(availableSlots) ? `(${availableSlots.length} slots available)` : ''}
-                  </p>
-                </div>
+                {/* Calendar Time Slot Selection */}
+                <CalendarScheduler
+                  availableSlots={availableSlots || []}
+                  selectedSlot={formData.selectedTimeSlot}
+                  onSlotSelect={(slot) => handleChange("selectedTimeSlot", slot)}
+                  userDetails={{
+                    name: `${formData.firstName} ${formData.lastName}`.trim(),
+                    email: formData.email
+                  }}
+                />
 
                 {/* Goals and Background */}
                 <div>
