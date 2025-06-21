@@ -250,6 +250,7 @@ export default function CalendarScheduler({
                       return (
                         <div key={slot.value} className="space-y-2">
                           <Button
+                            type="button"
                             variant={isSelected ? "default" : "outline"}
                             className="w-full justify-start text-left h-auto py-3 px-4"
                             onClick={() => handleSlotSelect(slot.value)}
@@ -259,6 +260,7 @@ export default function CalendarScheduler({
                           </Button>
                           {isSelected && userDetails.name && userDetails.email && (
                             <Button
+                              type="button"
                               variant="ghost"
                               size="sm"
                               onClick={() => handleAddToCalendar(slot)}
