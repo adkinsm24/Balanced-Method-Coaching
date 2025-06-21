@@ -72,7 +72,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API routes for consultation requests
   app.post("/api/consultation-requests", async (req, res) => {
     try {
-      const validatedData = insertConsultationRequestSchema.parse(req.body);
+      console.log('Request body:', req.body);
+      
+      // Add missing required fields with defaults
+      let requestData = { ...req.body };
+      if (!requestData.contactMethod) requestData.contactMethod = "email";
+      
+      const validatedData = insertConsultationRequestSchema.parse(requestData);
+      console.log('Validated data:', validatedData);
       
       // Check if time slot is still available
       const isAvailable = await storage.isTimeSlotAvailable(validatedData.selectedTimeSlot);
@@ -84,8 +91,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Create consultation request with confirmed status and book the time slot atomically
-      const requestData = { ...validatedData, status: "confirmed" };
-      const newRequest = await storage.createConsultationRequest(requestData);
+      const consultationData = { ...validatedData, status: "confirmed" };
+      const newRequest = await storage.createConsultationRequest(consultationData);
       
       // Free intro calls only use 30 minutes (single slot)
       await storage.bookTimeSlotWithDuration(

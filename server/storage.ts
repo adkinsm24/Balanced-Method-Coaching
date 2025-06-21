@@ -371,7 +371,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async bookTimeSlotWithDuration(timeSlot: string, duration: number, consultationRequestId?: number, coachingCallId?: number): Promise<BookedSlot[]> {
-    const bookedSlots: BookedSlot[] = [];
+    const resultSlots: BookedSlot[] = [];
     
     // Book primary slot
     const [primarySlot] = await db
@@ -385,7 +385,7 @@ export class DatabaseStorage implements IStorage {
         coachingCallId: coachingCallId || null,
       })
       .returning();
-    bookedSlots.push(primarySlot);
+    resultSlots.push(primarySlot);
 
     // For 45 and 60 minute calls, book the next slot as well
     if (duration > 30) {
@@ -402,11 +402,11 @@ export class DatabaseStorage implements IStorage {
             coachingCallId: coachingCallId || null,
           })
           .returning();
-        bookedSlots.push(secondarySlot);
+        resultSlots.push(secondarySlot);
       }
     }
 
-    return bookedSlots;
+    return resultSlots;
   }
 
   private getNextTimeSlot(currentSlot: string): string | null {
