@@ -353,7 +353,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Delete consultation request (admin only)
-  app.delete('/api/admin/consultation-requests/:id', isAuthenticated, async (req: any, res) => {
+  app.delete('/api/admin/consultation-requests/:id', async (req: any, res) => {
     try {
       const requestId = parseInt(req.params.id);
       
@@ -373,7 +373,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Delete coaching call (admin only)
-  app.delete('/api/admin/coaching-calls/:id', isAuthenticated, async (req: any, res) => {
+  app.delete('/api/admin/coaching-calls/:id', async (req: any, res) => {
     try {
       const callId = parseInt(req.params.id);
       
