@@ -742,7 +742,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/specific-date-slots", isAdmin, async (req, res) => {
     try {
       console.log("Received specific date slot data:", req.body);
-      const { startDate, endDate, dayOfWeek, timeOfDay, value, label, isActive } = req.body;
+      const { startDate, endDate, timeOfDay, value, label, isActive } = req.body;
       
       // Generate dates between start and end date
       const start = new Date(startDate);
@@ -753,12 +753,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       for (let currentDate = new Date(start); currentDate <= end; currentDate.setDate(currentDate.getDate() + 1)) {
         const dateStr = currentDate.toISOString().split('T')[0];
         
+        const time = TIMES_OF_DAY.find(t => t.value === timeOfDay)?.label || timeOfDay;
+        const dateObj = new Date(dateStr);
+        const formattedDate = format(dateObj, 'EEEE, MMMM d, yyyy');
+        
         const slotData = {
           date: dateStr,
-          dayOfWeek,
+          dayOfWeek: format(dateObj, 'eee').toLowerCase(), // auto-generate day of week from date
           timeOfDay,
           value: `${dateStr}-${value}`,
-          label: generateSpecificDateLabel(dateStr, timeOfDay),
+          label: `${formattedDate} ${time} EST`,
           isActive: isActive ?? true
         };
         

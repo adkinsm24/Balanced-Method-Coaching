@@ -26,7 +26,6 @@ const timeSlotSchema = z.object({
 const specificDateSlotSchema = z.object({
   startDate: z.string().min(1, "Start date is required"),
   endDate: z.string().min(1, "End date is required"),
-  dayOfWeek: z.string().min(1, "Day is required"),
   timeOfDay: z.string().min(1, "Time is required"),
 });
 
@@ -119,7 +118,6 @@ export default function AdminTimeSlots() {
     defaultValues: {
       startDate: "",
       endDate: "",
-      dayOfWeek: "",
       timeOfDay: "",
     },
   });
@@ -377,10 +375,9 @@ export default function AdminTimeSlots() {
     const finalData = {
       startDate: data.startDate,
       endDate: data.endDate,
-      dayOfWeek: data.dayOfWeek,
       timeOfDay: data.timeOfDay,
-      value: generateValue(data.dayOfWeek, data.timeOfDay),
-      label: generateLabel(data.dayOfWeek, data.timeOfDay),
+      value: data.timeOfDay,
+      label: `Date Range Slots - ${data.timeOfDay}`,
       isActive: true,
     };
     
@@ -642,7 +639,7 @@ export default function AdminTimeSlots() {
                       Add Date Range Slots
                     </CardTitle>
                     <CardDescription>
-                      Create time slots for a range of dates (e.g., 6/23/2025 to 9/30/2025)
+                      Create time slots for all dates in a range (e.g., 6/23/2025 to 9/30/2025). Select time only - no need to pick specific days.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -684,30 +681,7 @@ export default function AdminTimeSlots() {
                           />
                         </div>
 
-                        <FormField
-                          control={specificDateForm.control}
-                          name="dayOfWeek"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Day of Week</FormLabel>
-                              <Select onValueChange={field.onChange} value={field.value}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select day" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {DAYS_OF_WEEK.map((day) => (
-                                    <SelectItem key={day.value} value={day.value}>
-                                      {day.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+
 
                         <FormField
                           control={specificDateForm.control}
