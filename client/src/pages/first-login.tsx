@@ -79,9 +79,7 @@ export default function FirstLogin() {
     }
   };
 
-  const handleSkip = () => {
-    setLocation("/course");
-  };
+
 
   if (!user) {
     setLocation("/auth");
@@ -131,27 +129,14 @@ export default function FirstLogin() {
                 minLength={6}
               />
             </div>
-            <div className="space-y-2">
-              <Button 
-                type="submit" 
-                disabled={isChangingPassword}
-                className="w-full"
-              >
-                {isChangingPassword ? "Setting Password..." : "Set New Password"}
-              </Button>
-              <Button 
-                type="button"
-                variant="outline"
-                onClick={handleSkip}
-                className="w-full"
-              >
-                Skip for Now
-              </Button>
-            </div>
+            <Button 
+              type="submit" 
+              disabled={isChangingPassword}
+              className="w-full"
+            >
+              {isChangingPassword ? "Setting Password..." : "Set New Password"}
+            </Button>
           </form>
-          <div className="mt-4 text-xs text-gray-500 text-center">
-            You can always change your password later from the course page.
-          </div>
         </CardContent>
       </Card>
     </div>
