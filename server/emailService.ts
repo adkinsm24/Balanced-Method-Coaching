@@ -171,6 +171,129 @@ export async function sendCoachNotification(
   });
 }
 
+export async function sendCoachingCallConfirmation(
+  clientEmail: string,
+  clientName: string,
+  timeSlot: string,
+  duration: number,
+  amount: number,
+  contactMethod: string,
+  fromEmail: string
+): Promise<boolean> {
+  const subject = "Coaching Call Confirmed - Balanced Method Coaching";
+  
+  const html = `
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+      <h2 style="color: #2563eb; margin-bottom: 20px;">Your Coaching Call is Confirmed!</h2>
+      
+      <p>Hi ${clientName},</p>
+      
+      <p>Thank you for booking your coaching session with Mark from Balanced Method Coaching. Your payment has been processed and your appointment is confirmed for:</p>
+      
+      <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 0; font-weight: bold; color: #1f2937;">${timeSlot}</p>
+        <p style="margin: 5px 0 0 0; color: #6b7280;">Duration: ${duration} minutes</p>
+        <p style="margin: 5px 0 0 0; color: #6b7280;">Contact Method: ${contactMethod === 'facetime' ? 'FaceTime' : 'WhatsApp'}</p>
+      </div>
+      
+      <div style="background: #dcfdf7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981;">
+        <p style="margin: 0; font-weight: bold; color: #047857;">Session Total: $${(amount / 100).toFixed(2)}</p>
+        <p style="margin: 5px 0 0 0; color: #065f46; font-size: 14px;">Payment successfully processed</p>
+      </div>
+      
+      <h3 style="color: #1f2937; margin-top: 30px;">What to expect during your coaching session:</h3>
+      <ul>
+        <li>Personalized nutrition guidance based on your specific goals</li>
+        <li>Action steps you can implement immediately</li>
+        <li>Answers to your nutrition questions</li>
+        <li>Strategies for sustainable lifestyle changes</li>
+      </ul>
+      
+      <h3 style="color: #1f2937;">Before our call:</h3>
+      <ul>
+        <li>Have a pen and paper ready to take notes</li>
+        <li>Prepare any specific questions you'd like to discuss</li>
+        <li>Find a quiet space for our conversation</li>
+      </ul>
+      
+      <p><strong>Need to reschedule?</strong> Please contact me at least 24 hours in advance if possible.</p>
+      
+      <p>I'm looking forward to working with you and helping you achieve your nutrition goals!</p>
+      
+      <p style="margin-top: 30px;">
+        Best regards,<br>
+        <strong>Mark</strong><br>
+        Balanced Method Coaching<br>
+        Certified Nutrition Coach
+      </p>
+      
+      <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
+      <p style="font-size: 12px; color: #6b7280;">
+        This email confirms your paid coaching session. If you have any questions, please reply to this email.
+      </p>
+    </div>
+  `;
+
+  return await sendEmail({
+    to: clientEmail,
+    from: "mark@balancedmethodcoaching.com",
+    subject,
+    html,
+    text: `Hi ${clientName}, your ${duration}-minute coaching session with Mark from Balanced Method Coaching is confirmed for ${timeSlot}. Payment of $${(amount / 100).toFixed(2)} has been processed. Looking forward to working with you!`
+  });
+}
+
+export async function sendCoachingCallNotification(
+  coachEmail: string,
+  clientName: string,
+  clientEmail: string,
+  clientPhone: string,
+  timeSlot: string,
+  duration: number,
+  amount: number,
+  goals: string,
+  contactMethod: string
+): Promise<boolean> {
+  const subject = `New Coaching Call Booking - ${clientName} ($${(amount / 100).toFixed(2)})`;
+  
+  const html = `
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+      <h2 style="color: #dc2626; margin-bottom: 20px;">New Coaching Call Booking</h2>
+      
+      <p>You have a new paid coaching session booking:</p>
+      
+      <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p><strong>Client:</strong> ${clientName}</p>
+        <p><strong>Email:</strong> ${clientEmail}</p>
+        <p><strong>Phone:</strong> ${clientPhone}</p>
+        <p><strong>Time Slot:</strong> ${timeSlot}</p>
+        <p><strong>Duration:</strong> ${duration} minutes</p>
+        <p><strong>Contact Method:</strong> ${contactMethod === 'facetime' ? 'FaceTime' : 'WhatsApp'}</p>
+      </div>
+      
+      <div style="background: #dcfdf7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981;">
+        <p style="margin: 0;"><strong>Revenue:</strong> $${(amount / 100).toFixed(2)}</p>
+        <p style="margin: 5px 0 0 0; color: #065f46; font-size: 14px;">Payment successfully processed via Stripe</p>
+      </div>
+      
+      <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p><strong>Client Goals:</strong></p>
+        <p>${goals}</p>
+      </div>
+      
+      <p>View full details and manage bookings in your <a href="/admin" style="color: #2563eb;">admin panel</a>.</p>
+    </div>
+  `;
+
+  return await sendEmail({
+    to: coachEmail,
+    from: "mark@balancedmethodcoaching.com",
+    subject,
+    html,
+    text: `New coaching session booking from ${clientName} (${clientEmail}) for ${timeSlot}. ${duration} minutes, $${(amount / 100).toFixed(2)} paid. Contact: ${contactMethod}. Goals: ${goals}`
+  });
+}
+
 export async function sendCourseAccessEmail(
   clientEmail: string,
   clientName: string,

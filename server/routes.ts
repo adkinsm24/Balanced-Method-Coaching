@@ -6,7 +6,7 @@ import { consultationRequests, insertConsultationRequestSchema, coachingCalls, i
 import { desc, eq, and, sql, isNotNull, or } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./auth";
-import { sendEmail, sendBookingConfirmation, sendCoachNotification, sendCourseAccessEmail } from "./emailService";
+import { sendEmail, sendBookingConfirmation, sendCoachNotification, sendCourseAccessEmail, sendCoachingCallConfirmation, sendCoachingCallNotification } from "./emailService";
 import crypto from 'crypto';
 
 // Helper function to generate temporary password
@@ -528,20 +528,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Send confirmation emails
         const coachEmail = "mark@balancedmethodcoaching.com";
-        await sendBookingConfirmation(
+        await sendCoachingCallConfirmation(
           coachingCall.email,
           `${coachingCall.firstName} ${coachingCall.lastName}`,
           formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
+          coachingCall.duration,
+          coachingCall.amount,
+          coachingCall.contactMethod,
           coachEmail
         );
         
-        await sendCoachNotification(
+        await sendCoachingCallNotification(
           coachEmail,
           `${coachingCall.firstName} ${coachingCall.lastName}`,
           coachingCall.email,
           coachingCall.phone,
           formatTimeSlotForEmail(coachingCall.selectedTimeSlot),
-          `${coachingCall.duration}-minute Coaching Call ($${coachingCall.amount / 100}) - Goals: ${coachingCall.goals}`
+          coachingCall.duration,
+          coachingCall.amount,
+          coachingCall.goals,
+          coachingCall.contactMethod
         );
         
         res.json({ success: true, message: "Payment confirmed and coaching call booked" });
