@@ -6,7 +6,7 @@ import { consultationRequests, insertConsultationRequestSchema, coachingCalls, i
 import { desc, eq, and, sql, isNotNull, or } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./auth";
-import { sendBookingConfirmation, sendCoachNotification, sendCourseAccessEmail } from "./emailService";
+import { sendEmail, sendBookingConfirmation, sendCoachNotification, sendCourseAccessEmail } from "./emailService";
 import crypto from 'crypto';
 
 // Helper function to generate temporary password
