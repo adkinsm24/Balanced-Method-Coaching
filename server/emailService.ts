@@ -19,8 +19,25 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
   try {
     const emailData: any = {
       to: params.to,
-      from: params.from,
+      from: {
+        email: params.from,
+        name: 'Mark Adkins - Balanced Method Coaching'
+      },
       subject: params.subject,
+      // Add custom headers to improve deliverability
+      custom_args: {
+        'sender_type': 'transactional',
+        'category': 'password_reset'
+      },
+      // Add tracking settings
+      tracking_settings: {
+        click_tracking: {
+          enable: false
+        },
+        open_tracking: {
+          enable: false
+        }
+      }
     };
 
     // Add content based on what's provided
@@ -38,7 +55,13 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
 
     const response = await mailService.send(emailData);
     console.log(`Email sent successfully to ${params.to}`);
-    console.log('SendGrid response:', JSON.stringify(response, null, 2));
+    console.log('SendGrid response status:', response[0].statusCode);
+    
+    // Log message ID for tracking
+    if (response[0].headers && response[0].headers['x-message-id']) {
+      console.log('Message ID:', response[0].headers['x-message-id']);
+    }
+    
     return true;
   } catch (error: any) {
     console.error('SendGrid email error:', error);
