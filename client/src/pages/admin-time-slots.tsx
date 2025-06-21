@@ -48,9 +48,23 @@ const DAYS_OF_WEEK = [
   { value: "wed", label: "Wednesday" },
   { value: "thu", label: "Thursday" },
   { value: "fri", label: "Friday" },
+  { value: "sat", label: "Saturday" },
+  { value: "sun", label: "Sunday" },
 ];
 
 const TIMES_OF_DAY = [
+  { value: "12am", label: "12:00 AM" },
+  { value: "1230am", label: "12:30 AM" },
+  { value: "1am", label: "1:00 AM" },
+  { value: "130am", label: "1:30 AM" },
+  { value: "2am", label: "2:00 AM" },
+  { value: "230am", label: "2:30 AM" },
+  { value: "3am", label: "3:00 AM" },
+  { value: "330am", label: "3:30 AM" },
+  { value: "4am", label: "4:00 AM" },
+  { value: "430am", label: "4:30 AM" },
+  { value: "5am", label: "5:00 AM" },
+  { value: "530am", label: "5:30 AM" },
   { value: "6am", label: "6:00 AM" },
   { value: "630am", label: "6:30 AM" },
   { value: "7am", label: "7:00 AM" },
@@ -65,6 +79,28 @@ const TIMES_OF_DAY = [
   { value: "1130am", label: "11:30 AM" },
   { value: "12pm", label: "12:00 PM" },
   { value: "1230pm", label: "12:30 PM" },
+  { value: "1pm", label: "1:00 PM" },
+  { value: "130pm", label: "1:30 PM" },
+  { value: "2pm", label: "2:00 PM" },
+  { value: "230pm", label: "2:30 PM" },
+  { value: "3pm", label: "3:00 PM" },
+  { value: "330pm", label: "3:30 PM" },
+  { value: "4pm", label: "4:00 PM" },
+  { value: "430pm", label: "4:30 PM" },
+  { value: "5pm", label: "5:00 PM" },
+  { value: "530pm", label: "5:30 PM" },
+  { value: "6pm", label: "6:00 PM" },
+  { value: "630pm", label: "6:30 PM" },
+  { value: "7pm", label: "7:00 PM" },
+  { value: "730pm", label: "7:30 PM" },
+  { value: "8pm", label: "8:00 PM" },
+  { value: "830pm", label: "8:30 PM" },
+  { value: "9pm", label: "9:00 PM" },
+  { value: "930pm", label: "9:30 PM" },
+  { value: "10pm", label: "10:00 PM" },
+  { value: "1030pm", label: "10:30 PM" },
+  { value: "11pm", label: "11:00 PM" },
+  { value: "1130pm", label: "11:30 PM" },
 ];
 
 export default function AdminTimeSlots() {
@@ -344,8 +380,8 @@ export default function AdminTimeSlots() {
     createDateOverrideMutation.mutate(data);
   };
 
-  // Generate next 30 days for quick date selection
-  const upcomingDates = Array.from({ length: 30 }, (_, i) => {
+  // Generate next 60 days for quick date selection
+  const upcomingDates = Array.from({ length: 60 }, (_, i) => {
     const date = addDays(new Date(), i + 1);
     return {
       value: format(date, 'yyyy-MM-dd'),
@@ -507,7 +543,7 @@ export default function AdminTimeSlots() {
                           
                           return (
                             <div key={dayValue} className="space-y-2">
-                              <h3 className="font-semibold text-lg capitalize text-blue-800">
+                              <h3 className="font-semibold text-lg text-blue-800">
                                 {dayLabel}
                               </h3>
                               <div className="grid gap-2">
