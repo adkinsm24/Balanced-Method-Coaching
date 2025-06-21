@@ -254,7 +254,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (dateA.getTime() !== dateB.getTime()) {
           return dateA.getTime() - dateB.getTime();
         }
-        return a.timeOfDay.localeCompare(b.timeOfDay);
+        
+        // Sort by time of day
+        const timeOrder = ['6am', '630am', '7am', '730am', '8am', '830am', '9am', '930am', '10am', '1030am', '11am', '1130am', '12pm', '1230pm', '1pm', '130pm', '2pm', '230pm', '3pm', '330pm', '4pm', '430pm', '5pm', '530pm', '6pm', '630pm', '7pm', '730pm', '8pm', '830pm', '9pm', '930pm', '10pm', '1030pm', '11pm', '1130pm'];
+        const indexA = timeOrder.indexOf(a.timeOfDay);
+        const indexB = timeOrder.indexOf(b.timeOfDay);
+        return indexA - indexB;
       });
       
       res.json(allSlots);
