@@ -170,6 +170,7 @@ export default function CalendarScheduler({
   };
 
   const handleSlotSelect = (slot: string) => {
+    console.log('Time slot selected:', slot);
     onSlotSelect(slot);
   };
 

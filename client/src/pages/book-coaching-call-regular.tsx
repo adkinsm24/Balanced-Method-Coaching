@@ -45,6 +45,7 @@ export default function BookCoachingCallRegular() {
 
   const form = useForm<CoachingCallForm>({
     resolver: zodResolver(coachingCallSchema),
+    mode: "onChange", // Only validate on change, don't auto-submit
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -102,6 +103,7 @@ export default function BookCoachingCallRegular() {
   });
 
   const onSubmit = (data: CoachingCallForm) => {
+    console.log('Form submitted with data:', data);
     bookingMutation.mutate(data);
   };
 
@@ -287,7 +289,10 @@ export default function BookCoachingCallRegular() {
                           <CalendarScheduler
                             availableSlots={Array.isArray(availableSlots) ? availableSlots : []}
                             selectedSlot={field.value}
-                            onSlotSelect={field.onChange}
+                            onSlotSelect={(slot) => {
+                              console.log('Calendar slot selected, updating form field:', slot);
+                              field.onChange(slot);
+                            }}
                             userDetails={{
                               name: `${form.watch('firstName')} ${form.watch('lastName')}`.trim(),
                               email: form.watch('email')

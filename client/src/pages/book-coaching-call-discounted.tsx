@@ -45,6 +45,7 @@ export default function BookCoachingCallDiscounted() {
 
   const form = useForm<CoachingCallForm>({
     resolver: zodResolver(coachingCallSchema),
+    mode: "onChange", // Only validate on change, don't auto-submit
     defaultValues: {
       firstName: "",
       lastName: "",
