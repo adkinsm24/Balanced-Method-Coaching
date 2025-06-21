@@ -203,8 +203,6 @@ Email: ${loginEmail}
 Temporary Password: ${temporaryPassword}
 Course URL: ${process.env.NODE_ENV === 'production' ? 'https://your-domain.com' : 'http://localhost:5000'}/course
 
-Important: Please change your password after your first login for security.
-
 What's Included in Your Course:
 - 11 comprehensive modules covering all aspects of nutrition and weight management
 - Downloadable guides and worksheets for each section  
