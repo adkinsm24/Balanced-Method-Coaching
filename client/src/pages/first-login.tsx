@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+import { queryClient } from "@/lib/queryClient";
 
 export default function FirstLogin() {
   const { user } = useAuth();
@@ -53,6 +54,9 @@ export default function FirstLogin() {
       });
 
       if (response.ok) {
+        // Invalidate user cache to refresh auth state
+        await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+        
         toast({
           title: "Success",
           description: "Password set successfully!",
