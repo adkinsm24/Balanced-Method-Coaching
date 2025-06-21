@@ -159,6 +159,16 @@ export const insertSpecificDateSlotSchema = createInsertSchema(specificDateSlots
   updatedAt: true,
 });
 
+export const dateRangeSlotSchema = z.object({
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().min(1, "End date is required"),
+  dayOfWeek: z.string().min(1, "Day is required"),
+  timeOfDay: z.string().min(1, "Time is required"),
+  value: z.string().min(1, "Value is required"),
+  label: z.string().min(1, "Label is required"),
+  isActive: z.boolean().optional().default(true),
+});
+
 export const insertDateOverrideSchema = createInsertSchema(dateOverrides).omit({
   id: true,
   createdAt: true,

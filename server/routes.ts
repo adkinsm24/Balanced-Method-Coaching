@@ -741,17 +741,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/specific-date-slots", isAdmin, async (req, res) => {
     try {
-      const validatedData = insertSpecificDateSlotSchema.parse(req.body);
+      console.log("Received specific date slot data:", req.body);
+      const { startDate, endDate, dayOfWeek, timeOfDay, value, label, isActive } = req.body;
       
-      const [newSlot] = await db
-        .insert(specificDateSlots)
-        .values(validatedData)
-        .returning();
+      // Generate dates between start and end date
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const createdSlots = [];
       
-      res.json(newSlot);
+      // Loop through each date in the range
+      for (let currentDate = new Date(start); currentDate <= end; currentDate.setDate(currentDate.getDate() + 1)) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        
+        const slotData = {
+          date: dateStr,
+          dayOfWeek,
+          timeOfDay,
+          value: `${dateStr}-${value}`,
+          label: generateSpecificDateLabel(dateStr, timeOfDay),
+          isActive: isActive ?? true
+        };
+        
+        try {
+          const validatedData = insertSpecificDateSlotSchema.parse(slotData);
+          const [newSlot] = await db
+            .insert(specificDateSlots)
+            .values(validatedData)
+            .returning();
+          createdSlots.push(newSlot);
+        } catch (slotError) {
+          console.log(`Skipping duplicate slot for ${dateStr}:`, slotError.message);
+        }
+      }
+      
+      res.json({ 
+        message: `Created ${createdSlots.length} time slots for date range`,
+        slots: createdSlots 
+      });
     } catch (error) {
-      console.error("Error creating specific date slot:", error);
-      res.status(400).json({ error: "Invalid data or slot already exists" });
+      console.error("Error creating specific date slots:", error);
+      res.status(400).json({ error: error.message || "Invalid data" });
     }
   });
 

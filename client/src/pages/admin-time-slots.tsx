@@ -24,10 +24,10 @@ const timeSlotSchema = z.object({
 });
 
 const specificDateSlotSchema = z.object({
-  date: z.string().min(1, "Date is required"),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().min(1, "End date is required"),
+  dayOfWeek: z.string().min(1, "Day is required"),
   timeOfDay: z.string().min(1, "Time is required"),
-  value: z.string().min(1, "Value is required"),
-  label: z.string().min(1, "Label is required"),
 });
 
 const dateOverrideSchema = z.object({
@@ -117,10 +117,10 @@ export default function AdminTimeSlots() {
   const specificDateForm = useForm<SpecificDateSlotForm>({
     resolver: zodResolver(specificDateSlotSchema),
     defaultValues: {
-      date: "",
+      startDate: "",
+      endDate: "",
+      dayOfWeek: "",
       timeOfDay: "",
-      value: "",
-      label: "",
     },
   });
 
@@ -372,11 +372,18 @@ export default function AdminTimeSlots() {
   };
 
   const onSubmitSpecificSlot = (data: SpecificDateSlotForm) => {
+    console.log("Specific date form submitted:", data);
+    
     const finalData = {
-      ...data,
-      value: generateSpecificValue(data.date, data.timeOfDay),
-      label: generateSpecificLabel(data.date, data.timeOfDay),
+      startDate: data.startDate,
+      endDate: data.endDate,
+      dayOfWeek: data.dayOfWeek,
+      timeOfDay: data.timeOfDay,
+      value: generateValue(data.dayOfWeek, data.timeOfDay),
+      label: generateLabel(data.dayOfWeek, data.timeOfDay),
+      isActive: true,
     };
+    
     createSpecificSlotMutation.mutate(finalData);
   };
 
@@ -632,31 +639,67 @@ export default function AdminTimeSlots() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <CalendarPlus className="w-5 h-5" />
-                      Add Specific Date Slot
+                      Add Date Range Slots
                     </CardTitle>
                     <CardDescription>
-                      Create a one-time available slot for a specific date
+                      Create time slots for a range of dates (e.g., 6/23/2025 to 9/30/2025)
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Form {...specificDateForm}>
                       <form onSubmit={specificDateForm.handleSubmit(onSubmitSpecificSlot)} className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <FormField
+                            control={specificDateForm.control}
+                            name="startDate"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Start Date</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="date"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={specificDateForm.control}
+                            name="endDate"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>End Date</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="date"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
                         <FormField
                           control={specificDateForm.control}
-                          name="date"
+                          name="dayOfWeek"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Date</FormLabel>
+                              <FormLabel>Day of Week</FormLabel>
                               <Select onValueChange={field.onChange} value={field.value}>
                                 <FormControl>
                                   <SelectTrigger>
-                                    <SelectValue placeholder="Select date" />
+                                    <SelectValue placeholder="Select day" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {upcomingDates.map((date) => (
-                                    <SelectItem key={date.value} value={date.value}>
-                                      {date.label}
+                                  {DAYS_OF_WEEK.map((day) => (
+                                    <SelectItem key={day.value} value={day.value}>
+                                      {day.label}
                                     </SelectItem>
                                   ))}
                                 </SelectContent>
@@ -696,7 +739,7 @@ export default function AdminTimeSlots() {
                           className="w-full"
                           disabled={createSpecificSlotMutation.isPending}
                         >
-                          Add Specific Date Slot
+                          Add Date Range Slots
                         </Button>
                       </form>
                     </Form>
@@ -711,7 +754,7 @@ export default function AdminTimeSlots() {
                       Specific Date Slots
                     </CardTitle>
                     <CardDescription>
-                      One-time available slots for specific dates
+                      Time slots created for specific date ranges
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
