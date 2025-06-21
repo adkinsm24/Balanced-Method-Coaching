@@ -594,8 +594,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin middleware to check if user is admin
+  const isAdmin = async (req: any, res: any, next: any) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+    
+    const user = await storage.getUser(req.user.id);
+    if (!user || !user.isAdmin) {
+      return res.status(403).json({ error: "Admin access required" });
+    }
+    
+    next();
+  };
+
   // Admin time slots management routes
-  app.get("/api/admin/time-slots", async (req, res) => {
+  app.get("/api/admin/time-slots", isAdmin, async (req, res) => {
     try {
       const timeSlots = await db
         .select()
@@ -609,7 +623,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/time-slots", async (req, res) => {
+  app.post("/api/admin/time-slots", isAdmin, async (req, res) => {
     try {
       const validatedData = insertAvailableTimeSlotSchema.parse(req.body);
       
@@ -625,7 +639,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/time-slots/:id", async (req, res) => {
+  app.put("/api/admin/time-slots/:id", isAdmin, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       const validatedData = insertAvailableTimeSlotSchema.parse(req.body);
@@ -647,7 +661,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/time-slots/:id/toggle", async (req, res) => {
+  app.put("/api/admin/time-slots/:id/toggle", isAdmin, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       const { isActive } = req.body;
@@ -669,7 +683,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/time-slots/:id", async (req, res) => {
+  app.delete("/api/admin/time-slots/:id", isAdmin, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       
