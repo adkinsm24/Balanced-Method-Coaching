@@ -580,10 +580,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Check if user exists, create if not
         let user = await storage.getUserByEmail(userEmail);
+        let shouldSendEmail = false;
+        let temporaryPassword = "";
         
         if (!user) {
           // Create new user account
-          const temporaryPassword = generateTemporaryPassword();
+          temporaryPassword = generateTemporaryPassword();
           const hashedPassword = await storage.hashPassword(temporaryPassword);
           
           console.log("Creating new user for course purchase:", userEmail);
@@ -596,7 +598,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
             hasCourseAccess: true
           });
           
-          // Send course access email with login credentials
+          shouldSendEmail = true;
+          console.log("User created, will send email to:", userEmail);
+        } else if (!user.hasCourseAccess) {
+          // Grant course access to existing user (only if they don't already have it)
+          await storage.grantCourseAccess(user.id);
+          console.log("Course access granted to existing user:", userEmail);
+        } else {
+          console.log("User already has course access:", userEmail);
+        }
+        
+        // Send email only once for new users
+        if (shouldSendEmail) {
           try {
             await sendCourseAccessEmail(
               userEmail,
@@ -608,12 +621,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           } catch (emailError) {
             console.error("Failed to send course access email:", emailError);
           }
-          
-          console.log("User created and email sent to:", userEmail);
-        } else {
-          // Grant course access to existing user
-          await storage.grantCourseAccess(user.id);
-          console.log("Course access granted to existing user:", userEmail);
         }
         
         res.json({ 
