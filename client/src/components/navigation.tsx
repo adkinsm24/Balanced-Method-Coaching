@@ -61,12 +61,20 @@ export default function Navigation() {
 
           {/* Admin access */}
           {isAuthenticated && user?.isAdmin && (
-            <Link href="/admin/time-slots">
-              <Button 
-                variant={location === "/admin/time-slots" ? "default" : "ghost"}
-                className={location === "/admin/time-slots" ? "bg-primary text-primary-foreground" : ""}
-              >Admin</Button>
-            </Link>
+            <>
+              <Link href="/admin/time-slots">
+                <Button 
+                  variant={location === "/admin/time-slots" ? "default" : "ghost"}
+                  className={location === "/admin/time-slots" ? "bg-primary text-primary-foreground" : ""}
+                >Time Slots</Button>
+              </Link>
+              <Link href="/admin/calendar">
+                <Button 
+                  variant={location === "/admin/calendar" ? "default" : "ghost"}
+                  className={location === "/admin/calendar" ? "bg-primary text-primary-foreground" : ""}
+                >Calendar</Button>
+              </Link>
+            </>
           )}
 
           {/* Authentication buttons */}

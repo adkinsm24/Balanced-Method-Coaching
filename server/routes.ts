@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
-import { consultationRequests, insertConsultationRequestSchema, coachingCalls, insertCoachingCallSchema, bookedSlots, users, availableTimeSlots, insertAvailableTimeSlotSchema } from "@shared/schema";
+import { consultationRequests, insertConsultationRequestSchema, coachingCalls, insertCoachingCallSchema, bookedSlots, users, availableTimeSlots, insertAvailableTimeSlotSchema, specificDateSlots, insertSpecificDateSlotSchema, dateOverrides, insertDateOverrideSchema } from "@shared/schema";
 import { desc, eq, and } from "drizzle-orm";
 import Stripe from "stripe";
 import { setupAuth, isAuthenticated } from "./auth";
@@ -140,14 +140,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const bookedSlots = await storage.getBookedSlots();
       const bookedTimeSlots = bookedSlots.map(slot => slot.timeSlot);
       
-      // Get active time slots from database
-      const allTimeSlots = await db
+      // Get active recurring time slots from database
+      const recurringTimeSlots = await db
         .select()
         .from(availableTimeSlots)
         .where(eq(availableTimeSlots.isActive, true));
       
-      // Filter out booked slots
-      const availableSlots = allTimeSlots.filter(slot => !bookedTimeSlots.includes(slot.value));
+      // Get active specific date slots
+      const specificSlots = await db
+        .select()
+        .from(specificDateSlots)
+        .where(eq(specificDateSlots.isActive, true));
+      
+      // Get date overrides
+      const overrides = await db.select().from(dateOverrides);
+      
+      // Combine recurring and specific slots
+      const allTimeSlots = [...recurringTimeSlots, ...specificSlots];
+      
+      // Filter out booked slots and apply date overrides
+      let availableSlots = allTimeSlots.filter(slot => !bookedTimeSlots.includes(slot.value));
+      
+      // Apply date overrides logic here
+      // For now, just return filtered slots
+      // TODO: Implement date override filtering logic based on current date
       
       res.json(availableSlots);
     } catch (error) {
@@ -700,6 +716,108 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting time slot:", error);
       res.status(500).json({ error: "Failed to delete time slot" });
+    }
+  });
+
+  // Specific date slots management routes
+  app.get("/api/admin/specific-date-slots", isAdmin, async (req, res) => {
+    try {
+      const slots = await db
+        .select()
+        .from(specificDateSlots)
+        .orderBy(specificDateSlots.date, specificDateSlots.timeOfDay);
+      
+      res.json(slots);
+    } catch (error) {
+      console.error("Error fetching specific date slots:", error);
+      res.status(500).json({ error: "Failed to fetch specific date slots" });
+    }
+  });
+
+  app.post("/api/admin/specific-date-slots", isAdmin, async (req, res) => {
+    try {
+      const validatedData = insertSpecificDateSlotSchema.parse(req.body);
+      
+      const [newSlot] = await db
+        .insert(specificDateSlots)
+        .values(validatedData)
+        .returning();
+      
+      res.json(newSlot);
+    } catch (error) {
+      console.error("Error creating specific date slot:", error);
+      res.status(400).json({ error: "Invalid data or slot already exists" });
+    }
+  });
+
+  app.delete("/api/admin/specific-date-slots/:id", isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      const [deletedSlot] = await db
+        .delete(specificDateSlots)
+        .where(eq(specificDateSlots.id, id))
+        .returning();
+      
+      if (!deletedSlot) {
+        return res.status(404).json({ error: "Specific date slot not found" });
+      }
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting specific date slot:", error);
+      res.status(500).json({ error: "Failed to delete specific date slot" });
+    }
+  });
+
+  // Date overrides management routes
+  app.get("/api/admin/date-overrides", isAdmin, async (req, res) => {
+    try {
+      const overrides = await db
+        .select()
+        .from(dateOverrides)
+        .orderBy(dateOverrides.date);
+      
+      res.json(overrides);
+    } catch (error) {
+      console.error("Error fetching date overrides:", error);
+      res.status(500).json({ error: "Failed to fetch date overrides" });
+    }
+  });
+
+  app.post("/api/admin/date-overrides", isAdmin, async (req, res) => {
+    try {
+      const validatedData = insertDateOverrideSchema.parse(req.body);
+      
+      const [newOverride] = await db
+        .insert(dateOverrides)
+        .values(validatedData)
+        .returning();
+      
+      res.json(newOverride);
+    } catch (error) {
+      console.error("Error creating date override:", error);
+      res.status(400).json({ error: "Invalid data or date override already exists" });
+    }
+  });
+
+  app.delete("/api/admin/date-overrides/:id", isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      const [deletedOverride] = await db
+        .delete(dateOverrides)
+        .where(eq(dateOverrides.id, id))
+        .returning();
+      
+      if (!deletedOverride) {
+        return res.status(404).json({ error: "Date override not found" });
+      }
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting date override:", error);
+      res.status(500).json({ error: "Failed to delete date override" });
     }
   });
 

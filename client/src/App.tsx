@@ -22,6 +22,7 @@ import CoachingSuccess from "@/pages/coaching-success";
 import Course from "@/pages/course";
 import Admin from "@/pages/admin";
 import AdminTimeSlots from "@/pages/admin-time-slots";
+import AdminCalendar from "@/pages/admin-calendar";
 import AuthPage from "@/pages/auth-page";
 import NotFound from "@/pages/not-found";
 
@@ -43,6 +44,7 @@ function Router() {
       <ProtectedRoute path="/course" component={Course} />
       <ProtectedRoute path="/admin" component={Admin} />
       <ProtectedRoute path="/admin/time-slots" component={AdminTimeSlots} />
+      <ProtectedRoute path="/admin/calendar" component={AdminCalendar} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>

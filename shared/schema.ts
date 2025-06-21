@@ -84,6 +84,25 @@ export const availableTimeSlots = pgTable("available_time_slots", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const specificDateSlots = pgTable("specific_date_slots", {
+  id: serial("id").primaryKey(),
+  date: varchar("date", { length: 20 }).notNull(), // YYYY-MM-DD format
+  timeOfDay: varchar("time_of_day", { length: 10 }).notNull(),
+  value: varchar("value", { length: 50 }).notNull().unique(), // date-time format like "2024-01-15-6am"
+  label: varchar("label", { length: 100 }).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const dateOverrides = pgTable("date_overrides", {
+  id: serial("id").primaryKey(),
+  date: varchar("date", { length: 20 }).notNull().unique(), // YYYY-MM-DD format
+  type: varchar("type", { length: 20 }).notNull(), // "blocked" or "available_only"
+  reason: varchar("reason", { length: 255 }), // optional reason for the override
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const upsertUserSchema = createInsertSchema(users).pick({
   id: true,
   email: true,
@@ -134,6 +153,17 @@ export const insertAvailableTimeSlotSchema = createInsertSchema(availableTimeSlo
   updatedAt: true,
 });
 
+export const insertSpecificDateSlotSchema = createInsertSchema(specificDateSlots).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDateOverrideSchema = createInsertSchema(dateOverrides).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type UpsertUser = z.infer<typeof upsertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -147,3 +177,7 @@ export type CoachingCall = typeof coachingCalls.$inferSelect;
 export type InsertCoachingCall = z.infer<typeof insertCoachingCallSchema>;
 export type AvailableTimeSlot = typeof availableTimeSlots.$inferSelect;
 export type InsertAvailableTimeSlot = z.infer<typeof insertAvailableTimeSlotSchema>;
+export type SpecificDateSlot = typeof specificDateSlots.$inferSelect;
+export type InsertSpecificDateSlot = z.infer<typeof insertSpecificDateSlotSchema>;
+export type DateOverride = typeof dateOverrides.$inferSelect;
+export type InsertDateOverride = z.infer<typeof insertDateOverrideSchema>;
