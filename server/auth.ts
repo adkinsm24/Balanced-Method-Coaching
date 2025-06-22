@@ -178,10 +178,7 @@ export function setupAuth(app: Express) {
     }
   });
 
-  app.get("/api/auth/user", (req, res) => {
-    if (!req.isAuthenticated() || !req.user) {
-      return res.sendStatus(401);
-    }
+  app.get("/api/auth/user", isAuthenticated, (req, res) => {
     // Don't send password hash back to client and ensure proper field mapping
     const user = req.user as any;
     const userResponse = {
@@ -219,7 +216,6 @@ export async function isAuthenticated(req: any, res: any, next: any) {
       });
       return;
     }
-
     return next();
   } catch (error) {
     console.error('Authentication check error:', error);

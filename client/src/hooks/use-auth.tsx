@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 import {
   useQuery,
   useMutation,
@@ -7,6 +7,7 @@ import {
 import { User as SelectUser, RegisterUser, LoginUser } from "@shared/schema";
 import { getQueryFn, apiRequest, queryClient } from "../lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 
 type AuthContextType = {
   user: SelectUser | null;
@@ -22,6 +23,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const {
     data: user,
     error,
@@ -30,6 +32,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["/api/auth/user"],
     queryFn: getQueryFn({ on401: "returnNull" }),
   });
+
+  // Handle session invalidation
+  useEffect(() => {
+    if (error && error.message.includes("Session invalidated")) {
+      toast({
+        title: "Session Expired",
+        description: "You have been logged out because your account was accessed from another device.",
+        variant: "destructive",
+      });
+      queryClient.setQueryData(["/api/auth/user"], null);
+      setTimeout(() => {
+        setLocation("/auth");
+      }, 2000);
+    }
+  }, [error, toast, setLocation]);
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginUser) => {
