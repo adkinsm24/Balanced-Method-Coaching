@@ -1230,6 +1230,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin users management routes
+  app.get("/api/admin/users", isAdmin, async (req, res) => {
+    try {
+      const allUsers = await db
+        .select({
+          id: users.id,
+          email: users.email,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          hasCourseAccess: users.hasCourseAccess,
+          createdAt: users.createdAt,
+        })
+        .from(users)
+        .orderBy(users.createdAt);
+      
+      res.json(allUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).json({ error: "Failed to fetch users" });
+    }
+  });
+
+  app.post("/api/admin/create-user", isAdmin, async (req, res) => {
+    try {
+      const { email, firstName, lastName, password, hasCourseAccess } = req.body;
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(400).json({ error: "User with this email already exists" });
+      }
+
+      // Create the user
+      const newUser = await storage.createUser({
+        email,
+        firstName,
+        lastName,
+        hashedPassword: await storage.hashPassword(password),
+        hasCourseAccess: hasCourseAccess || false,
+      });
+
+      res.status(201).json({
+        message: "User created successfully",
+        user: {
+          id: newUser.id,
+          email: newUser.email,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          hasCourseAccess: newUser.hasCourseAccess,
+        }
+      });
+    } catch (error) {
+      console.error("Error creating user:", error);
+      res.status(500).json({ error: "Failed to create user" });
+    }
+  });
+
+  app.delete("/api/admin/users/:id", isAdmin, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      
+      // Prevent deleting admin users
+      const userToDelete = await storage.getUser(userId);
+      if (userToDelete?.isAdmin) {
+        return res.status(400).json({ error: "Cannot delete admin users" });
+      }
+
+      await db.delete(users).where(eq(users.id, userId));
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ error: "Failed to delete user" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
