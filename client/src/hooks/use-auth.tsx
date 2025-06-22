@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   } = useQuery<SelectUser | undefined, Error>({
     queryKey: ["/api/auth/user"],
     queryFn: getQueryFn({ on401: "returnNull" }),
-    refetchInterval: 30000, // Check session every 30 seconds
+    refetchInterval: false, // Disable automatic checking for now
     refetchIntervalInBackground: false,
   });
 

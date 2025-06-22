@@ -76,8 +76,10 @@ export function setupAuth(app: Express) {
             return done(null, false, { message: 'Invalid email or password' });
           }
           
-          // Update session tracking - this will invalidate any previous session
-          await storage.updateUserSession(user.id, req.sessionID);
+          // Update session tracking only for non-admin users to prevent concurrent logins
+          if (!user.isAdmin) {
+            await storage.updateUserSession(user.id, req.sessionID);
+          }
           
           return done(null, user);
         } catch (error) {
@@ -206,11 +208,12 @@ export async function isAuthenticated(req: any, res: any, next: any) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Skip session validation for admin users to prevent lockout
-    if (!user.isAdmin) {
-      // Check session validity for regular users to prevent concurrent logins
-      if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
-        // Clear the current session
+    // Only enforce session validation for regular users, not admins
+    if (!user.isAdmin && user.activeSessionId) {
+      // Only check if there's actually a stored session ID and it doesn't match
+      if (user.activeSessionId !== req.sessionID) {
+        console.log(`Session invalidated for user ${user.email}: different session detected`);
+        
         req.logout((err: any) => {
           if (err) console.error('Logout error:', err);
         });
