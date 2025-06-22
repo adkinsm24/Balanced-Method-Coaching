@@ -34,6 +34,12 @@ export const getQueryFn: <T>(options: {
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
+      // Check if this is a session invalidation
+      const errorText = await res.text();
+      if (errorText.includes("Session invalidated")) {
+        // Re-throw to trigger error handling for session invalidation
+        throw new Error(`${res.status}: ${errorText}`);
+      }
       return null;
     }
 

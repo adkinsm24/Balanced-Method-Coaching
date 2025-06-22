@@ -37,14 +37,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (error && error.message.includes("Session invalidated")) {
       toast({
-        title: "Session Expired",
-        description: "You have been logged out because your account was accessed from another device.",
+        title: "Logged Out",
+        description: "You have been logged in from another device. Please log in again.",
         variant: "destructive",
       });
       queryClient.setQueryData(["/api/auth/user"], null);
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       setTimeout(() => {
         setLocation("/auth");
-      }, 2000);
+      }, 1500);
     }
   }, [error, toast, setLocation]);
 
