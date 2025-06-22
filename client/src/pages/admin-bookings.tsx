@@ -65,6 +65,8 @@ export default function AdminBookingsPage() {
   const { data: consultationRequests, isLoading: loadingRequests } = useQuery({
     queryKey: ["/api/consultation-requests"],
     enabled: !!user,
+    staleTime: 0, // Always refetch to ensure fresh data
+    refetchInterval: 30000, // Auto-refresh every 30 seconds
   });
 
   const { data: coachingCalls, isLoading: loadingCalls } = useQuery({
