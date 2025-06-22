@@ -1078,17 +1078,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .from(dateOverrides)
         .where(sql`start_date IS NOT NULL AND end_date IS NOT NULL`);
       
-      // Combine and format the results
+      // Combine and format the results with unique IDs
       const combinedResults = [
         ...individualSlots,
-        ...dateRanges.map(range => ({
-          id: range.id,
+        ...dateRanges.map((range, index) => ({
+          id: `range_${range.id}`, // Prefix to avoid ID conflicts
           label: range.reason || `Date Range: ${range.startDate} to ${range.endDate}`,
           date: `${range.startDate} to ${range.endDate}`,
           isActive: range.isActive,
           type: 'date_range',
           startDate: range.startDate,
-          endDate: range.endDate
+          endDate: range.endDate,
+          originalId: range.id // Keep original ID for delete operations
         }))
       ];
       
@@ -1133,18 +1134,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete("/api/admin/specific-date-slots/:id", isAdmin, async (req, res) => {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       
-      const [deletedSlot] = await db
-        .delete(specificDateSlots)
-        .where(eq(specificDateSlots.id, id))
-        .returning();
-      
-      if (!deletedSlot) {
-        return res.status(404).json({ error: "Specific date slot not found" });
+      // Check if it's a date range (prefixed with 'range_')
+      if (id.startsWith('range_')) {
+        const actualId = parseInt(id.replace('range_', ''));
+        const [deletedRange] = await db
+          .delete(dateOverrides)
+          .where(eq(dateOverrides.id, actualId))
+          .returning();
+        
+        if (!deletedRange) {
+          return res.status(404).json({ error: "Date range not found" });
+        }
+        
+        res.json({ success: true });
+      } else {
+        // Handle regular specific date slot
+        const slotId = parseInt(id);
+        const [deletedSlot] = await db
+          .delete(specificDateSlots)
+          .where(eq(specificDateSlots.id, slotId))
+          .returning();
+        
+        if (!deletedSlot) {
+          return res.status(404).json({ error: "Specific date slot not found" });
+        }
+        
+        res.json({ success: true });
       }
-      
-      res.json({ success: true });
     } catch (error) {
       console.error("Error deleting specific date slot:", error);
       res.status(500).json({ error: "Failed to delete specific date slot" });
