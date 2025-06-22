@@ -28,9 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     data: user,
     error,
     isLoading,
+    refetch: refetchUser,
   } = useQuery<SelectUser | undefined, Error>({
     queryKey: ["/api/auth/user"],
     queryFn: getQueryFn({ on401: "returnNull" }),
+    refetchInterval: 30000, // Check session every 30 seconds
+    refetchIntervalInBackground: false,
   });
 
   // Handle session invalidation
@@ -48,6 +51,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }, 1500);
     }
   }, [error, toast, setLocation]);
+
+  // Add periodic session validation when window is focused
+  useEffect(() => {
+    const handleFocus = () => {
+      if (user) {
+        refetchUser();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden && user) {
+        refetchUser();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [user, refetchUser]);
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginUser) => {
