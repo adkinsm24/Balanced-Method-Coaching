@@ -122,6 +122,23 @@ export class MemoryStorage implements IStorage {
     }
   }
 
+  async updateUserSession(userId: number, sessionId: string): Promise<void> {
+    const user = this.users.get(userId);
+    if (user) {
+      user.activeSessionId = sessionId;
+      user.lastLoginAt = new Date();
+      this.users.set(userId, user);
+    }
+  }
+
+  async clearUserSession(userId: number): Promise<void> {
+    const user = this.users.get(userId);
+    if (user) {
+      user.activeSessionId = null;
+      this.users.set(userId, user);
+    }
+  }
+
   async createConsultationRequest(request: InsertConsultationRequest): Promise<ConsultationRequest> {
     const consultation: ConsultationRequest = {
       id: this.nextId++,

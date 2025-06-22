@@ -207,5 +207,18 @@ export function isAuthenticated(req: any, res: any, next: any) {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized" });
   }
-  next();
+
+  // Check if the current session matches the user's active session
+  const user = req.user;
+  if (user && user.activeSessionId && user.activeSessionId !== req.sessionID) {
+    // Session has been invalidated by another login
+    req.logout(() => {
+      res.status(401).json({ 
+        message: "Session invalidated - account accessed from another device"
+      });
+    });
+    return;
+  }
+
+  return next();
 }
