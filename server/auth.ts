@@ -206,16 +206,14 @@ export async function isAuthenticated(req: any, res: any, next: any) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Check if the current session matches the user's active session
-    if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
-      // Session has been invalidated by another login
-      req.logout(() => {
-        res.status(401).json({ 
-          message: "Session invalidated - account accessed from another device"
-        });
-      });
-      return;
-    }
+    // Only check session validity for concurrent logins (disable for now to allow admin access)
+    // This feature can be re-enabled later with proper session handling
+    // if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
+    //   await storage.clearUserSession(user.id);
+    //   return res.status(401).json({ 
+    //     message: "Session invalidated - account accessed from another device"
+    //   });
+    // }
     return next();
   } catch (error) {
     console.error('Authentication check error:', error);

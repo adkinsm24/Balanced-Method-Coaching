@@ -938,12 +938,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(401).json({ error: "Authentication required" });
     }
     
-    const user = await storage.getUser(req.user.id);
-    if (!user || !user.isAdmin) {
-      return res.status(403).json({ error: "Admin access required" });
+    try {
+      const user = await storage.getUser(req.user.id);
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+
+      if (!user.isAdmin) {
+        return res.status(403).json({ error: "Admin access required" });
+      }
+
+      // Session validation disabled for now to prevent admin lockout
+      // This can be re-enabled with proper session handling
+      // if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
+      //   await storage.clearUserSession(user.id);
+      //   return res.status(401).json({ 
+      //     error: "Session invalidated - account accessed from another device"
+      //   });
+      // }
+      
+      next();
+    } catch (error) {
+      console.error('Admin auth error:', error);
+      return res.status(500).json({ error: "Authentication error" });
     }
-    
-    next();
   };
 
   // Admin time slots management routes
