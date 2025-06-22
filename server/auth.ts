@@ -68,13 +68,23 @@ export function setupAuth(app: Express) {
 
   passport.use(
     new LocalStrategy(
-      { usernameField: 'email' },
-      async (email, password, done) => {
+      { usernameField: 'email', passReqToCallback: true },
+      async (req: any, email, password, done) => {
         try {
           const user = await storage.getUserByEmail(email);
           if (!user || !(await comparePasswords(password, user.hashedPassword))) {
             return done(null, false, { message: 'Invalid email or password' });
           }
+          
+          // Check if user has an active session on a different device
+          if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
+            // Clear the old session and update with new one
+            await storage.updateUserSession(user.id, req.sessionID);
+          } else {
+            // Update session tracking
+            await storage.updateUserSession(user.id, req.sessionID);
+          }
+          
           return done(null, user);
         } catch (error) {
           return done(error);
@@ -153,11 +163,25 @@ export function setupAuth(app: Express) {
     })(req, res, next);
   });
 
-  app.post("/api/logout", (req, res, next) => {
-    req.logout((err) => {
-      if (err) return next(err);
-      res.sendStatus(200);
-    });
+  app.post("/api/logout", async (req, res, next) => {
+    try {
+      const user = req.user as any;
+      if (user && user.id) {
+        // Clear the user's active session
+        await storage.clearUserSession(user.id);
+      }
+      
+      req.logout((err) => {
+        if (err) return next(err);
+        res.sendStatus(200);
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      req.logout((err) => {
+        if (err) return next(err);
+        res.sendStatus(200);
+      });
+    }
   });
 
   app.get("/api/auth/user", (req, res) => {

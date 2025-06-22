@@ -23,6 +23,8 @@ export interface IStorage {
   upsertUser(user: UpsertUser): Promise<User>;
   grantCourseAccess(userId: number): Promise<void>;
   hashPassword(password: string): Promise<string>;
+  updateUserSession(userId: number, sessionId: string): Promise<void>;
+  clearUserSession(userId: number): Promise<void>;
   
   // Booking operations
   createConsultationRequest(request: InsertConsultationRequest): Promise<ConsultationRequest>;
@@ -485,6 +487,25 @@ export class DatabaseStorage implements IStorage {
   async getCoachingCall(callId: number): Promise<CoachingCall | undefined> {
     const [call] = await db.select().from(coachingCalls).where(eq(coachingCalls.id, callId));
     return call;
+  }
+
+  async updateUserSession(userId: number, sessionId: string): Promise<void> {
+    await db.update(users)
+      .set({ 
+        activeSessionId: sessionId,
+        lastLoginAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async clearUserSession(userId: number): Promise<void> {
+    await db.update(users)
+      .set({ 
+        activeSessionId: null,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId));
   }
 }
 

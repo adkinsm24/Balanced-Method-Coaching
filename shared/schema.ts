@@ -25,6 +25,8 @@ export const users = pgTable("users", {
   isAdmin: boolean("is_admin").default(false),
   stripeCustomerId: varchar("stripe_customer_id"),
   isFirstLogin: boolean("is_first_login").default(true),
+  activeSessionId: varchar("active_session_id"),
+  lastLoginAt: timestamp("last_login_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
