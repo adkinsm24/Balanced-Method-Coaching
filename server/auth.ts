@@ -76,10 +76,18 @@ export function setupAuth(app: Express) {
             return done(null, false, { message: 'Invalid email or password' });
           }
           
-          // Session tracking temporarily disabled until concurrent login prevention is refined
-          // if (!user.isAdmin) {
-          //   await storage.updateUserSession(user.id, req.sessionID);
-          // }
+          // Check if user already has an active session (prevent new logins)
+          if (!user.isAdmin && user.activeSessionId) {
+            // Only allow login if the session ID matches (same device/browser)
+            if (user.activeSessionId !== req.sessionID) {
+              return done(null, false, { message: 'Account is already logged in on another device. Please log out first.' });
+            }
+          }
+          
+          // Update session tracking for non-admin users
+          if (!user.isAdmin) {
+            await storage.updateUserSession(user.id, req.sessionID);
+          }
           
           return done(null, user);
         } catch (error) {
@@ -208,18 +216,14 @@ export async function isAuthenticated(req: any, res: any, next: any) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Session validation temporarily disabled - concurrent login prevention needs refinement
-    // The current implementation was too aggressive and invalidating legitimate sessions
-    // 
-    // TODO: Implement proper concurrent login prevention with:
-    // - Session timeout handling
-    // - Grace period for legitimate session switches
-    // - Better session ID management
+    // Session validation: allow existing sessions to continue but prevent new concurrent logins
+    // This approach is less disruptive - existing sessions stay active, new logins are blocked
     
     if (!user.isAdmin && user.activeSessionId) {
       if (user.activeSessionId !== req.sessionID) {
         console.log(`Session mismatch detected for user ${user.email}: stored=${user.activeSessionId}, current=${req.sessionID}`);
-        // Currently logging only, not enforcing to prevent user disruption
+        // Don't invalidate existing sessions - they were legitimately established
+        // New login attempts are blocked at the login stage instead
       }
     }
     
