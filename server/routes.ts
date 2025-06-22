@@ -132,7 +132,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/consultation-requests", async (req, res) => {
+  app.get("/api/consultation-requests", isAuthenticated, async (req, res) => {
     try {
       const requests = await db
         .select()

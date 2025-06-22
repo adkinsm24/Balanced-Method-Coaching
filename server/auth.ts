@@ -76,14 +76,8 @@ export function setupAuth(app: Express) {
             return done(null, false, { message: 'Invalid email or password' });
           }
           
-          // Check if user has an active session on a different device
-          if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
-            // Clear the old session and update with new one
-            await storage.updateUserSession(user.id, req.sessionID);
-          } else {
-            // Update session tracking
-            await storage.updateUserSession(user.id, req.sessionID);
-          }
+          // Update session tracking - this will invalidate any previous session
+          await storage.updateUserSession(user.id, req.sessionID);
           
           return done(null, user);
         } catch (error) {
@@ -203,22 +197,32 @@ export function setupAuth(app: Express) {
   });
 }
 
-export function isAuthenticated(req: any, res: any, next: any) {
+export async function isAuthenticated(req: any, res: any, next: any) {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  // Check if the current session matches the user's active session
-  const user = req.user;
-  if (user && user.activeSessionId && user.activeSessionId !== req.sessionID) {
-    // Session has been invalidated by another login
-    req.logout(() => {
-      res.status(401).json({ 
-        message: "Session invalidated - account accessed from another device"
-      });
-    });
-    return;
-  }
+  try {
+    // Get fresh user data to check current active session
+    const user = await storage.getUser(req.user.id);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
 
-  return next();
+    // Check if the current session matches the user's active session
+    if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
+      // Session has been invalidated by another login
+      req.logout(() => {
+        res.status(401).json({ 
+          message: "Session invalidated - account accessed from another device"
+        });
+      });
+      return;
+    }
+
+    return next();
+  } catch (error) {
+    console.error('Authentication check error:', error);
+    return res.status(500).json({ message: "Authentication error" });
+  }
 }
