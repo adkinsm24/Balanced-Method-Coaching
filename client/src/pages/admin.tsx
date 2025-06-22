@@ -61,6 +61,7 @@ export default function AdminPage() {
   const { data: users, isLoading, error } = useQuery({
     queryKey: ["/api/admin/users"],
     enabled: !!user,
+    staleTime: 0, // Always refetch to ensure fresh data
   });
 
   const createUserMutation = useMutation({
