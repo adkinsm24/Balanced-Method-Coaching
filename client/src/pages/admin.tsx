@@ -67,12 +67,14 @@ export default function AdminPage() {
     mutationFn: async (userData: z.infer<typeof createUserSchema>) => {
       await apiRequest("POST", "/api/admin/create-user", userData);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast({
         title: "User created",
         description: "User account has been created successfully.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      // Force refetch the users data
+      await queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/admin/users"] });
       setIsCreateDialogOpen(false);
       form.reset();
     },
