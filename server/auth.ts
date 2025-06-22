@@ -206,14 +206,22 @@ export async function isAuthenticated(req: any, res: any, next: any) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Only check session validity for concurrent logins (disable for now to allow admin access)
-    // This feature can be re-enabled later with proper session handling
-    // if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
-    //   await storage.clearUserSession(user.id);
-    //   return res.status(401).json({ 
-    //     message: "Session invalidated - account accessed from another device"
-    //   });
-    // }
+    // Skip session validation for admin users to prevent lockout
+    if (!user.isAdmin) {
+      // Check session validity for regular users to prevent concurrent logins
+      if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
+        // Clear the current session
+        req.logout((err: any) => {
+          if (err) console.error('Logout error:', err);
+        });
+        
+        return res.status(401).json({ 
+          message: "Session invalidated",
+          reason: "logged_in_elsewhere"
+        });
+      }
+    }
+    
     return next();
   } catch (error) {
     console.error('Authentication check error:', error);

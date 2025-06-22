@@ -948,14 +948,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ error: "Admin access required" });
       }
 
-      // Session validation disabled for now to prevent admin lockout
-      // This can be re-enabled with proper session handling
-      // if (user.activeSessionId && user.activeSessionId !== req.sessionID) {
-      //   await storage.clearUserSession(user.id);
-      //   return res.status(401).json({ 
-      //     error: "Session invalidated - account accessed from another device"
-      //   });
-      // }
+      // For admin users, always update their session ID to allow flexible access
+      // This prevents admin lockout while still tracking their sessions
+      if (user.activeSessionId !== req.sessionID) {
+        await storage.updateUserSession(user.id, req.sessionID);
+      }
       
       next();
     } catch (error) {
