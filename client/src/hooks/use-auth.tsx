@@ -36,19 +36,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refetchIntervalInBackground: false,
   });
 
-  // Handle session invalidation
+  // Handle session invalidation and timeouts
   useEffect(() => {
-    if (error && error.message.includes("Session invalidated")) {
+    if (error && (error.message.includes("Session invalidated") || error.message.includes("SESSION_CONFLICT"))) {
+      const isSessionConflict = error.message.includes("SESSION_CONFLICT");
+      
       toast({
-        title: "Logged Out",
-        description: "You have been logged in from another device. Please log in again.",
+        title: "Session Expired",
+        description: isSessionConflict 
+          ? "You have been logged in from another device. Please log in again."
+          : "Your session has expired due to inactivity. Please log in again.",
         variant: "destructive",
       });
+      
       queryClient.setQueryData(["/api/auth/user"], null);
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      
       setTimeout(() => {
         setLocation("/auth");
-      }, 1500);
+      }, 2500);
     }
   }, [error, toast, setLocation]);
 
@@ -74,6 +80,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [user, refetchUser]);
+
+  // Add user activity tracking to extend session on interaction
+  useEffect(() => {
+    if (!user) return;
+
+    let activityTimer: NodeJS.Timeout;
+    
+    const extendSession = async () => {
+      try {
+        // Make a lightweight request to extend the session
+        await fetch('/api/auth/user', {
+          method: 'GET',
+          credentials: 'include',
+        });
+      } catch (error) {
+        // Session extension failed - will be caught by error boundary
+        console.log('Session extension failed:', error);
+      }
+    };
+
+    const handleUserActivity = () => {
+      // Debounce activity to avoid excessive requests
+      clearTimeout(activityTimer);
+      activityTimer = setTimeout(extendSession, 60000); // Extend every minute of activity
+    };
+
+    // Track various user activities
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    events.forEach(event => {
+      document.addEventListener(event, handleUserActivity, { passive: true });
+    });
+
+    return () => {
+      clearTimeout(activityTimer);
+      events.forEach(event => {
+        document.removeEventListener(event, handleUserActivity);
+      });
+    };
+  }, [user]);
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginUser) => {
