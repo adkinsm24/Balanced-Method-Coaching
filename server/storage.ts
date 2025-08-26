@@ -25,6 +25,7 @@ export interface IStorage {
   hashPassword(password: string): Promise<string>;
   updateUserSession(userId: number, sessionId: string): Promise<void>;
   clearUserSession(userId: number): Promise<void>;
+  updateUserActivity(userId: number): Promise<void>;
   
   // Booking operations
   createConsultationRequest(request: InsertConsultationRequest): Promise<ConsultationRequest>;
@@ -135,6 +136,14 @@ export class MemoryStorage implements IStorage {
     const user = this.users.get(userId);
     if (user) {
       user.activeSessionId = null;
+      this.users.set(userId, user);
+    }
+  }
+
+  async updateUserActivity(userId: number): Promise<void> {
+    const user = this.users.get(userId);
+    if (user) {
+      user.lastLoginAt = new Date();
       this.users.set(userId, user);
     }
   }
@@ -520,6 +529,15 @@ export class DatabaseStorage implements IStorage {
     await db.update(users)
       .set({ 
         activeSessionId: null,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async updateUserActivity(userId: number): Promise<void> {
+    await db.update(users)
+      .set({ 
+        lastLoginAt: new Date(),
         updatedAt: new Date()
       })
       .where(eq(users.id, userId));

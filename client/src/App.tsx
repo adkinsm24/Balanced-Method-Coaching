@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/lib/protected-route";
+import { SessionWarning } from "@/components/session-warning";
 import Navigation from "@/components/navigation";
 import SocialMedia from "@/components/social-media";
 import Home from "@/pages/home";
@@ -59,6 +60,7 @@ function App() {
       <TooltipProvider>
         <AuthProvider>
           <Toaster />
+          <SessionWarning />
           <Navigation />
           <SocialMedia variant="floating" />
           <Router />

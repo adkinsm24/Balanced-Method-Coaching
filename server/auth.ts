@@ -41,23 +41,44 @@ async function comparePasswords(supplied: string, stored: string): Promise<boole
 }
 
 export function setupAuth(app: Express) {
-  const MemStore = MemoryStore(session);
+  // Configure session store with PostgreSQL for production reliability
+  const PgStore = connectPg(session);
+  let store;
   
-  // Use memory store to avoid database connection issues
-  // This is more reliable for development and handles Neon connectivity issues
-  const store = new MemStore({
-    checkPeriod: 86400000 // prune expired entries every 24h
-  });
+  try {
+    // Use PostgreSQL session store for better session management
+    store = new PgStore({
+      pool: pool,
+      tableName: 'sessions',
+      createTableIfMissing: true,
+      pruneSessionInterval: 60 * 15, // Clean up expired sessions every 15 minutes
+      errorLog: (error: Error) => {
+        console.error('Session store error:', error);
+      }
+    });
+    console.log('Using PostgreSQL session store');
+  } catch (error) {
+    console.warn('PostgreSQL session store failed, falling back to memory store:', error);
+    // Fallback to memory store if PostgreSQL fails
+    const MemStore = MemoryStore(session);
+    store = new MemStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    });
+  }
   
+  // Session configuration with 30-minute idle timeout
+  const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
   const sessionSettings: session.SessionOptions = {
     secret: process.env.SESSION_SECRET || 'development-secret-key-change-in-production',
-    resave: false,
-    saveUninitialized: false,
+    resave: false, // Don't save session if unmodified
+    saveUninitialized: false, // Don't create sessions until something is stored
     store: store,
+    rolling: true, // Reset expiration on activity (this enables idle timeout behavior)
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
+      maxAge: IDLE_TIMEOUT, // 30 minutes idle timeout
+      sameSite: 'lax' // Improved security
     },
   };
 
@@ -65,6 +86,9 @@ export function setupAuth(app: Express) {
   app.use(session(sessionSettings));
   app.use(passport.initialize());
   app.use(passport.session());
+
+  // Set up periodic cleanup of expired sessions
+  setupSessionCleanup();
 
   passport.use(
     new LocalStrategy(
@@ -76,18 +100,21 @@ export function setupAuth(app: Express) {
             return done(null, false, { message: 'Invalid email or password' });
           }
           
-          // Check if user already has an active session (prevent new logins)
+          // Check if user already has an active session (prevent concurrent logins)
           if (!user.isAdmin && user.activeSessionId) {
-            // Only allow login if the session ID matches (same device/browser)
+            // Only allow login if the session ID matches (same device/browser) or if the stored session is expired
             if (user.activeSessionId !== req.sessionID) {
-              return done(null, false, { message: 'Account is already logged in on another device. Please log out first.' });
+              // Check if the stored session is still valid
+              const existingSession = await checkSessionExists(user.activeSessionId);
+              if (existingSession) {
+                return done(null, false, { message: 'Account is already logged in on another device. Please log out first or wait for the session to expire.' });
+              }
+              // Session no longer exists, allow login
             }
           }
           
-          // Update session tracking for non-admin users
-          if (!user.isAdmin) {
-            await storage.updateUserSession(user.id, req.sessionID);
-          }
+          // Update session tracking for all users (including admins for activity tracking)
+          await storage.updateUserSession(user.id, req.sessionID);
           
           return done(null, user);
         } catch (error) {
@@ -213,23 +240,91 @@ export async function isAuthenticated(req: any, res: any, next: any) {
     // Get fresh user data to check current active session
     const user = await storage.getUser(req.user.id);
     if (!user) {
+      // Clear session if user no longer exists
+      req.logout((err) => {
+        if (err) console.error('Logout error:', err);
+      });
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Session validation: allow existing sessions to continue but prevent new concurrent logins
-    // This approach is less disruptive - existing sessions stay active, new logins are blocked
-    
+    // Update last activity timestamp for idle timeout tracking
+    await updateUserActivity(user.id);
+
+    // Session validation for non-admin users
     if (!user.isAdmin && user.activeSessionId) {
       if (user.activeSessionId !== req.sessionID) {
         console.log(`Session mismatch detected for user ${user.email}: stored=${user.activeSessionId}, current=${req.sessionID}`);
-        // Don't invalidate existing sessions - they were legitimately established
-        // New login attempts are blocked at the login stage instead
+        
+        // For session conflicts, invalidate the current session
+        req.logout((err) => {
+          if (err) console.error('Logout error:', err);
+        });
+        
+        await storage.clearUserSession(user.id);
+        return res.status(401).json({ 
+          message: "Session invalidated - account is logged in elsewhere. Please log in again.",
+          code: "SESSION_CONFLICT"
+        });
       }
     }
+    
+    // Touch the session to reset idle timeout on activity
+    req.session.touch();
     
     return next();
   } catch (error) {
     console.error('Authentication check error:', error);
     return res.status(500).json({ message: "Authentication error" });
   }
+}
+
+// Helper function to update user activity timestamp
+async function updateUserActivity(userId: number) {
+  try {
+    await storage.updateUserActivity(userId);
+  } catch (error) {
+    console.error('Failed to update user activity:', error);
+    // Don't fail authentication for activity update errors
+  }
+}
+
+// Helper function to check if a session exists in the session store
+async function checkSessionExists(sessionId: string): Promise<boolean> {
+  try {
+    const result = await pool.query('SELECT sid FROM sessions WHERE sid = $1 AND expire > NOW()', [sessionId]);
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error('Failed to check session existence:', error);
+    return false; // Assume session doesn't exist if we can't check
+  }
+}
+
+// Setup periodic session cleanup to prevent abandoned session accumulation
+function setupSessionCleanup() {
+  const CLEANUP_INTERVAL = 15 * 60 * 1000; // 15 minutes
+  const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 minutes (matches session timeout)
+  
+  setInterval(async () => {
+    try {
+      // Clean up expired sessions from PostgreSQL sessions table
+      await pool.query(`
+        DELETE FROM sessions 
+        WHERE expire < NOW()
+      `);
+      
+      // Clear activeSessionId for users with old sessions (safety net)
+      const cutoffTime = new Date(Date.now() - (IDLE_TIMEOUT * 2)); // 1 hour cutoff
+      await pool.query(`
+        UPDATE users 
+        SET active_session_id = NULL, updated_at = NOW() 
+        WHERE last_login_at < $1 AND active_session_id IS NOT NULL
+      `, [cutoffTime]);
+      
+      console.log('Session cleanup completed');
+    } catch (error) {
+      console.error('Session cleanup failed:', error);
+    }
+  }, CLEANUP_INTERVAL);
+  
+  console.log('Session cleanup job started (runs every 15 minutes)');
 }
